@@ -1,4 +1,4 @@
-import { ArrowUpRight, Clock, MapPin, CalendarDays } from 'lucide-react'
+import { ArrowUpRight, Clock, MapPin, CalendarDays } from '../ui/MughalIcons'
 import { events } from '../../data/wedding'
 import { formatDate, formatDay } from '../../utils/date'
 import { cn } from '../../utils/cn'
@@ -162,25 +162,21 @@ export function Events() {
                     aria-label={`Get directions to ${event.venue}, ${event.address}`}
                     className="group/venue mb-7 grid grid-cols-[auto_1fr_auto] items-center gap-x-3.5 rounded-[1px] border border-gold/30 bg-gold/[0.06] px-4 py-3.5 transition-colors duration-300 hover:border-gold/60 hover:bg-gold/[0.11] focus-visible:outline-gold"
                   >
-                    <MapPin
-                      className="h-4 w-4 self-start text-gold-deep"
-                      strokeWidth={1.5}
-                      aria-hidden="true"
-                    />
-                    <span>
-                      <span className="display block text-[1.2rem] leading-snug text-emerald md:text-[1.35rem]">
-                        {event.venue}
-                      </span>
-                      <span className="mt-1 block text-[0.72rem] leading-relaxed font-light text-muted">
-                        {event.address}
-                      </span>
+                    {/* Row 1: pin, venue name and arrow on one line */}
+                    <MapPin className="h-4 w-4 text-gold-deep" strokeWidth={1.5} aria-hidden="true" />
+                    <span className="display block text-[1.2rem] leading-snug text-emerald md:text-[1.35rem]">
+                      {event.venue}
                     </span>
                     {/* Affordance: an arrow that nudges on hover */}
                     <ArrowUpRight
-                      className="h-4 w-4 self-start text-gold-deep/70 transition-transform duration-300 group-hover/venue:translate-x-0.5 group-hover/venue:-translate-y-0.5"
+                      className="h-4 w-4 text-gold-deep/70 transition-transform duration-300 group-hover/venue:translate-x-0.5 group-hover/venue:-translate-y-0.5"
                       strokeWidth={1.5}
                       aria-hidden="true"
                     />
+                    {/* Row 2: address, aligned under the name */}
+                    <span className="col-start-2 mt-1 block text-[0.72rem] leading-relaxed font-light text-muted">
+                      {event.address}
+                    </span>
                   </a>
 
                   <p className="text-[0.78rem] leading-loose font-light text-pretty text-muted">
@@ -220,7 +216,7 @@ export function Events() {
               href={sharedMaps}
               target="_blank"
               rel="noopener noreferrer"
-              variant="gold"
+              variant="emerald"
               size="md"
               icon={<MapPin className="h-4 w-4" strokeWidth={1.25} />}
               iconPosition="left"

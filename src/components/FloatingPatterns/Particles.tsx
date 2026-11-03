@@ -37,10 +37,11 @@ export function Particles({ count = 18, className, tone = 'gold' }: ParticlesPro
       id: i,
       left: rand() * 100,
       top: rand() * 100,
-      size: 1.5 + rand() * 3.5,
+      size: 4 + rand() * 5,
+      spin: (rand() - 0.5) * 540,
       duration: 14 + rand() * 16,
       delay: rand() * -22,
-      drift: -30 - rand() * 70,
+      drift: 40 + rand() * 90,
       sway: (rand() - 0.5) * 44,
       opacity: 0.2 + rand() * 0.5,
     }))
@@ -57,23 +58,19 @@ export function Particles({ count = 18, className, tone = 'gold' }: ParticlesPro
         <motion.span
           key={m.id}
           className={cn(
-            'absolute rounded-full',
+            'absolute rounded-[100%_0]', // a petal, not a mote
             tone === 'gold' ? 'bg-gold' : 'bg-ivory',
           )}
           style={{
             left: `${m.left}%`,
             top: `${m.top}%`,
             width: m.size,
-            height: m.size,
-            filter: 'blur(0.4px)',
-            boxShadow:
-              tone === 'gold'
-                ? '0 0 6px rgba(200,169,106,0.7)'
-                : '0 0 6px rgba(255,255,255,0.6)',
+            height: m.size * 0.7,
           }}
           animate={{
             y: [0, m.drift, 0],
             x: [0, m.sway, 0],
+            rotate: [0, m.spin],
             opacity: [0, m.opacity, m.opacity * 0.4, 0],
           }}
           transition={{

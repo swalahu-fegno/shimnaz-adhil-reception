@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Music, VolumeX } from 'lucide-react'
+import { Music, VolumeX } from '../ui/MughalIcons'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { cn } from '../../utils/cn'
 

@@ -1,7 +1,6 @@
-// bride/groom are no longer read here — the signature block below is commented
-// out. Restore the import if you bring it back.
-import { wedding, hosts } from '../../data/wedding'
-import { ArabesqueDivider, Divider, GirihPattern, Khatim } from '../ui/Ornaments'
+import { bride, groom, wedding, hosts } from '../../data/wedding'
+import { GirihPattern } from '../ui/Ornaments'
+import { GoldPalm, LotusDivider } from '../ui/Mughal'
 import { Reveal, TextReveal } from '../ui/Reveal'
 
 /**
@@ -46,10 +45,7 @@ export function Invitation() {
           {/* Seal */}
           <Reveal direction="scale">
             <div className="relative mb-9 flex items-center justify-center">
-              <Khatim
-                className="animate-spin-slow h-16 w-16 text-gold/70 md:h-20 md:w-20"
-                strokeWidth={0.8}
-              />
+              <GoldPalm className="h-24 w-20 text-gold md:h-28 md:w-24" />
               <span className="absolute inset-0 -z-10 rounded-full bg-gold/10 blur-xl" />
             </div>
           </Reveal>
@@ -71,37 +67,50 @@ export function Invitation() {
           </Reveal>
 
           <Reveal direction="scale" delay={0.3} className="my-10 w-full">
-            <ArabesqueDivider />
+            <LotusDivider />
           </Reveal>
 
-          {/* The ask */}
-          <TextReveal
-            text={wedding.invitationMessage}
-            as="p"
-            className="display max-w-2xl text-[clamp(1.5rem,3.8vw,2.4rem)] leading-[1.35] text-balance text-ink"
-            stagger={0.045}
-          />
-
-          <Reveal direction="up" delay={0.25}>
-            <p className="mt-8 max-w-lg text-[0.82rem] leading-loose font-light text-pretty text-muted">
-              {wedding.invitationSubtext}
+          {/* The ask — worded as on the family's printed card */}
+          <Reveal direction="up">
+            <p className="royal text-[0.78rem] tracking-[0.22em] text-ink md:text-sm">
+              {hosts.grandfather} &amp; {hosts.grandmother}
+            </p>
+          </Reveal>
+          <Reveal direction="up" delay={0.1}>
+            <p className="display mt-4 max-w-md text-[clamp(1.1rem,2.6vw,1.4rem)] leading-relaxed text-balance text-muted italic">
+              {wedding.invitationMessage}
             </p>
           </Reveal>
 
-          {/* Hosts — the invitation is extended by the groom's grandparents */}
-          <Reveal direction="up" delay={0.3}>
-            <div className="mt-12 flex flex-col items-center gap-4">
-              <Divider variant="lozenge" className="mb-2 w-40" />
-
-              <p className="eyebrow text-[0.5rem]">With the blessings of</p>
-
-              <p className="display text-xl leading-relaxed text-ink md:text-2xl">
-                {hosts.grandfather}
-                <span className="mx-2 text-gold">&amp;</span>
-                {hosts.grandmother}
-              </p>
+          <TextReveal
+            text={bride.fullName}
+            as="p"
+            className="royal mt-8 text-gold-deep text-[clamp(1.6rem,5.4vw,3rem)] leading-tight"
+            stagger={0.05}
+          />
+          <Reveal direction="up" delay={0.15}>
+            <div className="my-3 flex items-center justify-center gap-4">
+              <span className="h-px w-14 bg-gold/50 md:w-24" />
+              <span className="display text-xl text-gold-deep italic">with</span>
+              <span className="h-px w-14 bg-gold/50 md:w-24" />
             </div>
           </Reveal>
+          <TextReveal
+            text={groom.fullName}
+            as="p"
+            className="royal text-gold-deep text-[clamp(1.6rem,5.4vw,3rem)] leading-tight"
+            stagger={0.05}
+          />
+          <Reveal direction="up" delay={0.2}>
+            <p className="display mt-3 text-lg text-muted italic">Insha Allah</p>
+          </Reveal>
+
+          <Reveal direction="up" delay={0.25}>
+            <p className="display mt-8 max-w-md text-[clamp(1rem,2.2vw,1.2rem)] leading-relaxed text-pretty text-ink/80 italic">
+              “{wedding.invitationSubtext}”
+            </p>
+          </Reveal>
+
           {/* Signature */}
           {/* <Reveal direction="fade" delay={0.35}>
             <div className="flex flex-col items-center gap-3">

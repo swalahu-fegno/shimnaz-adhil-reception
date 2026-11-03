@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { AnimatePresence, motion, type PanInfo } from 'framer-motion'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight } from '../ui/MughalIcons'
 import { bride, couplePhotoAspect, couplePhotos, groom } from '../../data/wedding'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { cn } from '../../utils/cn'

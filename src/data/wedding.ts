@@ -50,29 +50,23 @@ export interface SocialLink {
 /*  COUPLE                                                                     */
 /* -------------------------------------------------------------------------- */
 
-// VERIFY: `arabicName` should mirror `fullName` in full, not just the given
-// name. These are the standard Arabic renderings — نشاد محمد and لبنى محمود —
-// but names admit more than one spelling, so please have the families confirm
-// them before this goes out.
 export const groom: Person = {
-  firstName: 'Nishad',
-  fullName: 'Nishad Muhammed',
-  arabicName: 'نيشاد محمد',
-  father: 'Late Noushad KT',
-  mother: 'Shakeera K',
+  firstName: 'Adhil',
+  fullName: 'Adhil KP',
+  father: 'Ahammed Kutty KP',
+  mother: 'Sakeena M',
   image: '/images/groom.jpg',
-  initial: 'N',
+  initial: 'A',
 }
 
 export const bride: Person = {
-  firstName: "Lubna",
-  fullName: "Lubna Mahamood",
-  arabicName: "لبنى بنت محمود",
-  father: "Mahamood CV",
-  mother: "Ramlath Mahamood",
-  image: "/images/bride.jpg",
-  initial: "L",
-};
+  firstName: 'Shimnaz',
+  fullName: 'Shimnaz Fathima Nazar',
+  father: 'PA Nazar',
+  mother: 'Shahnaz Nazar',
+  image: '/images/bride.jpg',
+  initial: 'S',
+}
 
 /* -------------------------------------------------------------------------- */
 /*  COUPLE PHOTOS — the slider in the Couple section                           */
@@ -86,7 +80,7 @@ export interface CouplePhoto {
 }
 
 /**
- * Photos of Nishad and Lubna TOGETHER.
+ * Photos of Adhil and Shimnaz TOGETHER.
  *
  * Add, remove or reorder freely — the slider, the dots and the counter all
  * follow this list. Drop the files at these exact paths (or change the paths to
@@ -110,19 +104,19 @@ export const couplePhotos: CouplePhoto[] = [
 export const couplePhotoAspect = '5 / 6'
 
 /* -------------------------------------------------------------------------- */
-/*  HOSTS — the invitation is extended by the groom's grandparents             */
+/*  HOSTS — the invitation is extended by the bride's parents                 */
 /* -------------------------------------------------------------------------- */
 
 export const hosts = {
-  grandfather: 'Mr. Hamsa P.P.',
-  grandmother: 'Mrs. Safiya Kodiyil',
-  /** Rendered line by line, so keep it as separate lines */
-  address: ["Shahina's", 'Near Royal School', 'Syed Nagar', 'Taliparamba'],
+  label: 'Hosted by',
+  grandfather: 'Mr. PA Nazar',
+  grandmother: 'Mrs. Shahnaz Nazar',
 } as const
 
-/** The bride's family home. */
-export const brideHome = {
-  address: ['Raheela Mahal', 'Master Road', 'Pushpagiri', 'Thaliparamba'],
+/** Dress code — a suggestion, not a rule. */
+export const dressCode = {
+  colours: 'Grey & Gold',
+  note: 'Not mandatory — your presence is our priority.',
 } as const
 
 /* -------------------------------------------------------------------------- */
@@ -131,12 +125,14 @@ export const brideHome = {
 
 export const wedding = {
   /** Primary date — the countdown target. ISO 8601, IST (+05:30). */
-  date: '2026-08-07T17:00:00+05:30',
+  date: '2026-12-03T17:30:00+05:30',
   /** Pre-formatted so the Hero never waits on a date library */
-  dateLabel: '7 August 2026',
-  dayLabel: 'Friday',
+  dateLabel: '3 December 2026',
+  dayLabel: 'Thursday',
+  /** The time column of the card's date block */
+  timeNote: ['5 PM Onwards', 'Nikkah at 5:30 PM'],
   // VERIFY: Umm al-Qura reckoning. Local moon sighting may differ by a day.
-  hijriLabel: '24 Safar 1448',
+  hijriLabel: '22 Jumada al-Akhirah 1448',
   quote: {
     text: 'And among His signs is that He created for you mates from among yourselves, that you may dwell in tranquillity with them, and He has put love and mercy between your hearts.',
     source: 'Surah Ar-Rum, 30:21',
@@ -146,9 +142,9 @@ export const wedding = {
     translation: 'In the Name of Allah, the Most Compassionate, the Most Merciful',
   },
   invitationMessage:
-    'Together with our families, we request the honour of your presence at our Nikkah ceremony.',
+    'Request the honour of your presence at the wedding of their beloved daughter',
   invitationSubtext:
-    'With hearts full of gratitude to Allah, we invite you to share in the joy of this blessed union — and to remember us in your prayers.',
+    'May Allah bless you, and shower His blessings upon you, and join you together in goodness.',
 } as const
 
 /* -------------------------------------------------------------------------- */
@@ -156,14 +152,13 @@ export const wedding = {
 /* -------------------------------------------------------------------------- */
 
 export const venue = {
-  name: 'Babil Greens Convention Centre',
-  address: 'Oman Nagar, Andikalam, Kanjirangad P.O., Taliparamba, Kerala 670142',
-  mapsUrl: 'https://maps.app.goo.gl/7rZJaqCPiR2ZJRHj6',
-  directionsUrl:
-    'https://www.google.com/maps/dir/?api=1&destination=Babil+Greens+Convention+Centre+Oman+Nagar+Andikalam+Kanjirangad+Taliparamba+Kerala+670142',
+  name: 'Wasava Cliff House',
+  // VERIFY: exact Google Maps pin from the client.
+  address: 'Burnacherry, Kannur, Kerala',
+  mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Wasava+Cliff+House+Burnacherry+Kannur',
+  directionsUrl: 'https://www.google.com/maps/dir/?api=1&destination=Wasava+Cliff+House+Burnacherry+Kannur',
   /** Keyless embed — `output=embed` needs no API key and no billing account. */
-  embedUrl:
-    'https://maps.google.com/maps?q=Babil+Greens+Convention+Centre+Oman+Nagar+Andikalam+Kanjirangad+Taliparamba+Kerala+670142&z=15&output=embed',
+  embedUrl: 'https://maps.google.com/maps?q=Wasava+Cliff+House+Burnacherry+Kannur&z=15&output=embed',
 } as const
 
 /* -------------------------------------------------------------------------- */
@@ -175,34 +170,46 @@ export const events: WeddingEvent[] = [
     id: 'nikkah',
     name: 'Nikkah',
     arabicName: 'نكاح',
-    dateTime: '2026-08-07T17:00:00+05:30',
-    timeLabel: '5:00 PM',
+    dateTime: '2026-12-03T17:30:00+05:30',
+    timeLabel: '5:30 PM',
     venue: venue.name,
     address: venue.address,
     description:
-      'The solemnisation of our marriage, followed by dua. We would be honoured to have you witness our nikkah and share in the blessings of the day.',
+      'Guests are welcomed from 5:00 PM onwards. The solemnisation of our marriage, followed by dua — we would be honoured to have you witness it.',
     icon: 'nikkah',
     mapsUrl: venue.mapsUrl,
   },
   {
-    id: 'walima',
-    name: 'Walima',
+    id: 'dinner',
+    name: 'Dinner',
     arabicName: 'وليمة',
-    // Reception follows the nikkah. dateTime drives the sort/countdown; the
-    // label is the one guests read.
-    dateTime: '2026-08-07T17:30:00+05:30',
-    timeLabel: '5:30 PM — 8:30 PM',
-    // Both events share the `venue` const (Babil Greens). If the nikkah is at a
-    // different place — a masjid, say — give THAT event its own venue/address/
-    // mapsUrl literals and leave this one pointing at `venue.*`.
+    dateTime: '2026-12-03T19:30:00+05:30',
+    timeLabel: '7:30 PM',
     venue: venue.name,
     address: venue.address,
-    description:
-      'An evening of food, warmth and gratitude in the company of family and friends. We look forward to welcoming you.',
+    description: `An evening of food, warmth and gratitude with family and friends. Dress code: ${dressCode.colours} — ${dressCode.note}`,
     icon: 'walima',
     mapsUrl: venue.mapsUrl,
   },
 ]
+
+/* -------------------------------------------------------------------------- */
+/*  PROGRAMME — the order of the evening                                       */
+/* -------------------------------------------------------------------------- */
+
+export const programme = [
+  { time: '5:00 PM', title: 'Arrival of Guests', note: 'Welcome from 5 PM onwards' },
+  { time: '5:30 PM', title: 'Nikkah', note: 'The solemnisation, followed by dua' },
+  // VERIFY: 7:30 PM dinner came from the first brief; the latest card omits it.
+  { time: '7:30 PM', title: 'Dinner', note: 'An evening of food and gratitude' },
+] as const
+
+/** Swatches shown with the dress code — the card's own palette. */
+export const dressSwatches = [
+  { name: 'Charcoal Grey', hex: '#3A3A3C' },
+  { name: 'Champagne Gold', hex: '#D1B47A' },
+  { name: 'Ivory', hex: '#F8F5EF' },
+] as const
 
 /* -------------------------------------------------------------------------- */
 /*  SHARING OUR JOY — family standing with the couple                          */
@@ -225,20 +232,15 @@ export const sharingOurJoy = {
 /*  CONTACT & SOCIAL                                                           */
 /* -------------------------------------------------------------------------- */
 
+// VERIFY: the client hasn't sent contact details yet. Empty values hide the
+// phone list, email, social icons and the WhatsApp button.
 export const contact = {
-  // VERIFY: the floating WhatsApp button opens a chat to this number. International
-  // format, digits only. Confirm it is actually on WhatsApp — updated to match
-  // the contact number below; revert if WhatsApp is on a different SIM.
-  whatsapp: '919495902453',
-  /** Shown in the footer and dialable on mobile. */
-  phones: ['+91 94959 02453','+91 97472 22228'],
-  email: 'nishadmo7@gmail.com',
-} as const
+  whatsapp: '',
+  phones: [] as string[],
+  email: '',
+}
 
-export const socials: SocialLink[] = [
-  { label: 'Email us', href: 'mailto:nishadmo7@gmail.com', icon: 'mail' },
-  { label: 'Call us', href: 'tel:+919495902453', icon: 'phone' },
-]
+export const socials: SocialLink[] = []
 
 /* -------------------------------------------------------------------------- */
 /*  MUSIC                                                                      */
@@ -268,12 +270,12 @@ export const site = {
 /* -------------------------------------------------------------------------- */
 
 export const theme = {
-  bg: '#FFFCF8',
+  bg: '#FFFDF8',
   gold: '#C8A96A',
   goldSoft: '#E3D3AE',
   goldDeep: '#A8863F',
-  emerald: '#0E5A4E',
-  emeraldDeep: '#083830',
+  emerald: '#3A3A3C',
+  emeraldDeep: '#232325',
   ivory: '#F8F5EF',
   ink: '#2D2926',
   muted: '#6B625A',

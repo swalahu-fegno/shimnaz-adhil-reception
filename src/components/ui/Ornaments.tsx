@@ -1,42 +1,47 @@
 import type { SVGProps } from 'react'
 import { cn } from '../../utils/cn'
+import { cuspedArchPath } from './Mughal'
 
 /* ============================================================================
- * ORNAMENT LIBRARY
+ * ORNAMENT LIBRARY — Mughal court
  *
- * The entire decorative language of the site. All geometry is constructed
- * rather than drawn by hand, following classical Islamic construction:
- * an 8-fold rosette (khatim) from two overlaid squares, girih strapwork from a
- * repeating unit cell, and arabesque scrollwork from mirrored béziers.
+ * The decorative language of this invitation, drawn from Mughal pietra dura
+ * and the family's printed card: lotus medallions, the three-petal fleur
+ * scattered across the card, flowering vines along its borders, and the
+ * cusped arch of every palace window.
  *
- * Everything is stroke-based so it inherits `currentColor` and scales cleanly.
+ * Everything inherits `currentColor` and scales cleanly. Export names are
+ * kept stable so every section picks the set up without call-site changes.
  * ========================================================================== */
-
-/* -- geometry helpers ------------------------------------------------------ */
 
 const polar = (cx: number, cy: number, r: number, deg: number) => {
   const rad = ((deg - 90) * Math.PI) / 180
   return [cx + r * Math.cos(rad), cy + r * Math.sin(rad)] as const
 }
 
-/** Star polygon points, alternating outer/inner radius. */
-export function starPoints(
-  cx: number,
-  cy: number,
-  outer: number,
-  inner: number,
-  points: number,
-): string {
-  const step = 360 / (points * 2)
-  const coords: string[] = []
-  for (let i = 0; i < points * 2; i++) {
-    const [x, y] = polar(cx, cy, i % 2 === 0 ? outer : inner, i * step)
-    coords.push(`${x.toFixed(3)},${y.toFixed(3)}`)
-  }
-  return coords.join(' ')
+/** Pointed (ogee) petal from the centre outward, rotated to `deg`. */
+function petal(cx: number, cy: number, r0: number, r1: number, w: number, deg: number) {
+  const [x0, y0] = polar(cx, cy, r0, deg)
+  const [x1, y1] = polar(cx, cy, r1, deg)
+  const [lx, ly] = polar(cx, cy, (r0 + r1) / 2, deg - w)
+  const [rx, ry] = polar(cx, cy, (r0 + r1) / 2, deg + w)
+  const f = (n: number) => n.toFixed(2)
+  return `M${f(x0)} ${f(y0)} Q${f(lx)} ${f(ly)} ${f(x1)} ${f(y1)} Q${f(rx)} ${f(ry)} ${f(x0)} ${f(y0)}Z`
 }
 
-/* -- Khatim: the signature 8-point seal ------------------------------------ */
+/** A five-petal blossom, as in the card's border vines. */
+function Blossom({ x, y, r, filled = false }: { x: number; y: number; r: number; filled?: boolean }) {
+  return (
+    <g>
+      {[0, 72, 144, 216, 288].map((d) => (
+        <path key={d} d={petal(x, y, r * 0.25, r, 26, d)} fill={filled ? 'currentColor' : 'none'} fillOpacity="0.25" />
+      ))}
+      <circle cx={x} cy={y} r={r * 0.22} fill="currentColor" stroke="none" />
+    </g>
+  )
+}
+
+/* -- Lotus medallion: the signature mark ------------------------------------ */
 
 interface KhatimProps extends SVGProps<SVGSVGElement> {
   /** Draw the enclosing rings */
@@ -45,24 +50,26 @@ interface KhatimProps extends SVGProps<SVGSVGElement> {
 }
 
 /**
- * Khatim Sulaymani — the 8-fold seal. This is the site's signature mark:
- * it draws itself in the preloader, then recurs as section markers and
- * divider centres.
+ * Lotus medallion — two tiers of pointed petals inside beaded rings, the
+ * rosette found on Mughal ceilings and jharokha soffits.
  */
 export function Khatim({ rings = true, strokeWidth = 1, className, ...props }: KhatimProps) {
+  const outer = Array.from({ length: 12 }, (_, i) => i * 30)
   return (
     <svg viewBox="0 0 100 100" fill="none" aria-hidden="true" className={className} {...props}>
       <g stroke="currentColor" strokeWidth={strokeWidth} strokeLinejoin="round">
-        {/* Two squares at 45° — the classical construction of the 8-point star */}
-        <rect x="21.5" y="21.5" width="57" height="57" />
-        <rect x="21.5" y="21.5" width="57" height="57" transform="rotate(45 50 50)" />
-        {/* Interior rosette */}
-        <polygon points={starPoints(50, 50, 30, 12.4, 8)} opacity="0.55" />
-        <polygon points={starPoints(50, 50, 15, 6.2, 8)} opacity="0.35" />
+        {outer.map((d) => (
+          <path key={d} d={petal(50, 50, 12, 38, 9, d)} />
+        ))}
+        {outer.map((d) => (
+          <path key={`i${d}`} d={petal(50, 50, 8, 24, 10, d + 15)} opacity="0.6" />
+        ))}
+        <circle cx="50" cy="50" r="8" />
+        <circle cx="50" cy="50" r="3" fill="currentColor" stroke="none" />
         {rings && (
           <>
-            <circle cx="50" cy="50" r="40.5" opacity="0.5" />
-            <circle cx="50" cy="50" r="45" opacity="0.25" />
+            <circle cx="50" cy="50" r="42" opacity="0.5" />
+            <circle cx="50" cy="50" r="46.5" opacity="0.3" strokeDasharray="0.6 2.4" strokeLinecap="round" />
           </>
         )}
       </g>
@@ -70,26 +77,25 @@ export function Khatim({ rings = true, strokeWidth = 1, className, ...props }: K
   )
 }
 
-/* -- Eight-point star (solid-friendly, used small) -------------------------- */
+/* -- Fleur (buta): the small mark scattered across the card ----------------- */
 
 export function StarEight({ className, ...props }: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className={className} {...props}>
-      <polygon
-        points={starPoints(12, 12, 11, 4.55, 8)}
-        stroke="currentColor"
-        strokeWidth="1"
-        strokeLinejoin="round"
-      />
+      <g stroke="currentColor" strokeWidth="1" strokeLinejoin="round" strokeLinecap="round">
+        <path d="M12 2 Q15 7 12 13 Q9 7 12 2Z" fill="currentColor" fillOpacity="0.35" />
+        <path d="M12 13 Q6 13 4.5 8.5 Q8 9 12 13Z M12 13 Q18 13 19.5 8.5 Q16 9 12 13Z" />
+        <path d="M12 13 V20 M8.5 17 Q12 15.5 15.5 17 M10 21.5 H14" />
+      </g>
     </svg>
   )
 }
 
-/** Filled diamond — the smallest unit of punctuation in the type system. */
+/** A tiny pointed bud — the smallest unit of punctuation. */
 export function Lozenge({ className, ...props }: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 12 12" aria-hidden="true" className={className} {...props}>
-      <path d="M6 0 L12 6 L6 12 L0 6 Z" fill="currentColor" />
+      <path d="M6 0.5 Q10 6 6 11.5 Q2 6 6 0.5Z" fill="currentColor" />
     </svg>
   )
 }
@@ -98,15 +104,11 @@ export function Lozenge({ className, ...props }: SVGProps<SVGSVGElement>) {
 
 interface DividerProps {
   className?: string
-  /** 'star' centres a khatim; 'lozenge' is quieter; 'plain' is a bare rule */
+  /** 'star' centres a fleur; 'lozenge' is three buds; 'plain' is a bare rule */
   variant?: 'star' | 'lozenge' | 'plain'
   width?: string
 }
 
-/**
- * The recurring section divider: a hairline that fades outward from a centred
- * ornament. Replaces every heart icon a wedding template would reach for.
- */
 export function Divider({ className, variant = 'star', width = '100%' }: DividerProps) {
   return (
     <div
@@ -115,17 +117,12 @@ export function Divider({ className, variant = 'star', width = '100%' }: Divider
       role="presentation"
     >
       <span className="rule-fade h-px flex-1" />
-      {variant === 'star' && (
-        <span className="relative flex shrink-0 items-center justify-center">
-          <StarEight className="h-4 w-4 opacity-90" />
-          <span className="absolute inset-0 -z-10 rounded-full bg-gold/10 blur-md" />
-        </span>
-      )}
+      {variant === 'star' && <StarEight className="h-5 w-5 shrink-0" />}
       {variant === 'lozenge' && (
         <span className="flex shrink-0 items-center gap-1.5">
-          <Lozenge className="h-1 w-1 opacity-50" />
-          <Lozenge className="h-1.5 w-1.5" />
-          <Lozenge className="h-1 w-1 opacity-50" />
+          <Lozenge className="h-1.5 w-1.5 opacity-50" />
+          <Lozenge className="h-2.5 w-2.5" />
+          <Lozenge className="h-1.5 w-1.5 opacity-50" />
         </span>
       )}
       <span className="rule-fade h-px flex-1" />
@@ -133,57 +130,63 @@ export function Divider({ className, variant = 'star', width = '100%' }: Divider
   )
 }
 
-/** Ornate divider with flanking arabesque scrolls — used between Bride & Groom. */
+/** Flowering vine either side of a fleur in a cusped cartouche. */
 export function ArabesqueDivider({ className }: { className?: string }) {
+  const leaves = [40, 70, 100, 130, 160]
   return (
-    <div className={cn('flex w-full items-center justify-center text-gold', className)}>
-      <svg
-        viewBox="0 0 400 40"
-        fill="none"
-        className="h-8 w-full max-w-md"
-        aria-hidden="true"
-        preserveAspectRatio="xMidYMid meet"
-      >
-        <g stroke="currentColor" strokeWidth="1" strokeLinecap="round" fill="none">
-          {/* Mirrored scrollwork either side of the seal */}
-          <path d="M20 20 H120" opacity="0.35" />
-          <path d="M120 20 C140 20 140 8 156 8 C170 8 172 20 158 20 C146 20 144 32 158 32 C172 32 176 20 186 20" />
-          <path d="M280 20 H380" opacity="0.35" />
-          <path d="M280 20 C260 20 260 8 244 8 C230 8 228 20 242 20 C254 20 256 32 242 32 C228 32 224 20 214 20" />
-          <circle cx="200" cy="20" r="13" opacity="0.6" />
-          <polygon points={starPoints(200, 20, 9, 3.7, 8)} strokeLinejoin="round" />
-          <circle cx="120" cy="20" r="2" fill="currentColor" stroke="none" />
-          <circle cx="280" cy="20" r="2" fill="currentColor" stroke="none" />
+    <div className={cn('relative flex w-full items-center justify-center text-gold', className)}>
+      <svg viewBox="0 0 400 40" fill="none" className="h-9 w-full max-w-md" aria-hidden="true">
+        <g stroke="currentColor" strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round">
+          {[1, -1].map((dir) => (
+            <g key={dir} transform={dir < 0 ? 'translate(400 0) scale(-1 1)' : undefined}>
+              <path d="M20 20 Q100 14 176 20" opacity="0.7" />
+              {leaves.map((x, i) => (
+                <path
+                  key={x}
+                  d={i % 2 ? `M${x} 18 q6 -9 14 -8 q-5 7 -14 8Z` : `M${x} 19 q6 9 14 8 q-5 -7 -14 -8Z`}
+                  fill="currentColor"
+                  fillOpacity="0.2"
+                />
+              ))}
+              <Blossom x={58} y={11} r={4.5} />
+              <Blossom x={118} y={28} r={4.5} />
+            </g>
+          ))}
+          <path d="M184 30 V20 Q184 12 190 11 Q192 6 200 4 Q208 6 210 11 Q216 12 216 20 V30 Z" opacity="0.8" />
         </g>
       </svg>
+      <StarEight className="absolute top-1/2 left-1/2 h-4 w-4 -translate-x-1/2 -translate-y-[35%]" />
     </div>
   )
 }
 
-/* -- Corner arabesque ------------------------------------------------------ */
+/* -- Corner vine ------------------------------------------------------------ */
 
 /**
- * A single corner flourish. Rotate with `style={{transform}}` at the call site
- * to build a full frame from four instances.
+ * A flowering corner from the card's border: double rule, a cusped bracket,
+ * and a vine of blossoms and leaves. Rotate at the call site for each corner.
  */
 export function CornerFlourish({ className, ...props }: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 120 120" fill="none" aria-hidden="true" className={className} {...props}>
-      <g stroke="currentColor" strokeWidth="1" strokeLinecap="round" fill="none">
-        <path d="M0 0 H44" opacity="0.55" />
-        <path d="M0 0 V44" opacity="0.55" />
-        <path d="M0 10 H30 Q34 10 34 14 V34" opacity="0.35" />
-        {/* Scrolling vine, curling inward */}
-        <path d="M44 4 C64 4 78 18 78 38 C78 52 68 62 54 62 C44 62 38 55 38 46 C38 39 43 34 50 34 C56 34 60 38 60 44" />
-        <path d="M4 44 C4 64 18 78 38 78 C52 78 62 68 62 54" opacity="0.5" />
-        <circle cx="60" cy="44" r="2.2" fill="currentColor" stroke="none" />
-        <path d="M12 12 L26 26" opacity="0.3" />
+      <g stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M0 0 H60 M0 0 V60" opacity="0.6" />
+        <path d="M6 6 H44 M6 6 V44" opacity="0.35" />
+        {/* cusped bracket */}
+        <path d="M6 30 Q14 30 16 22 Q22 22 22 16 Q30 14 30 6" opacity="0.8" />
+        {/* vine */}
+        <path d="M12 12 C30 22 40 36 44 58 M12 12 C22 30 36 40 58 44" />
+        <path d="M30 26 q8 -8 16 -6 q-6 7 -16 6Z M26 30 q-8 8 -6 16 q7 -6 6 -16Z" fill="currentColor" fillOpacity="0.2" />
+        <path d="M40 46 q9 -3 13 -11 q-9 2 -13 11Z" fill="currentColor" fillOpacity="0.2" />
+        <Blossom x={14} y={14} r={7} filled />
+        <Blossom x={46} y={62} r={5} />
+        <Blossom x={62} y={46} r={5} />
       </g>
     </svg>
   )
 }
 
-/** Four flourishes, one per corner — the Hero's decorative frame. */
+/** Double rule with a flowering vine at each corner — the Hero's frame. */
 export function OrnateFrame({ className, inset = 'inset-4' }: { className?: string; inset?: string }) {
   const corners = [
     { rotate: 0, pos: 'top-0 left-0' },
@@ -194,12 +197,12 @@ export function OrnateFrame({ className, inset = 'inset-4' }: { className?: stri
   return (
     <div className={cn('pointer-events-none absolute', inset, className)} aria-hidden="true">
       <div className="relative h-full w-full">
-        {/* Hairline border */}
-        <div className="absolute inset-0 border border-current opacity-25" />
+        <div className="absolute inset-0 border border-current opacity-30" />
+        <div className="absolute inset-[6px] border border-current opacity-15" />
         {corners.map((c) => (
           <CornerFlourish
             key={c.rotate}
-            className={cn('absolute h-14 w-14 md:h-20 md:w-20', c.pos)}
+            className={cn('absolute h-16 w-16 md:h-24 md:w-24', c.pos)}
             style={{ transform: `rotate(${c.rotate}deg)` }}
           />
         ))}
@@ -208,12 +211,66 @@ export function OrnateFrame({ className, inset = 'inset-4' }: { className?: stri
   )
 }
 
-/* -- Girih strapwork pattern (tiling background) --------------------------- */
+/* -- Fan motif pattern (tiling background) --------------------------------- */
 
 /**
- * Seamless girih tile as an SVG <pattern>. Each instance needs a unique id or
- * the defs collide across mounts — hence the required `id` prop.
+ * The client's embossed gold fan motif, drawn at unit size (0..20 x 0..18):
+ * five rounded petals fanning upward from a curled base.
  */
+function FanMotif({ x, y, s }: { x: number; y: number; s: number }) {
+  const k = s / 20
+  return (
+    <g transform={`translate(${x - 10 * k} ${y - 9 * k}) scale(${k})`} fill="currentColor">
+      <ellipse cx="10" cy="4.2" rx="1.5" ry="3.4" />
+      <ellipse cx="10" cy="4.2" rx="1.5" ry="3.4" transform="rotate(-34 10 12)" />
+      <ellipse cx="10" cy="4.2" rx="1.5" ry="3.4" transform="rotate(34 10 12)" />
+      <ellipse cx="10" cy="5" rx="1.3" ry="3" transform="rotate(-66 10 12)" />
+      <ellipse cx="10" cy="5" rx="1.3" ry="3" transform="rotate(66 10 12)" />
+      <circle cx="10" cy="12" r="1.6" />
+      <path
+        d="M3 14.5 Q6 12.2 10 14.2 Q14 12.2 17 14.5 Q14 13.8 10 16 Q6 13.8 3 14.5Z"
+        fillOpacity="0.85"
+      />
+    </g>
+  )
+}
+
+/**
+ * Staggered field of fan motifs as an SVG <pattern> — the ground of the
+ * client's invitation. Each instance needs a unique id or the defs collide
+ * across mounts — hence the required `id` prop.
+ */
+function MotifPattern({
+  id,
+  className,
+  scale,
+  opacity,
+}: {
+  id: string
+  className?: string
+  scale: number
+  opacity: number
+}) {
+  const s = scale * 0.26
+  return (
+    <svg className={className} aria-hidden="true" width="100%" height="100%">
+      <defs>
+        <pattern id={id} width={scale} height={scale} patternUnits="userSpaceOnUse">
+          <g opacity={opacity * 2}>
+            <FanMotif x={0} y={0} s={s} />
+            <FanMotif x={scale} y={0} s={s} />
+            <FanMotif x={0} y={scale} s={s} />
+            <FanMotif x={scale} y={scale} s={s} />
+            <FanMotif x={scale / 2} y={scale / 2} s={s} />
+          </g>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill={`url(#${id})`} />
+    </svg>
+  )
+}
+
+/** Kept under its old name so every section picks up the new motif. */
 export function GirihPattern({
   id,
   className,
@@ -225,39 +282,8 @@ export function GirihPattern({
   scale?: number
   opacity?: number
 }) {
-  return (
-    <svg className={className} aria-hidden="true" width="100%" height="100%">
-      <defs>
-        <pattern id={id} width={scale} height={scale} patternUnits="userSpaceOnUse">
-          <g stroke="currentColor" strokeWidth="0.6" fill="none" opacity={opacity}>
-            {/* Unit cell: an 8-star with strapwork reaching each edge midpoint */}
-            <polygon
-              points={starPoints(scale / 2, scale / 2, scale * 0.3, scale * 0.124, 8)}
-              strokeLinejoin="round"
-            />
-            <rect x={scale * 0.15} y={scale * 0.15} width={scale * 0.7} height={scale * 0.7} />
-            <rect
-              x={scale * 0.15}
-              y={scale * 0.15}
-              width={scale * 0.7}
-              height={scale * 0.7}
-              transform={`rotate(45 ${scale / 2} ${scale / 2})`}
-              opacity="0.5"
-            />
-            {/* Edge connectors — these make the tile read as continuous */}
-            <path d={`M0 0 L${scale * 0.15} ${scale * 0.15}`} />
-            <path d={`M${scale} 0 L${scale * 0.85} ${scale * 0.15}`} />
-            <path d={`M0 ${scale} L${scale * 0.15} ${scale * 0.85}`} />
-            <path d={`M${scale} ${scale} L${scale * 0.85} ${scale * 0.85}`} />
-          </g>
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill={`url(#${id})`} />
-    </svg>
-  )
+  return <MotifPattern id={id} className={className} scale={scale * 1.3} opacity={opacity} />
 }
-
-/* -- Moroccan quatrefoil lattice ------------------------------------------- */
 
 export function LatticePattern({
   id,
@@ -270,41 +296,16 @@ export function LatticePattern({
   scale?: number
   opacity?: number
 }) {
-  return (
-    <svg className={className} aria-hidden="true" width="100%" height="100%">
-      <defs>
-        <pattern id={id} width={scale} height={scale} patternUnits="userSpaceOnUse">
-          <g stroke="currentColor" strokeWidth="0.7" fill="none" opacity={opacity}>
-            {/* Interlocking arcs → quatrefoil lattice */}
-            <path
-              d={`M${scale / 2} 0 Q${scale} 0 ${scale} ${scale / 2} Q${scale} ${scale} ${scale / 2} ${scale} Q0 ${scale} 0 ${scale / 2} Q0 0 ${scale / 2} 0 Z`}
-            />
-            <circle cx={scale / 2} cy={scale / 2} r={scale * 0.13} opacity="0.7" />
-          </g>
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill={`url(#${id})`} />
-    </svg>
-  )
+  return <MotifPattern id={id} className={className} scale={scale * 1.5} opacity={opacity} />
 }
 
 /* -- Arch (mihrab silhouette) ---------------------------------------------- */
 
 /**
- * Pointed Islamic arch used to frame the couple portraits. Returned as a path
- * string so it can serve double duty as a clip-path.
+ * Cusped Mughal arch used to frame portraits. Returned as a path string so it
+ * can serve double duty as a clip-path.
  */
-export function archPath(w: number, h: number): string {
-  const shoulder = h * 0.52
-  return [
-    `M0 ${h}`,
-    `L0 ${shoulder}`,
-    `Q0 ${h * 0.16} ${w / 2} 0`,
-    `Q${w} ${h * 0.16} ${w} ${shoulder}`,
-    `L${w} ${h}`,
-    'Z',
-  ].join(' ')
-}
+export { cuspedArchPath as archPath } from './Mughal'
 
 export function ArchFrame({ className }: { className?: string }) {
   return (
@@ -316,7 +317,7 @@ export function ArchFrame({ className }: { className?: string }) {
       className={className}
     >
       <path
-        d={archPath(200, 280)}
+        d={cuspedArchPath(200, 280)}
         stroke="currentColor"
         strokeWidth="1.2"
         vectorEffect="non-scaling-stroke"

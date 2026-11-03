@@ -17,6 +17,9 @@ const Countdown = lazy(() =>
 )
 /** Events now carries the venue map too — they were one question, asked twice. */
 const Events = lazy(() => import('./components/Events/Events').then((m) => ({ default: m.Events })))
+const Programme = lazy(() =>
+  import('./components/Programme/Programme').then((m) => ({ default: m.Programme })),
+)
 const Footer = lazy(() => import('./components/Footer/Footer').then((m) => ({ default: m.Footer })))
 
 /** Reserves vertical space so lazy sections don't collapse the scroll height. */
@@ -99,6 +102,7 @@ export default function Site({
             <Couple />
             <Countdown />
             <Events />
+            <Programme />
           </Suspense>
         </div>
 

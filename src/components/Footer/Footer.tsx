@@ -1,10 +1,11 @@
-import { Mail, Phone } from 'lucide-react'
+import { Mail, Phone } from '../ui/MughalIcons'
 import type { ComponentType } from 'react'
 import { bride, groom, socials, wedding, contact, type SocialLink } from '../../data/wedding'
 import { Facebook, Instagram } from '../ui/BrandIcons'
 import { Reveal, TextReveal } from '../ui/Reveal'
-import { ArabesqueDivider, Khatim, StarEight } from '../ui/Ornaments'
+import { StarEight } from '../ui/Ornaments'
 import { Particles } from '../FloatingPatterns/Particles'
+import { Birds, GardenScene, GoldPalm, LotusDivider } from '../ui/Mughal'
 
 const SOCIAL_ICONS: Record<SocialLink['icon'], ComponentType<{ className?: string; strokeWidth?: number }>> = {
   instagram: Instagram,
@@ -16,6 +17,14 @@ const SOCIAL_ICONS: Record<SocialLink['icon'], ComponentType<{ className?: strin
 export function Footer() {
   return (
     <footer className="relative overflow-hidden bg-emerald-deep" aria-label="Thank you">
+      {/* ---- The card's garden in gold line, as dusk falls into charcoal ------- */}
+      <div className="relative h-[42vw] max-h-[24rem] min-h-[14rem] overflow-hidden bg-gradient-to-b from-bg via-emerald to-emerald-deep" aria-hidden="true">
+        <GardenScene className="absolute bottom-0 left-1/2 h-full w-auto max-w-none -translate-x-1/2 text-gold/70" />
+        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-bg to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-emerald-deep to-transparent" />
+        <Birds tone="text-gold-soft/60" />
+      </div>
+
       {/* ---- Background: ornamental light and deep emerald ------------------ */}
       <div className="absolute inset-0" aria-hidden="true">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_30%,rgba(200,169,106,0.16),transparent_70%)]" />
@@ -32,7 +41,7 @@ export function Footer() {
         <Reveal direction="scale">
           <div className="mb-9 flex justify-center">
             <div className="relative flex h-20 w-20 items-center justify-center">
-              <Khatim className="animate-spin-slow h-full w-full text-gold/70" strokeWidth={0.7} />
+              <GoldPalm className="h-full w-full text-gold/80" />
               <span className="animate-pulse-soft absolute inset-4 -z-10 rounded-full bg-gold/20 blur-lg" />
             </div>
           </div>
@@ -58,7 +67,7 @@ export function Footer() {
         </Reveal>
 
         <Reveal direction="scale" delay={0.3} className="my-12 text-gold/70">
-          <ArabesqueDivider />
+          <LotusDivider />
         </Reveal>
 
         {/* Couple + date */}
@@ -87,17 +96,17 @@ export function Footer() {
 
         {/* Contact — rehomed here when the RSVP section was removed. These are
             the only numbers on the page now, so they can't quietly vanish. */}
-        <Reveal direction="up" delay={0.4}>
+        {(contact.phones.length > 0 || contact.email) && <Reveal direction="up" delay={0.4}>
           <div className="mt-14 flex flex-col items-center gap-4">
             <p className="font-body text-[0.5rem] font-light tracking-[0.32em] text-gold/70 uppercase">
               For any assistance
             </p>
 
             <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
-              {contact.phones.map((phone) => (
+              {contact.phones.length > 0 && contact.phones.map((phone) => (
                 <li key={phone}>
                   {/*
-                    Poppins, not the display serif. Cormorant sets numerals as
+                    Jost, not the display serif. Playfair sets numerals as
                     old-style figures — digits at differing heights, some below
                     the baseline — which is beautiful in prose and awful in a
                     phone number you're meant to read digit by digit. Tabular
@@ -116,14 +125,14 @@ export function Footer() {
 
             {/* Nudged up from 0.68rem: it's a contact detail someone may need
                 to read off a phone screen, not decoration. */}
-            <a
+            {contact.email && <a
               href={`mailto:${contact.email}`}
               className="mt-1 font-body text-[0.8rem] font-light tracking-[0.04em] text-gold/90 transition-colors hover:text-gold"
             >
               {contact.email}
-            </a>
+            </a>}
           </div>
-        </Reveal>
+        </Reveal>}
 
         {/* Socials */}
         <Reveal direction="up" delay={0.45}>

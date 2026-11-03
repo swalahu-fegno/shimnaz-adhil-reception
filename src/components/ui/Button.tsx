@@ -23,7 +23,9 @@ const SIZES: Record<Size, string> = {
 
 const VARIANTS: Record<Variant, string> = {
   gold: 'bg-gold text-white border border-gold hover:bg-gold-deep hover:border-gold-deep',
-  emerald: 'bg-emerald text-ivory border border-emerald hover:bg-emerald-deep',
+  // Charcoal with gold type and a gold rule — the Hero's ground, as a button.
+  emerald:
+    'bg-[radial-gradient(ellipse_at_center,#3a3a3c,#232325)] text-gold-soft border border-gold/70 shadow-[inset_0_0_0_3px_#232325,inset_0_0_0_4px_rgba(209,180,122,0.35)] hover:text-gold hover:border-gold',
   glass: 'glass text-ink hover:border-gold/60 hover:bg-white/80',
   outline: 'border border-gold/45 text-ink bg-transparent hover:border-gold hover:bg-gold/[0.06]',
 }

@@ -1,6 +1,6 @@
 import { AnimatePresence, motion, useScroll, useMotionValueEvent } from 'framer-motion'
 import { useState } from 'react'
-import { ArrowUp, Check, Copy, Share2 } from 'lucide-react'
+import { ArrowUp, Check, Copy, Share2 } from '../ui/MughalIcons'
 import { site } from '../../data/wedding'
 import { useShare } from '../../hooks/useShare'
 import { cn } from '../../utils/cn'
@@ -71,6 +71,23 @@ export function FloatingDock({
           <WhatsApp className="h-[1.15rem] w-[1.15rem]" />
         </motion.a> */}
 
+        {/* Scroll to top, above Share — only once there's something to go back to */}
+        <AnimatePresence>
+          {scrolled && (
+            <motion.button
+              type="button"
+              onClick={onScrollTop}
+              aria-label="Back to top"
+              {...pop}
+              whileHover={{ scale: 1.06, y: -2 }}
+              whileTap={{ scale: 0.94 }}
+              className={cn(buttonBase, 'border-gold/50 bg-gold/[0.12]')}
+            >
+              <ArrowUp className="h-4 w-4" strokeWidth={1.25} />
+            </motion.button>
+          )}
+        </AnimatePresence>
+
         {/* Share */}
         <motion.button
           type="button"
@@ -117,22 +134,6 @@ export function FloatingDock({
           </AnimatePresence>
         </motion.button>
 
-        {/* Scroll to top — only once there's something to go back to */}
-        <AnimatePresence>
-          {scrolled && (
-            <motion.button
-              type="button"
-              onClick={onScrollTop}
-              aria-label="Back to top"
-              {...pop}
-              whileHover={{ scale: 1.06, y: -2 }}
-              whileTap={{ scale: 0.94 }}
-              className={cn(buttonBase, 'border-gold/50 bg-gold/[0.12]')}
-            >
-              <ArrowUp className="h-4 w-4" strokeWidth={1.25} />
-            </motion.button>
-          )}
-        </AnimatePresence>
       </div>
     </>
   )

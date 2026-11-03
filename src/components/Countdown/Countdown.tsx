@@ -82,7 +82,7 @@ export function Countdown() {
         scale={68}
       />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_60%_at_50%_50%,rgba(200,169,106,0.14),transparent_70%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(8,56,48,0.7)_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(20,20,22,0.7)_100%)]" />
       <Particles count={16} tone="gold" className="opacity-60" />
 
       {/* Gold seams top and bottom — the section reads as inlaid */}

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ExternalLink, MapPin, Navigation } from 'lucide-react'
+import { ExternalLink, MapPin, Navigation } from '../ui/MughalIcons'
 import { venue } from '../../data/wedding'
 import { GlassCard } from '../ui/GlassCard'
 import { ButtonLink } from '../ui/Button'
