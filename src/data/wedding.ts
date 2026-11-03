@@ -204,11 +204,10 @@ export const programme = [
   { time: '7:30 PM', title: 'Dinner', note: 'An evening of food and gratitude' },
 ] as const
 
-/** Swatches shown with the dress code — the card's own palette. */
+/** Swatches shown with the dress code: grey and gold. */
 export const dressSwatches = [
   { name: 'Charcoal Grey', hex: '#3A3A3C' },
   { name: 'Champagne Gold', hex: '#D1B47A' },
-  { name: 'Ivory', hex: '#F8F5EF' },
 ] as const
 
 /* -------------------------------------------------------------------------- */
