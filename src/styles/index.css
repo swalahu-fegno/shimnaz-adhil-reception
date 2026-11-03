@@ -553,6 +553,56 @@
   0%, 100% { transform: rotate(-2.5deg); }
   50% { transform: rotate(3deg) skewX(-1.5deg); }
 }
+/* Invitation card border band: a running trim of gold beads and fleurs */
+.card-band {
+  background-image:
+    radial-gradient(circle at 50% 50%, rgba(176, 146, 90, 0.75) 0 1.3px, transparent 1.6px),
+    radial-gradient(circle at 50% 50%, rgba(176, 146, 90, 0.75) 0 1.3px, transparent 1.6px);
+  background-size: 12px 12px;
+  background-position: 0 0, 6px 6px;
+  background-repeat: repeat;
+}
+
+.lotus-bob {
+  animation: lotus-bob 4.5s ease-in-out infinite;
+}
+@keyframes lotus-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(1.4px); }
+}
+.lantern-flame {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: lantern-flame 2.4s ease-in-out infinite;
+}
+@keyframes lantern-flame {
+  0%, 100% { transform: scale(1, 1); opacity: 0.85; }
+  30% { transform: scale(0.92, 1.08); opacity: 1; }
+  60% { transform: scale(1.05, 0.95); opacity: 0.75; }
+}
+
+.cypress-sway {
+  transform-box: view-box;
+  transform-origin: 30px 192px;
+  animation: vine-sway 11s ease-in-out infinite;
+}
+
+.vine-sway {
+  transform-box: view-box;
+  transform-origin: 60px 590px; /* the lotus at the vine's root */
+  animation: vine-sway 9s ease-in-out infinite;
+}
+@keyframes vine-sway {
+  0%, 100% { transform: rotate(-0.8deg); }
+  50% { transform: rotate(0.9deg); }
+}
+.peacock-train {
+  animation: peacock-shimmer 5s ease-in-out infinite;
+}
+@keyframes peacock-shimmer {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.72; }
+}
 .water-flow {
   animation: water-flow 9s linear infinite;
 }
@@ -665,6 +715,11 @@
     animation: none;
   }
   .palm-sway,
+  .vine-sway,
+  .cypress-sway,
+  .peacock-train,
+  .lotus-bob,
+  .lantern-flame,
   .water-flow,
   .water-glint,
   .boat-drift,

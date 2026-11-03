@@ -1,19 +1,20 @@
 import { bride, groom, wedding, hosts } from '../../data/wedding'
-import { GirihPattern } from '../ui/Ornaments'
-import { GoldPalm, LotusDivider } from '../ui/Mughal'
-import { Reveal, TextReveal } from '../ui/Reveal'
+import { CornerFlourish, GirihPattern } from '../ui/Ornaments'
+import { BlossomSpray, Lotus, LotusLake, LotusMedallion } from '../ui/Mughal'
+import { Reveal } from '../ui/Reveal'
 
 /**
- * The Bismillah card — the site's quiet centre.
+ * The invitation card, drawn after the family's illustrated card.
  *
- * Deliberately the least decorated section on the page. It follows the Hero's
- * cinematic noise with near-silence: one seal, one line of Arabic, and a great
- * deal of paper. The restraint is the point.
+ * Ivory paper inside a gold border band; blossom sprays arch in from the
+ * top corners; a lotus medallion crowns an engraved NIKKAH, the names and
+ * the date; and a lotus lake with a terrace rail runs along the foot. Its
+ * vectors are its own — palms, peacocks and the chhatri garden belong to
+ * other sections. All line work, in the card's champagne gold.
  */
 export function Invitation() {
   return (
     <section id="invitation" className="section-y relative overflow-hidden" aria-label="Invitation">
-      {/* Barely-there girih wash */}
       <GirihPattern
         id="invitation-girih"
         className="pointer-events-none absolute inset-0 text-gold/[0.055]"
@@ -21,107 +22,79 @@ export function Invitation() {
       />
 
       <div className="shell-narrow relative">
-        <div className="grain relative mx-auto flex flex-col items-center px-6 py-6 text-center md:px-16 md:py-20">
-          {/* Hairline frame with notched corners */}
-          <div
-            className="pointer-events-none absolute inset-0 border border-gold/25"
-            aria-hidden="true"
-          />
-          {(
-            [
-              'top-0 left-0 border-t-2 border-l-2',
-              'top-0 right-0 border-t-2 border-r-2',
-              'bottom-0 left-0 border-b-2 border-l-2',
-              'bottom-0 right-0 border-b-2 border-r-2',
-            ] as const
-          ).map((pos) => (
-            <span
-              key={pos}
-              className={`pointer-events-none absolute h-5 w-5 border-gold/70 ${pos}`}
-              aria-hidden="true"
-            />
-          ))}
+        <Reveal direction="up">
+          <article className="relative mx-auto max-w-[40rem] bg-gradient-to-br from-gold-soft via-gold to-gold-deep p-[2px] shadow-[var(--shadow-luxe)]">
+            {/* Border band: ivory with a running bead-and-fleur trim */}
+            <div className="card-band relative bg-ivory p-2.5 md:p-3.5">
+              <div className="relative overflow-hidden border border-gold/70 bg-bg">
+                <GirihPattern
+                  id="card-paper"
+                  className="pointer-events-none absolute inset-0 text-gold/[0.07]"
+                  scale={64}
+                />
+                {(['top-1 left-1', 'top-1 right-1 rotate-90', 'bottom-1 right-1 rotate-180', 'bottom-1 left-1 -rotate-90'] as const).map(
+                  (pos) => (
+                    <CornerFlourish key={pos} className={`pointer-events-none absolute z-20 h-12 w-12 text-gold md:h-16 md:w-16 ${pos}`} />
+                  ),
+                )}
 
-          {/* Seal */}
-          <Reveal direction="scale">
-            <div className="relative mb-9 flex items-center justify-center">
-              <GoldPalm className="h-24 w-20 text-gold md:h-28 md:w-24" />
-              <span className="absolute inset-0 -z-10 rounded-full bg-gold/10 blur-xl" />
+                {/* Blossom sprays arching in from the top corners */}
+                <div className="pointer-events-none absolute inset-x-0 top-0 text-gold-deep/80" aria-hidden="true">
+                  <BlossomSpray className="absolute top-2 left-2 w-[30%] max-w-[11rem]" />
+                  <BlossomSpray className="absolute top-2 right-2 w-[30%] max-w-[11rem]" flip />
+                </div>
+
+                <div className="relative z-10 flex flex-col items-center px-[14%] pt-14 text-center md:pt-20">
+                  <LotusMedallion className="h-16 w-16 text-gold md:h-20 md:w-20" />
+
+                  <p className="arabic mt-4 text-[clamp(1.05rem,3.4vw,1.5rem)] leading-relaxed text-gold-deep" lang="ar">
+                    {wedding.bismillah.arabic}
+                  </p>
+
+                  <p className="royal mt-3 text-[0.62rem] tracking-[0.18em] text-ink md:text-xs">
+                    {hosts.grandfather} &amp; {hosts.grandmother}
+                  </p>
+                  <p className="display mt-1.5 max-w-xs text-[clamp(0.85rem,2.2vw,1rem)] leading-snug text-balance text-ink/70 italic">
+                    {wedding.invitationMessage}
+                  </p>
+
+                  {/* NIKKAH, engraved */}
+                  <h2 className="royal foil animate-foil mt-5 text-[clamp(2.6rem,10vw,4.75rem)] leading-none tracking-[0.06em]">
+                    Nikkah
+                  </h2>
+
+                  <p className="royal mt-4 text-[clamp(0.85rem,2.6vw,1.2rem)] tracking-[0.14em] text-ink">
+                    {bride.fullName}
+                  </p>
+                  <div className="my-1.5 flex items-center justify-center gap-3" aria-hidden="true">
+                    <span className="h-px w-10 bg-gold/70 md:w-16" />
+                    <span className="royal text-base text-gold-deep">&amp;</span>
+                    <span className="h-px w-10 bg-gold/70 md:w-16" />
+                  </div>
+                  <p className="royal text-[clamp(0.85rem,2.6vw,1.2rem)] tracking-[0.14em] text-ink">{groom.fullName}</p>
+                  <p className="display mt-1 text-sm text-ink/60 italic">Insha Allah</p>
+
+                  {/* Date block, as on the card */}
+                  <Lotus className="mt-5 h-4 w-7 text-gold" />
+                  <div className="mt-2 flex flex-col items-center">
+                    <span className="royal text-[0.62rem] tracking-[0.3em] text-ink md:text-xs">December</span>
+                    <span className="royal text-[clamp(2.2rem,7vw,3.25rem)] leading-none text-gold-deep">03</span>
+                    <span className="royal text-[0.62rem] tracking-[0.45em] text-ink md:text-xs">2026</span>
+                  </div>
+
+                  <p className="display mt-5 max-w-xs text-[clamp(0.8rem,2vw,0.95rem)] leading-snug text-pretty text-ink/70 italic">
+                    “{wedding.invitationSubtext}”
+                  </p>
+                </div>
+
+                {/* The lotus lake along the foot */}
+                <div className="relative z-10 mt-4 text-gold-deep/85" aria-hidden="true">
+                  <LotusLake className="block h-auto w-full" />
+                </div>
+              </div>
             </div>
-          </Reveal>
-
-          {/* Bismillah — the largest Arabic on the page */}
-          <Reveal direction="up" delay={0.1}>
-            <p
-              className="arabic text-[clamp(1.6rem,5vw,2.6rem)] leading-relaxed text-emerald"
-              lang="ar"
-            >
-              {wedding.bismillah.arabic}
-            </p>
-          </Reveal>
-
-          <Reveal direction="up" delay={0.2}>
-            <p className="mt-4 max-w-md text-[0.68rem] leading-relaxed font-light tracking-[0.12em] text-balance text-muted">
-              {wedding.bismillah.translation}
-            </p>
-          </Reveal>
-
-          <Reveal direction="scale" delay={0.3} className="my-10 w-full">
-            <LotusDivider />
-          </Reveal>
-
-          {/* The ask — worded as on the family's printed card */}
-          <Reveal direction="up">
-            <p className="royal text-[0.78rem] tracking-[0.22em] text-ink md:text-sm">
-              {hosts.grandfather} &amp; {hosts.grandmother}
-            </p>
-          </Reveal>
-          <Reveal direction="up" delay={0.1}>
-            <p className="display mt-4 max-w-md text-[clamp(1.1rem,2.6vw,1.4rem)] leading-relaxed text-balance text-muted italic">
-              {wedding.invitationMessage}
-            </p>
-          </Reveal>
-
-          <TextReveal
-            text={bride.fullName}
-            as="p"
-            className="royal mt-8 text-gold-deep text-[clamp(1.6rem,5.4vw,3rem)] leading-tight"
-            stagger={0.05}
-          />
-          <Reveal direction="up" delay={0.15}>
-            <div className="my-3 flex items-center justify-center gap-4">
-              <span className="h-px w-14 bg-gold/50 md:w-24" />
-              <span className="display text-xl text-gold-deep italic">with</span>
-              <span className="h-px w-14 bg-gold/50 md:w-24" />
-            </div>
-          </Reveal>
-          <TextReveal
-            text={groom.fullName}
-            as="p"
-            className="royal text-gold-deep text-[clamp(1.6rem,5.4vw,3rem)] leading-tight"
-            stagger={0.05}
-          />
-          <Reveal direction="up" delay={0.2}>
-            <p className="display mt-3 text-lg text-muted italic">Insha Allah</p>
-          </Reveal>
-
-          <Reveal direction="up" delay={0.25}>
-            <p className="display mt-8 max-w-md text-[clamp(1rem,2.2vw,1.2rem)] leading-relaxed text-pretty text-ink/80 italic">
-              “{wedding.invitationSubtext}”
-            </p>
-          </Reveal>
-
-          {/* Signature */}
-          {/* <Reveal direction="fade" delay={0.35}>
-            <div className="flex flex-col items-center gap-3">
-              <span className="h-8 w-px bg-gradient-to-b from-transparent to-gold/60" />
-              <p className="display text-2xl text-ink italic md:text-3xl">
-                {groom.firstName} <span className="text-gold">&amp;</span> {bride.firstName}
-              </p>
-              <p className="eyebrow text-[0.5rem]">{wedding.dateLabel}</p>
-            </div>
-          </Reveal> */}
-        </div>
+          </article>
+        </Reveal>
       </div>
     </section>
   )

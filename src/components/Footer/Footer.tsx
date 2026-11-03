@@ -5,7 +5,7 @@ import { Facebook, Instagram } from '../ui/BrandIcons'
 import { Reveal, TextReveal } from '../ui/Reveal'
 import { StarEight } from '../ui/Ornaments'
 import { Particles } from '../FloatingPatterns/Particles'
-import { Birds, GardenScene, GoldPalm, LotusDivider } from '../ui/Mughal'
+import { Birds, Lantern, LotusDivider, PalaceSkyline } from '../ui/Mughal'
 
 const SOCIAL_ICONS: Record<SocialLink['icon'], ComponentType<{ className?: string; strokeWidth?: number }>> = {
   instagram: Instagram,
@@ -32,8 +32,8 @@ export function Footer() {
         {/* Seal */}
         <Reveal direction="scale">
           <div className="mb-9 flex justify-center">
-            <div className="relative flex h-20 w-20 items-center justify-center">
-              <GoldPalm className="h-full w-full text-gold/80" />
+            <div className="relative flex h-24 w-12 items-center justify-center">
+              <Lantern className="h-full w-full text-gold/85" />
               <span className="animate-pulse-soft absolute inset-4 -z-10 rounded-full bg-gold/20 blur-lg" />
             </div>
           </div>
@@ -152,9 +152,8 @@ export function Footer() {
 
         {/* Colophon */}
         <Reveal direction="fade" delay={0.55}>
-          {/* The card's garden in gold line, edge to edge, resting on the
-              closing rule. The terrace rail runs the full width (aligned with
-              the scene's own rail), with palms standing along it. */}
+          {/* A Mughal palace on the skyline, resting on a full-width terrace
+              rail — the footer's own farewell view. */}
           <div
             className="relative left-1/2 mt-16 h-44 w-screen -translate-x-1/2 overflow-hidden text-gold/70 md:h-64"
             aria-hidden="true"
@@ -176,16 +175,7 @@ export function Footer() {
               <rect width="4000" height="30" fill="url(#footer-rail)" />
               <path d="M0 4 H4000 M0 7 H4000 M0 26 H4000 M0 29 H4000" stroke="currentColor" strokeWidth="0.8" />
             </svg>
-            <div className="absolute inset-x-0 bottom-[12.5%] flex items-end justify-between px-[3vw]">
-              {[0.55, 0.8, 0.62].map((h, i) => (
-                <GoldPalm key={`l${i}`} className={`w-auto ${i === 1 ? '' : 'hidden sm:block'}`} style={{ height: `calc(${h} * 11rem)` }} />
-              ))}
-              <span className="flex-1" />
-              {[0.62, 0.8, 0.55].map((h, i) => (
-                <GoldPalm key={`r${i}`} className={`w-auto -scale-x-100 ${i === 1 ? '' : 'hidden sm:block'}`} style={{ height: `calc(${h} * 11rem)` }} />
-              ))}
-            </div>
-            <GardenScene className="absolute bottom-0 left-1/2 h-full w-auto max-w-none -translate-x-1/2" />
+            <PalaceSkyline className="absolute bottom-[12.5%] left-1/2 h-[88%] w-auto max-w-none -translate-x-1/2" />
             <Birds tone="text-gold-soft/60" />
           </div>
           <div className="flex flex-col items-center gap-3 border-t border-gold/25 pt-8">
