@@ -573,6 +573,12 @@
   50% { transform: rotate(1.8deg); }
 }
 
+/* Off-screen sections hold their animations still (see Site.tsx) */
+.anim-paused,
+.anim-paused * {
+  animation-play-state: paused !important;
+}
+
 /* ---- Ongoing life in the card and the Couple garden --------------------- */
 .blossom-turn {
   transform-box: fill-box;

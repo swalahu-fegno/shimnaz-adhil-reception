@@ -64,6 +64,31 @@ export default function Site({
     else window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [lenisRef])
 
+  // Pause every CSS animation in sections that are off screen (birds, water,
+  // swaying palms, peacocks…) and resume as they return: smoother scrolling
+  // and less battery on phones, with no visible difference.
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.target.classList.toggle('anim-paused', !e.isIntersecting)),
+      { rootMargin: '15% 0px' },
+    )
+    const SECTIONS = '#hero, #invitation, #couple, #countdown, #events, #programme, footer'
+    // Lazy sections mount a moment later; pick them up as they arrive, then
+    // stop listening once all seven are watched.
+    const mo = new MutationObserver(() => watch())
+    const watch = () => {
+      const found = document.querySelectorAll(SECTIONS)
+      found.forEach((el) => io.observe(el))
+      if (found.length >= 7) mo.disconnect()
+    }
+    mo.observe(document.getElementById('main') ?? document.body, { childList: true, subtree: true })
+    watch()
+    return () => {
+      io.disconnect()
+      mo.disconnect()
+    }
+  }, [])
+
   useEffect(() => {
     const hash = window.location.hash
     if (hash.length > 1) {
