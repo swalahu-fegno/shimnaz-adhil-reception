@@ -3,7 +3,6 @@ import { bride, groom, wedding } from '../../data/wedding'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { cuspedArchPath } from '../ui/Mughal'
 import { ChevronDown } from '../ui/MughalIcons'
-import { burstPetals } from '../ui/Effects'
 import { JaaliPattern } from '../ui/Ornaments'
 
 const DEBUG_MUSIC = false
@@ -64,9 +63,10 @@ function LotusSeal({ d }: { d: (delay: number) => React.CSSProperties }) {
  * which is exactly backwards. Plain CSS runs it, and the rest of the site
  * streams in behind this screen while the guest reads the Bismillah.
  *
- * Sequence: on two plain charcoal door leaves, a lotus seal draws itself
- * around the monogram while the Bismillah and the invitation line rise. A tap (or scroll) swings the leaves
- * inward on their hinges, revealing the Hero beneath.
+ * Sequence: on two charcoal panels, a lotus seal draws itself around the
+ * monogram while the Bismillah and the invitation line rise. A tap (or
+ * scroll) blooms the seal outward and slides the panels apart, revealing the
+ * Hero beneath — the same opening as the reference invitation.
  */
 export function Preloader({ onMusicIntent, onOpenStart, onOpen }: PreloaderProps) {
   const prefersReduced = useReducedMotion()
@@ -78,12 +78,10 @@ export function Preloader({ onMusicIntent, onOpenStart, onOpen }: PreloaderProps
     openedRef.current = true // ref, not state: the listeners below close over
     logMusic('preloader opening')
     setOpening(true) //          the first render and would re-fire otherwise
-    // A few petals drift out through the gap
-    window.setTimeout(() => burstPetals(window.innerWidth / 2, window.innerHeight * 0.5, 10, 120), 450)
     onMusicIntent()
     onOpenStart() // reveal the Hero before the doors expose it
     // Hand off just before the panels finish, so Hero is already fading up
-    window.setTimeout(onOpen, prefersReduced ? 0 : 2150)
+    window.setTimeout(onOpen, prefersReduced ? 0 : 1150)
   }, [onMusicIntent, onOpen, onOpenStart, prefersReduced])
 
   // The static boot copy of this screen started its entrance animations at
@@ -176,8 +174,8 @@ export function Preloader({ onMusicIntent, onOpenStart, onOpen }: PreloaderProps
       aria-modal="true"
       aria-label="Tap or scroll to open the invitation"
     >
-      {/* --- Doors: two quiet charcoal leaves that swing open on their hinges.
-          Kept plain on purpose so the type in the middle reads first. */}
+      {/* --- Panels: two charcoal leaves that slide apart on open, as on the
+          reference invitation. Kept plain so the type in the middle reads. */}
       <div className="pl-stage absolute inset-0">
         {(['left', 'right'] as const).map((side) => (
           <div
@@ -187,17 +185,9 @@ export function Preloader({ onMusicIntent, onOpenStart, onOpen }: PreloaderProps
             }`}
           >
             <JaaliPattern id={`door-jaali-${side}`} className="absolute inset-0 text-gold/[0.2]" scale={58} />
-            {/* Warm light catching this leaf's inner edge — it rides the door
-                as it swings, so the light travels outward with the opening */}
-            <div
-              className={`pl-edge-light absolute inset-y-0 w-24 ${
-                side === 'left' ? 'right-0 pl-edge-l' : 'left-0 pl-edge-r'
-              }`}
-              aria-hidden="true"
-            />
             {/* gold seam where the leaves meet */}
             <div
-              className={`absolute inset-y-0 w-px bg-gradient-to-b from-transparent via-gold/50 to-transparent ${
+              className={`pl-seam absolute inset-y-0 w-px bg-gradient-to-b from-transparent via-gold/60 to-transparent ${
                 side === 'left' ? 'right-0' : 'left-0'
               }`}
             />
@@ -211,7 +201,7 @@ export function Preloader({ onMusicIntent, onOpenStart, onOpen }: PreloaderProps
         {/* Monogram inside a cusped Mughal arch */}
         {/* Seal + monogram: a lotus seal that draws itself, stroke by stroke */}
         <div className="relative mb-8 flex h-48 w-48 items-center justify-center md:h-56 md:w-56">
-          <div className="absolute inset-0 text-gold">
+          <div className="pl-seal absolute inset-0 text-gold">
             <LotusSeal d={d} />
           </div>
           <div className="pl-scale relative mt-3 flex items-center gap-2.5" style={d(0.35)}>
