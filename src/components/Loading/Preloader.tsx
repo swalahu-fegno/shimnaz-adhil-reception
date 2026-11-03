@@ -46,8 +46,16 @@ function LotusSeal({ d }: { d: (delay: number) => React.CSSProperties }) {
         {/* scalloped arch, framing the initials */}
         <path data-draw d={cuspedArchPath(84, 112)} transform="translate(58 44)" pathLength="1" style={el(0.45)} />
         {/* ring of lotus petals */}
+        {/* ...then each petal fills with gold in turn, going round the circle */}
         {petals.map((deg, i) => (
-          <path key={deg} data-draw d={petal(deg)} pathLength="1" style={el(0.7 + i * 0.03, 0.75)} />
+          <path
+            key={deg}
+            data-draw
+            className="seal-fill"
+            d={petal(deg)}
+            pathLength="1"
+            style={{ ...el(0.7 + i * 0.03, 0.75), '--f': d(1.55 + i * 0.09)['--d' as keyof React.CSSProperties] } as React.CSSProperties}
+          />
         ))}
       </g>
     </svg>
