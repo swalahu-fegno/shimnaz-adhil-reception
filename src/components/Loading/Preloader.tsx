@@ -5,7 +5,7 @@ import { CuspedArch, Lotus } from '../ui/Mughal'
 import { burstPetals } from '../ui/Effects'
 import { GirihPattern } from '../ui/Ornaments'
 
-const DEBUG_MUSIC = true
+const DEBUG_MUSIC = false
 
 function logMusic(message: string, details?: Record<string, unknown>) {
   if (!DEBUG_MUSIC) return

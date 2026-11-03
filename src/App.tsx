@@ -12,7 +12,7 @@ import { TapPetals } from './components/ui/Effects'
  * pure CSS — paints without waiting on any of them.
  */
 const Site = lazy(() => import('./Site'))
-const DEBUG_MUSIC = true
+const DEBUG_MUSIC = false
 
 function logMusic(message: string, details?: Record<string, unknown>) {
   if (!DEBUG_MUSIC) return
@@ -62,15 +62,6 @@ export default function App() {
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
     if (!hasHash) window.scrollTo(0, 0)
   }, [hasHash])
-
-  // Best-effort audible autoplay on page entry. Many browsers block this until
-  // a user gesture, so scroll/touch/button opening still retries via Preloader.
-  useEffect(() => {
-    if (music.autoplayAfterOpen) {
-      logMusic('page-entry autoplay attempt')
-      void play()
-    }
-  }, [play])
 
   return (
     <>
