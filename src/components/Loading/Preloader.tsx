@@ -187,11 +187,6 @@ export function Preloader({ onMusicIntent, onOpenStart, onOpen }: PreloaderProps
             }`}
           >
             <JaaliPattern id={`door-jaali-${side}`} className="absolute inset-0 text-gold/[0.2]" scale={58} />
-            <div
-              className={`absolute inset-y-5 border border-gold/25 md:inset-y-8 ${
-                side === 'left' ? 'right-3 left-5 md:left-8' : 'right-5 left-3 md:right-8'
-              }`}
-            />
             {/* Warm light catching this leaf's inner edge — it rides the door
                 as it swings, so the light travels outward with the opening */}
             <div
