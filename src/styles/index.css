@@ -549,8 +549,8 @@
   animation: lotus-bob 4.5s ease-in-out infinite;
 }
 @keyframes lotus-bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(1.4px); }
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(2.6px) rotate(2deg); }
 }
 .lantern-flame {
   transform-box: fill-box;
@@ -566,7 +566,84 @@
 .cypress-sway {
   transform-box: view-box;
   transform-origin: 30px 192px;
-  animation: vine-sway 11s ease-in-out infinite;
+  animation: cypress-sway 7s ease-in-out infinite;
+}
+@keyframes cypress-sway {
+  0%, 100% { transform: rotate(-1.6deg); }
+  50% { transform: rotate(1.8deg); }
+}
+
+/* ---- Ongoing life in the card and the Couple garden --------------------- */
+.blossom-turn {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: blossom-turn 24s linear infinite;
+}
+@keyframes blossom-turn {
+  to { transform: rotate(360deg); }
+}
+.spray-sway {
+  transform-box: view-box;
+  transform-origin: 0 0; /* the corner the spray grows from */
+  animation: spray-sway 6.5s ease-in-out infinite;
+}
+@keyframes spray-sway {
+  0%, 100% { transform: rotate(-1.5deg); }
+  50% { transform: rotate(2.5deg); }
+}
+.medallion-turn {
+  transform-box: view-box;
+  transform-origin: 50px 50px;
+  animation: blossom-turn 40s linear infinite;
+}
+.shrub-sway {
+  transform-box: view-box;
+  animation: shrub-sway 5s ease-in-out infinite;
+}
+@keyframes shrub-sway {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2.5deg); }
+}
+.peacock-head {
+  transform-box: view-box;
+  transform-origin: 106px 106px; /* base of the neck */
+  animation: peacock-nod 4.8s ease-in-out infinite;
+}
+@keyframes peacock-nod {
+  0%, 60%, 100% { transform: rotate(0deg); }
+  70% { transform: rotate(-5deg); }
+  80% { transform: rotate(2deg); }
+  90% { transform: rotate(-1deg); }
+}
+.tassel-swing {
+  transform-box: view-box;
+  animation: tassel-swing 3.4s ease-in-out infinite;
+}
+@keyframes tassel-swing {
+  0%, 100% { transform: rotate(-7deg); }
+  50% { transform: rotate(7deg); }
+}
+.urn-flowers {
+  transform-box: view-box;
+  transform-origin: 40px 58px;
+  animation: shrub-sway 4.4s ease-in-out infinite;
+}
+
+.moon-glow {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: moon-glow 5s ease-in-out infinite;
+}
+@keyframes moon-glow {
+  0%, 100% { transform: scale(1); opacity: 0.14; }
+  50% { transform: scale(1.25); opacity: 0.28; }
+}
+.star-twinkle {
+  animation: star-twinkle 3.2s ease-in-out infinite;
+}
+@keyframes star-twinkle {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.9; }
 }
 
 .vine-sway {
@@ -579,7 +656,15 @@
   50% { transform: rotate(0.9deg); }
 }
 .peacock-train {
-  animation: peacock-shimmer 5s ease-in-out infinite;
+  transform-box: view-box;
+  transform-origin: 78px 150px;
+  animation:
+    peacock-shimmer 5s ease-in-out infinite,
+    train-sway 6s ease-in-out infinite;
+}
+@keyframes train-sway {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(3deg); }
 }
 @keyframes peacock-shimmer {
   0%, 100% { opacity: 1; }
@@ -702,6 +787,15 @@
   .palm-sway,
   .vine-sway,
   .cypress-sway,
+  .blossom-turn,
+  .moon-glow,
+  .star-twinkle,
+  .spray-sway,
+  .medallion-turn,
+  .shrub-sway,
+  .peacock-head,
+  .tassel-swing,
+  .urn-flowers,
   .peacock-train,
   .lotus-bob,
   .lantern-flame,

@@ -369,7 +369,7 @@ export function GardenScene({ className }: { className?: string }) {
 /** A five-petal blossom for the vines (the Ornaments one is module-private). */
 function VineBlossom({ x, y, r }: { x: number; y: number; r: number }) {
   return (
-    <g>
+    <g className="blossom-turn" style={{ animationDelay: `${-((x * 7 + y * 3) % 23)}s` }}>
       {[0, 72, 144, 216, 288].map((d) => (
         <ellipse
           key={d}
@@ -521,6 +521,8 @@ export function Peacock({ className, flip = false }: { className?: string; flip?
         />
         {/* folded wing, scalloped */}
         <path d="M84 128 Q96 120 112 128 M86 138 Q98 130 114 138 M90 148 Q100 141 112 148" strokeWidth="0.6" opacity="0.8" />
+        {/* neck, head and crest — a gentle nod */}
+        <g className="peacock-head">
         {/* neck */}
         <path d="M100 104 C96 86 104 66 116 56" strokeWidth="1.1" />
         <path d="M112 108 C108 90 114 72 124 61" strokeWidth="1.1" />
@@ -540,6 +542,7 @@ export function Peacock({ className, flip = false }: { className?: string; flip?
             <circle cx={120 + dx} cy={47 + dy} r="1.5" fill="currentColor" />
           </g>
         ))}
+        </g>
         {/* legs and feet */}
         <path d="M96 164 L94 186 M104 164 L106 186 M94 186 l-5 3 M94 186 l4 3 M106 186 l-4 3 M106 186 l5 3" strokeWidth="0.9" />
         {/* lotus plinth */}
@@ -566,7 +569,7 @@ export function BlossomSpray({ className, flip = false }: { className?: string; 
       aria-hidden="true"
       style={flip ? { transform: 'scaleX(-1)' } : undefined}
     >
-      <g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+      <g className="spray-sway" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
         {/* main branch sweeping in from the corner, with a falling sprig */}
         <path d="M2 6 C40 10 74 22 104 50 C120 66 128 84 130 104" strokeWidth="1.1" />
         <path d="M58 20 C62 44 58 70 46 92" strokeWidth="0.8" />
@@ -605,7 +608,8 @@ export function LotusMedallion({ className }: { className?: string }) {
   return (
     <svg ref={ref} viewBox="0 0 100 100" className={className} fill="none" aria-hidden="true">
       <g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-        {/* scalloped roundel */}
+        {/* scalloped roundel, slowly turning */}
+        <g className="medallion-turn">
         <path
           d={Array.from({ length: 16 }, (_, i) => {
             const a0 = (i / 16) * Math.PI * 2
@@ -617,6 +621,7 @@ export function LotusMedallion({ className }: { className?: string }) {
           strokeWidth="0.9"
         />
         <circle cx="50" cy="50" r="39" strokeWidth="0.5" strokeDasharray="0.5 2.5" />
+        </g>
         {/* lotus */}
         <path d="M50 22 C43 32 43 46 50 60 C57 46 57 32 50 22Z" strokeWidth="1" fill="currentColor" fillOpacity="0.22" />
         <path d="M50 60 C38 54 32 42 33 32 C41 37 47 47 50 60Z M50 60 C62 54 68 42 67 32 C59 37 53 47 50 60Z" strokeWidth="0.9" />
@@ -642,6 +647,11 @@ export function LotusLake({ className }: { className?: string }) {
   ]
   return (
     <svg ref={ref} viewBox="0 0 400 210" className={className} fill="none" aria-hidden="true">
+      <defs>
+        <filter id="lake-mist" x="-30%" y="-150%" width="160%" height="400%">
+          <feGaussianBlur stdDeviation="5" />
+        </filter>
+      </defs>
       <g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
         {/* hills */}
         <path d="M0 104 Q36 76 74 92 Q110 60 154 86 Q196 58 236 84 Q280 66 318 88 Q356 74 400 96" strokeWidth="0.8" opacity="0.55" />
@@ -676,7 +686,7 @@ export function LotusLake({ className }: { className?: string }) {
           [10, 1],
           [390, -1],
         ].map(([x0, d]) => (
-          <g key={x0}>
+          <g key={x0} className="shrub-sway" style={{ transformOrigin: `${x0}px 178px`, animationDelay: `${d * -1.7}s` }}>
             {[0, 1, 2, 3, 4].map((i) => (
               <path
                 key={i}
@@ -699,6 +709,11 @@ export function LotusLake({ className }: { className?: string }) {
         <VineBlossom x={46} y={112} r={6} />
         <VineBlossom x={376} y={124} r={7} />
         <VineBlossom x={354} y={112} r={6} />
+        {/* mist drifting low over the water */}
+        <g data-nodraw filter="url(#lake-mist)" stroke="none">
+          <ellipse className="mist mist-a" cx="150" cy="122" rx="90" ry="6" fill="currentColor" fillOpacity="0.14" />
+          <ellipse className="mist mist-b" cx="270" cy="140" rx="100" ry="5" fill="currentColor" fillOpacity="0.12" />
+        </g>
         {/* terrace rail with urn finials */}
         <path d="M0 176 H400 M0 180 H400 M0 200 H400 M0 204 H400" strokeWidth="0.8" />
         {Array.from({ length: 39 }, (_, i) => 10 + i * 10).map((x) => (
@@ -819,10 +834,12 @@ export function Toran({ className }: { className?: string }) {
           <g key={x}>
             <path d={`M${x} 6 Q${x + 20} 30 ${x + 40} 6`} strokeWidth="0.9" />
             <path d={`M${x + 4} 8 Q${x + 20} 24 ${x + 36} 8`} strokeWidth="0.5" opacity="0.6" />
-            {/* tasselled drop at the low point of the swag */}
+            {/* tasselled drop at the low point of the swag, swinging */}
+            <g className="tassel-swing" style={{ transformOrigin: `${x + 20}px 18px`, animationDelay: `${-x / 40}s` }}>
             <path d={`M${x + 20} 18 V30`} strokeWidth="0.6" />
             <path d={`M${x + 20} 30 q-3 5 0 10 q3 -5 0 -10z`} strokeWidth="0.6" fill="currentColor" fillOpacity="0.3" />
             <path d={`M${x + 18} 42 l-1 5 M${x + 20} 42 v6 M${x + 22} 42 l1 5`} strokeWidth="0.4" />
+            </g>
           </g>
         ))}
         {knots.map((x) => (
@@ -871,6 +888,7 @@ export function FlowerUrn({ className, flip = false }: { className?: string; fli
       style={flip ? { transform: 'scaleX(-1)' } : undefined}
     >
       <g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+        <g className="urn-flowers">
         {/* stems */}
         <path d="M40 58 C38 44 30 34 22 26 M40 58 C41 42 44 30 46 18 M40 58 C44 46 54 38 62 34 M40 58 C36 50 28 48 18 46" strokeWidth="0.8" />
         {/* leaves */}
@@ -881,6 +899,7 @@ export function FlowerUrn({ className, flip = false }: { className?: string; fli
         <VineBlossom x={46} y={16} r={8} />
         <VineBlossom x={62} y={34} r={6} />
         <VineBlossom x={18} y={46} r={5} />
+        </g>
         {/* urn */}
         <path d="M24 58 H56 M26 58 Q22 72 32 80 H48 Q58 72 54 58" strokeWidth="1" fill="currentColor" fillOpacity="0.1" />
         <path d="M28 66 Q40 70 52 66" strokeWidth="0.5" opacity="0.7" />

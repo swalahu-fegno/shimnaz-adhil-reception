@@ -55,7 +55,7 @@ export function Programme() {
         <div className="grid items-center gap-5 md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] md:gap-20">
           {/* Jharokha window */}
           <Reveal direction="scale">
-            <div className="relative mx-auto aspect-[3/4] w-full max-w-[7.25rem] md:max-w-sm">
+            <div className="relative mx-auto aspect-[3/4] w-full max-w-[10.5rem] md:max-w-sm">
               <svg viewBox="0 0 300 400" className="absolute inset-0 h-full w-full" aria-hidden="true">
                 <defs>
                   <clipPath id="jharokha-clip">
@@ -68,8 +68,27 @@ export function Programme() {
                 </defs>
                 <g clipPath="url(#jharokha-clip)">
                   <rect width="300" height="400" fill="url(#jharokha-sky)" />
-                  <circle cx="200" cy="120" r="26" fill="#e3d3ae" opacity="0.18" />
+                  {/* moon with a slow breathing glow, and twinkling stars */}
+                  <circle className="moon-glow" cx="200" cy="120" r="26" fill="#e3d3ae" opacity="0.18" />
                   <circle cx="200" cy="120" r="16" fill="#e3d3ae" opacity="0.35" />
+                  {[
+                    [70, 90, 0],
+                    [110, 60, 1.2],
+                    [150, 100, 2.1],
+                    [240, 70, 0.6],
+                    [90, 140, 1.7],
+                    [255, 160, 2.6],
+                  ].map(([x, y, dl]) => (
+                    <circle
+                      key={`${x}${y}`}
+                      className="star-twinkle"
+                      cx={x}
+                      cy={y}
+                      r="1.6"
+                      fill="#f8f5ef"
+                      style={{ animationDelay: `${dl}s` }}
+                    />
+                  ))}
                 </g>
               </svg>
               <div className="absolute inset-x-0 bottom-0 overflow-hidden text-gold" style={{ height: '72%' }}>
