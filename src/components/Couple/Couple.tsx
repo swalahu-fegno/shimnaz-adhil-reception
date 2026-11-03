@@ -34,10 +34,9 @@ function ArchPanel({ person, relation }: { person: Person; relation: string }) {
           <span className="relative mt-2 h-px w-12 bg-gradient-to-r from-transparent via-gold to-transparent md:mt-3 md:w-16" aria-hidden="true" />
           <p className="relative mt-2 text-[0.6rem] tracking-[0.22em] text-gold-deep uppercase md:mt-4 md:text-[0.65rem] md:tracking-[0.3em]">{relation}</p>
           <p className="display relative mt-1 text-[clamp(0.75rem,3.2vw,1.02rem)] leading-snug text-ink/80 md:mt-2 md:leading-relaxed">
-            {person.father}
-            <span className="mx-1 text-gold">&amp;</span>
-            <br className="md:hidden" />
-            {person.mother}
+            <span className="block">{person.father}</span>
+            <span className="block text-gold">&amp;</span>
+            <span className="block">{person.mother}</span>
           </p>
         </div>
       </div>
