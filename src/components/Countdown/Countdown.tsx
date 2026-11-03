@@ -116,7 +116,7 @@ export function Countdown() {
         </Reveal>
 
         <TextReveal
-          text={isPast ? 'We are married' : 'Until we say Qubool Hai'}
+          text={isPast ? 'We are married' : 'Until Our Forever Begins'}
           as="h2"
           className="display mt-5 mb-4 text-[clamp(2rem,5.5vw,3.75rem)] text-ivory"
         />
