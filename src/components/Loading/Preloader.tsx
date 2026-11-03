@@ -4,7 +4,7 @@ import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { cuspedArchPath } from '../ui/Mughal'
 import { ChevronDown } from '../ui/MughalIcons'
 import { burstPetals } from '../ui/Effects'
-import { GirihPattern } from '../ui/Ornaments'
+import { JaaliPattern } from '../ui/Ornaments'
 
 const DEBUG_MUSIC = false
 
@@ -186,7 +186,7 @@ export function Preloader({ onMusicIntent, onOpenStart, onOpen }: PreloaderProps
               side === 'left' ? 'pl-door-l left-0' : 'pl-door-r right-0'
             }`}
           >
-            <GirihPattern id={`door-motif-${side}`} className="absolute inset-0 text-gold/[0.16]" scale={56} />
+            <JaaliPattern id={`door-jaali-${side}`} className="absolute inset-0 text-gold/[0.2]" scale={58} />
             <div
               className={`absolute inset-y-5 border border-gold/25 md:inset-y-8 ${
                 side === 'left' ? 'right-3 left-5 md:left-8' : 'right-5 left-3 md:right-8'

@@ -343,3 +343,66 @@ export function Crescent({ className, ...props }: SVGProps<SVGSVGElement>) {
     </svg>
   )
 }
+
+/* -- Jaali lattice (tiling background) ------------------------------------ */
+
+/**
+ * A Mughal jaali: the ogee (onion) trellis of carved palace screens, with a
+ * small four-petal rosette wherever the curves cross and a bud in each cell.
+ * Line work in currentColor, as a seamless SVG <pattern>.
+ */
+export function JaaliPattern({
+  id,
+  className,
+  scale = 56,
+  opacity = 1,
+}: {
+  id: string
+  className?: string
+  scale?: number
+  opacity?: number
+}) {
+  const w = scale
+  const h = scale * 1.35
+  const ogee = (x0: number) => {
+    const xm = x0 === 0 ? w / 2 : w / 2
+    return `M${x0} 0 C${x0} ${h * 0.28} ${xm} ${h * 0.22} ${xm} ${h / 2} C${xm} ${h * 0.78} ${x0} ${h * 0.72} ${x0} ${h}`
+  }
+  const rosette = (cx: number, cy: number, r: number) =>
+    [0, 90].map((a) => (
+      <ellipse key={a} cx={cx} cy={cy} rx={r} ry={r * 0.38} transform={`rotate(${a + 45} ${cx} ${cy})`} />
+    ))
+  return (
+    <svg className={className} aria-hidden="true" width="100%" height="100%">
+      <defs>
+        <pattern id={id} width={w} height={h} patternUnits="userSpaceOnUse">
+          <g stroke="currentColor" strokeWidth="0.7" fill="none" opacity={opacity}>
+            <path d={ogee(0)} />
+            <path d={ogee(w)} />
+            {/* inner echo of each onion cell */}
+            <path
+              d={`M${w / 2} ${h * 0.62} C${w / 2 - w * 0.22} ${h * 0.78} ${w * 0.1} ${h * 0.9} ${w / 2} ${h * 1.12}`}
+              opacity="0.35"
+            />
+            <path
+              d={`M${w / 2} ${h * 0.62} C${w / 2 + w * 0.22} ${h * 0.78} ${w * 0.9} ${h * 0.9} ${w / 2} ${h * 1.12}`}
+              opacity="0.35"
+            />
+            {rosette(w / 2, h / 2, w * 0.09)}
+            {rosette(0, 0, w * 0.09)}
+            {rosette(w, 0, w * 0.09)}
+            {rosette(0, h, w * 0.09)}
+            {rosette(w, h, w * 0.09)}
+            <circle cx={w / 2} cy={h / 2} r={w * 0.025} fill="currentColor" />
+            {/* bud at the heart of each cell */}
+            <path
+              d={`M0 ${h / 2 - h * 0.08} q${w * 0.05} ${h * 0.08} 0 ${h * 0.16} q${-w * 0.05} ${-h * 0.08} 0 ${-h * 0.16}z M${w} ${h / 2 - h * 0.08} q${w * 0.05} ${h * 0.08} 0 ${h * 0.16} q${-w * 0.05} ${-h * 0.08} 0 ${-h * 0.16}z`}
+              opacity="0.7"
+            />
+          </g>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill={`url(#${id})`} />
+    </svg>
+  )
+}
