@@ -182,6 +182,14 @@ export function Footer() {
             <p className="text-[0.6rem] leading-relaxed font-light text-balance text-ivory/40">
               Made with love, and a great many duas.
             </p>
+            <a
+              href="https://fegno.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-body text-[0.5rem] font-light tracking-[0.28em] text-gold/50 uppercase transition-colors hover:text-gold"
+            >
+              Crafted by Fegno
+            </a>
           </div>
         </Reveal>
       </div>
