@@ -41,7 +41,11 @@ export function Events() {
     firstMaps && events.every((e) => e.mapsUrl === firstMaps) ? firstMaps : null
 
   return (
-    <section id="events" className="section-y relative overflow-hidden" aria-label="Events">
+    <section
+      id="events"
+      className="relative overflow-hidden py-8 md:py-[clamp(4rem,8vw,7.5rem)]"
+      aria-label="Events"
+    >
       <LatticePattern
         id="events-lattice"
         className="pointer-events-none absolute inset-0 text-emerald/[0.05]"
@@ -67,26 +71,26 @@ export function Events() {
               ? 'We would be honoured by your presence at both — and by your duas.'
               : 'We would be honoured by your presence — and by your duas.'
           }
-          className="mb-16 md:mb-20"
+          className="mb-6 max-md:gap-3 md:mb-20"
         />
 
         <RevealGroup
           /* A lone card in a two-column grid sits stranded in the left half.
              On its own it gets centred at a readable width instead. */
           className={cn(
-            'grid gap-8 md:gap-10',
-            many ? 'md:grid-cols-2' : 'mx-auto max-w-xl',
+            'grid gap-3 md:gap-10',
+            many ? 'grid-cols-2' : 'mx-auto max-w-xl',
           )}
           stagger={0.15}
         >
           {events.map((event) => (
             <RevealItem key={event.id} as="article" direction="up">
               <TiltGlow max={5}>
-              <GlassCard interactive corners className="h-full p-8 md:p-10">
+              <GlassCard interactive corners className="h-full p-4 md:p-10">
                 {/* Arabic name as background texture */}
                 {event.arabicName && (
                   <span
-                    className="arabic pointer-events-none absolute -top-4 -right-2 text-[7rem] leading-none text-gold/[0.07] select-none md:text-[9rem]"
+                    className="arabic pointer-events-none absolute -top-2 -right-1 text-[4rem] leading-none text-gold/[0.07] select-none md:-top-4 md:-right-2 md:text-[9rem]"
                     aria-hidden="true"
                   >
                     {event.arabicName}
@@ -95,7 +99,7 @@ export function Events() {
 
                 <div className="relative flex h-full flex-col">
                   {/* Icon medallion */}
-                  <div className="relative mb-7 flex h-16 w-16 items-center justify-center">
+                  <div className="relative mb-3 flex h-11 w-11 items-center justify-center md:mb-7 md:h-16 md:w-16">
                     <span className="absolute inset-0 rounded-full border border-gold/30" />
                     <Khatim
                       className="animate-spin-slow absolute -inset-1.5 h-[calc(100%+0.75rem)] w-[calc(100%+0.75rem)] text-gold/25"
@@ -103,14 +107,14 @@ export function Events() {
                       aria-hidden="true"
                     />
                     <span className="absolute inset-1 rounded-full bg-gold/[0.07]" />
-                    <EventIcon name={event.icon} className="relative h-7 w-7 text-emerald transition-transform duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-1 group-hover:scale-110" />
+                    <EventIcon name={event.icon} className="relative h-5 w-5 text-emerald md:h-7 md:w-7 transition-transform duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-1 group-hover:scale-110" />
                   </div>
 
-                  <h3 className="display text-[clamp(1.9rem,4vw,2.6rem)] leading-none text-ink">
+                  <h3 className="display text-[clamp(1.6rem,4vw,2.6rem)] leading-none text-ink">
                     {event.name}
                   </h3>
 
-                  <Divider variant="lozenge" className="my-6 max-w-[7rem]" />
+                  <Divider variant="lozenge" className="my-3 max-w-[7rem] md:my-6" />
 
                   {/*
                     Each group is <div><dt/><dd/></div> with dt and dd as DIRECT
@@ -118,16 +122,16 @@ export function Events() {
                     deeper is invalid dl structure and fails axe's definition-list
                     rule, even though it looks identical.
                   */}
-                  <dl className="mb-7 space-y-4">
+                  <dl className="space-y-2 md:mb-7 md:space-y-4">
                     {/* Date and time are omitted entirely when the timing isn't
                         fixed — an empty row reads as a bug, not as "TBC". */}
                     {event.dateTime && (
-                      <div className="grid grid-cols-[auto_1fr] items-start gap-x-3.5">
+                      <div className="grid grid-cols-[auto_1fr] items-start gap-x-2 md:gap-x-3.5">
                         <dt className="mt-0.5">
                           <CalendarDays className="h-4 w-4 text-gold" strokeWidth={1.25} aria-hidden="true" />
                           <span className="sr-only">Date</span>
                         </dt>
-                        <dd className="text-[0.8rem] font-light text-ink">
+                        <dd className="text-[0.72rem] font-light text-ink md:text-[0.8rem]">
                           {formatDate(event.dateTime)}
                           <span className="block text-[0.65rem] tracking-[0.12em] text-muted uppercase">
                             {formatDay(event.dateTime)}
@@ -137,12 +141,12 @@ export function Events() {
                     )}
 
                     {event.timeLabel && (
-                      <div className="grid grid-cols-[auto_1fr] items-start gap-x-3.5">
+                      <div className="grid grid-cols-[auto_1fr] items-start gap-x-2 md:gap-x-3.5">
                         <dt className="mt-0.5">
                           <Clock className="h-4 w-4 text-gold" strokeWidth={1.25} aria-hidden="true" />
                           <span className="sr-only">Time</span>
                         </dt>
-                        <dd className="text-[0.8rem] font-light text-ink">{event.timeLabel}</dd>
+                        <dd className="text-[0.8rem] font-normal text-ink">{event.timeLabel}</dd>
                       </div>
                     )}
                   </dl>
@@ -163,7 +167,7 @@ export function Events() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`Get directions to ${event.venue}, ${event.address}`}
-                    className="group/venue mb-7 grid grid-cols-[auto_1fr_auto] items-center gap-x-3.5 rounded-[1px] border border-gold/30 bg-gold/[0.06] px-4 py-3.5 transition-colors duration-300 hover:border-gold/60 hover:bg-gold/[0.11] focus-visible:outline-gold"
+                    className={`group/venue mb-7 grid-cols-[auto_1fr_auto] ${sharedMaps ? 'hidden md:grid' : 'mt-4 grid md:mt-0'} items-center gap-x-3.5 rounded-[1px] border border-gold/30 bg-gold/[0.06] px-4 py-3.5 transition-colors duration-300 hover:border-gold/60 hover:bg-gold/[0.11] focus-visible:outline-gold`}
                   >
                     {/* Row 1: pin, venue name and arrow on one line */}
                     <MapPin className="h-4 w-4 text-gold-deep" strokeWidth={1.5} aria-hidden="true" />
@@ -182,7 +186,7 @@ export function Events() {
                     </span>
                   </a>
 
-                  <p className="text-[0.78rem] leading-loose font-light text-pretty text-muted">
+                  <p className="hidden text-[0.78rem] leading-loose font-light text-pretty text-muted md:block">
                     {event.description}
                   </p>
 
@@ -214,8 +218,28 @@ export function Events() {
 
         {/* One shared directions button — both events are at the same venue,
             so a single call to action is clearer than one per card. */}
+        {/* Phones: one shared venue panel under the cards */}
+        {sharedMaps && events[0] && (
+          <Reveal direction="up" className="mt-3 md:hidden">
+            <a
+              href={sharedMaps}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Open ${events[0].venue}, ${events[0].address} in maps`}
+              className="grid grid-cols-[auto_1fr_auto] items-center gap-x-3 rounded-[1px] border border-gold/30 bg-gold/[0.06] px-4 py-3"
+            >
+              <MapPin className="h-4 w-4 text-gold-deep" strokeWidth={1.5} aria-hidden="true" />
+              <span className="display block text-[1.15rem] leading-snug text-emerald">{events[0].venue}</span>
+              <ArrowUpRight className="h-4 w-4 text-gold-deep/70" strokeWidth={1.5} aria-hidden="true" />
+              <span className="col-start-2 block text-[0.72rem] leading-relaxed font-light text-muted">
+                {events[0].address}
+              </span>
+            </a>
+          </Reveal>
+        )}
+
         {sharedMaps && (
-          <Reveal direction="up" className="mt-12 flex justify-center md:mt-16">
+          <Reveal direction="up" className="mt-5 flex justify-center md:mt-16">
             <ButtonLink
               href={sharedMaps}
               target="_blank"
