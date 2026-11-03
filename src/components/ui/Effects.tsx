@@ -153,8 +153,9 @@ export function useDrawIn<T extends Element>({
         io.disconnect()
         drawWhenVisible()
       },
-      // Start as soon as the ornament edges into view
-      { threshold: 0.01, rootMargin: '0px 0px 10% 0px' },
+      // Start once the ornament is clearly on screen — not while it is still
+      // just below the fold, or the guest arrives to find it already drawn.
+      { threshold: 0.15, rootMargin: '0px 0px -12% 0px' },
     )
     io.observe(root)
     return () => {
