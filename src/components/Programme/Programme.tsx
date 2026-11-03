@@ -55,7 +55,7 @@ export function Programme() {
         <div className="grid items-center gap-5 md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] md:gap-20">
           {/* Jharokha window */}
           <Reveal direction="scale">
-            <div className="relative mx-auto aspect-[3/4] w-full max-w-[10.5rem] md:max-w-sm">
+            <div className="relative mx-auto aspect-[3/4] w-full max-w-[13rem] md:max-w-md">
               <svg viewBox="0 0 300 400" className="absolute inset-0 h-full w-full" aria-hidden="true">
                 <defs>
                   <clipPath id="jharokha-clip">
