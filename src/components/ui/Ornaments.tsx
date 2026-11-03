@@ -56,8 +56,9 @@ interface KhatimProps extends SVGProps<SVGSVGElement> {
  */
 export function Khatim({ rings = true, strokeWidth = 1, className, ...props }: KhatimProps) {
   const outer = Array.from({ length: 12 }, (_, i) => i * 30)
+  const ref = useDrawIn<SVGSVGElement>({ duration: 1.2, stagger: 0.02 })
   return (
-    <svg viewBox="0 0 100 100" fill="none" aria-hidden="true" className={className} {...props}>
+    <svg ref={ref} viewBox="0 0 100 100" fill="none" aria-hidden="true" className={className} {...props}>
       <g stroke="currentColor" strokeWidth={strokeWidth} strokeLinejoin="round">
         {outer.map((d) => (
           <path key={d} d={petal(50, 50, 12, 38, 9, d)} />

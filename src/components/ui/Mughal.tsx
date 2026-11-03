@@ -103,11 +103,12 @@ function nextSway() {
 
 /** The date palm from the card — the couple's emblem. */
 export function GoldPalm({ className, ...props }: SVGProps<SVGSVGElement>) {
+  const ref = useDrawIn<SVGSVGElement>({ duration: 1.2, stagger: 0.004 })
   // Angles from vertical; every frond arcs up and over, then droops.
   const fronds = [-118, -95, -72, -50, -28, -10, 10, 28, 50, 72, 95, 118]
   const sway = nextSway()
   return (
-    <svg viewBox="0 0 100 120" className={className} fill="none" aria-hidden="true" {...props}>
+    <svg ref={ref} viewBox="0 0 100 120" className={className} fill="none" aria-hidden="true" {...props}>
       <g stroke="currentColor" strokeLinecap="round">
         {/* trunk, gently curved, with ring marks */}
         <path d="M50 36 C48 60 52 86 47 112" strokeWidth="2.6" />
@@ -235,10 +236,11 @@ export function Birds({ className, tone = 'text-ink/60' }: { className?: string;
  * a chhajja (eave), three cusped arches on slender columns, and a plinth.
  */
 export function Chhatri({ className, ...props }: SVGProps<SVGSVGElement>) {
+  const ref = useDrawIn<SVGSVGElement>({ duration: 1.2, stagger: 0.02 })
   const arch = (x: number) =>
     `M${x} 112 L${x} 84 Q${x} 72 ${x + 4} 70 Q${x + 6} 64 ${x + 10} 63 Q${x + 14} 64 ${x + 16} 70 Q${x + 20} 72 ${x + 20} 84 L${x + 20} 112`
   return (
-    <svg viewBox="0 0 100 130" className={className} fill="none" aria-hidden="true" {...props}>
+    <svg ref={ref} viewBox="0 0 100 130" className={className} fill="none" aria-hidden="true" {...props}>
       <g stroke="currentColor" strokeLinejoin="round" strokeLinecap="round">
         {/* finial */}
         <path d="M50 8 V12" strokeWidth="0.9" />

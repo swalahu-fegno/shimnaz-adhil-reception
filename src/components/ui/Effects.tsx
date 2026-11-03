@@ -112,10 +112,8 @@ export function useDrawIn<T extends Element>({
     const root = ref.current
     const p = prepared.current
     if (!root || !p || !when) return
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return
-        io.disconnect()
+    let waitTimer = 0
+    const draw = () => {
         // Cap the cascade: ornaments with hundreds of strokes (palms) would
         // otherwise take many seconds to finish.
         const spread = Math.min(p.strokes.length * stagger, 0.8)
@@ -139,12 +137,30 @@ export function useDrawIn<T extends Element>({
           }),
           (duration + spread) * 1000 + 100,
         )
+    }
+    // Draw only once the guest can actually see it: content behind the
+    // opening screen is laid out (and "intersecting") but visibility-hidden.
+    const drawWhenVisible = () => {
+      if (getComputedStyle(root).visibility === 'hidden') {
+        waitTimer = window.setTimeout(drawWhenVisible, 120)
+        return
+      }
+      draw()
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return
+        io.disconnect()
+        drawWhenVisible()
       },
       // Start as soon as the ornament edges into view
       { threshold: 0.01, rootMargin: '0px 0px 10% 0px' },
     )
     io.observe(root)
-    return () => io.disconnect()
+    return () => {
+      io.disconnect()
+      window.clearTimeout(waitTimer)
+    }
   }, [when, duration, stagger])
 
   return ref
