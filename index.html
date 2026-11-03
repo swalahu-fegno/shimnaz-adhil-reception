@@ -115,16 +115,9 @@
     <div id="boot"><!--preloader-ssr--></div>
     <script>
       window.__bootT = performance.now()
-      // Web fonts load right after the first frame: the door screen paints at
-      // once in metric-matched fallbacks, then swaps to the real faces.
-      requestAnimationFrame(function () {
-        setTimeout(function () {
-          var l = document.createElement('link')
-          l.rel = 'stylesheet'
-          l.href = './fonts/fonts.css'
-          document.head.appendChild(l)
-        }, 0)
-      })
+      // Web fonts are linked by main.tsx once React has taken over from this
+      // shell, so the handoff repaints in the same fallback faces and isn't
+      // counted as a later, larger paint.
     </script>
 
     <div id="root"></div>

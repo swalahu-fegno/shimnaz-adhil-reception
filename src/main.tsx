@@ -20,6 +20,10 @@ createRoot(document.getElementById('root')!).render(
 requestAnimationFrame(() => {
   requestAnimationFrame(() => {
     document.getElementById('boot')?.remove()
+    const fonts = document.createElement('link')
+    fonts.rel = 'stylesheet'
+    fonts.href = './fonts/fonts.css'
+    document.head.appendChild(fonts)
   })
 })
 
