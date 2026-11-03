@@ -198,7 +198,7 @@ export const events: WeddingEvent[] = [
 /* -------------------------------------------------------------------------- */
 
 export const programme = [
-  { time: '5:00 PM', title: 'Arrival of Guests', note: 'Welcome from 5 PM onwards' },
+  { time: '5:00 PM', title: 'Arrival', note: 'Welcome from 5 PM onwards' },
   { time: '5:30 PM', title: 'Nikkah', note: 'The solemnisation, followed by dua' },
   // VERIFY: 7:30 PM dinner came from the first brief; the latest card omits it.
   { time: '7:30 PM', title: 'Dinner', note: 'An evening of food and gratitude' },
