@@ -16,7 +16,7 @@ export function Invitation() {
   return (
     <section
       id="invitation"
-      className="relative overflow-hidden py-5 md:py-[clamp(4rem,8vw,7.5rem)]"
+      className="relative overflow-hidden py-6 md:py-[clamp(4rem,8vw,7.5rem)]"
       aria-label="Invitation"
     >
       <GirihPattern
@@ -48,14 +48,14 @@ export function Invitation() {
                   <BlossomSpray className="absolute top-2 right-2 w-[24%] max-w-[11rem] md:w-[30%]" flip />
                 </div>
 
-                <div className="relative z-10 flex flex-col items-center px-[12%] pt-7 text-center md:px-[14%] md:pt-20">
-                  <LotusMedallion className="h-11 w-11 text-gold md:h-20 md:w-20" />
+                <div className="relative z-10 flex flex-col items-center px-[12%] pt-11 text-center md:px-[14%] md:pt-20">
+                  <LotusMedallion className="h-14 w-14 text-gold md:h-20 md:w-20" />
 
-                  <p className="arabic mt-1 text-[clamp(1.05rem,3.4vw,1.5rem)] leading-relaxed text-gold-deep md:mt-4" lang="ar">
+                  <p className="arabic mt-2 text-[clamp(1.05rem,3.4vw,1.5rem)] leading-relaxed text-gold-deep md:mt-4" lang="ar">
                     {wedding.bismillah.arabic}
                   </p>
 
-                  <p className="royal mt-1 text-[0.62rem] tracking-[0.14em] text-ink md:mt-3 md:text-xs md:tracking-[0.18em]">
+                  <p className="royal mt-2 text-[0.62rem] tracking-[0.14em] text-ink md:mt-3 md:text-xs md:tracking-[0.18em]">
                     {hosts.grandfather} &amp; {hosts.grandmother}
                   </p>
                   <p className="display mt-1.5 max-w-xs text-[clamp(0.85rem,2.2vw,1rem)] leading-snug text-balance text-ink/70 italic">
@@ -63,14 +63,14 @@ export function Invitation() {
                   </p>
 
                   {/* NIKKAH, engraved */}
-                  <h2 className="royal foil animate-foil mt-3 text-[clamp(2.4rem,10vw,4.75rem)] leading-none tracking-[0.06em] md:mt-5">
+                  <h2 className="royal foil animate-foil mt-5 text-[clamp(2.4rem,10vw,4.75rem)] leading-none tracking-[0.06em] md:mt-5">
                     Nikkah
                   </h2>
 
-                  <p className="royal mt-2 text-[clamp(0.85rem,2.6vw,1.2rem)] tracking-[0.14em] text-ink md:mt-4">
+                  <p className="royal mt-3 text-[clamp(0.85rem,2.6vw,1.2rem)] tracking-[0.14em] text-ink md:mt-4">
                     {bride.fullName}
                   </p>
-                  <div className="my-0.5 flex items-center justify-center gap-3 md:my-1.5" aria-hidden="true">
+                  <div className="my-1 flex items-center justify-center gap-3 md:my-1.5" aria-hidden="true">
                     <span className="h-px w-10 bg-gold/70 md:w-16" />
                     <span className="royal text-base text-gold-deep">&amp;</span>
                     <span className="h-px w-10 bg-gold/70 md:w-16" />
@@ -80,19 +80,19 @@ export function Invitation() {
 
                   {/* Date block, as on the card */}
                   <Lotus className="mt-5 hidden h-4 w-7 text-gold md:block" />
-                  <div className="mt-3 flex items-center gap-3 md:mt-2 md:flex-col md:gap-0">
+                  <div className="mt-5 flex items-center gap-3 md:mt-2 md:flex-col md:gap-0">
                     <span className="royal text-[0.62rem] tracking-[0.3em] text-ink md:text-xs">December</span>
                     <span className="royal text-[clamp(2.2rem,7vw,3.25rem)] leading-none text-gold-deep">03</span>
                     <span className="royal text-[0.62rem] tracking-[0.45em] text-ink md:text-xs">2026</span>
                   </div>
 
-                  <p className="display mt-3 max-w-xs text-[clamp(0.8rem,2vw,0.95rem)] leading-snug text-pretty text-ink/70 italic md:mt-5">
+                  <p className="display mt-5 max-w-xs text-[clamp(0.8rem,2vw,0.95rem)] leading-snug text-pretty text-ink/70 italic md:mt-5">
                     “{wedding.invitationSubtext}”
                   </p>
                 </div>
 
                 {/* The lotus lake along the foot */}
-                <div className="relative z-10 -mt-[12%] text-gold-deep/85 md:mt-4" aria-hidden="true">
+                <div className="relative z-10 -mt-[6%] text-gold-deep/85 md:mt-4" aria-hidden="true">
                   <LotusLake className="block h-auto w-full" />
                 </div>
               </div>
