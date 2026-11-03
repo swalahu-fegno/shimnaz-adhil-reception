@@ -55,7 +55,7 @@ export const groom: Person = {
   fullName: 'Adhil KP',
   father: 'Ahammed Kutty KP',
   mother: 'Sakeena M',
-  image: '/images/groom.jpg',
+  image: `${import.meta.env.BASE_URL}images/groom.jpg`,
   initial: 'A',
 }
 
@@ -64,7 +64,7 @@ export const bride: Person = {
   fullName: 'Shimnaz Fathima Nazar',
   father: 'PA Nazar',
   mother: 'Shahnaz Nazar',
-  image: '/images/bride.jpg',
+  image: `${import.meta.env.BASE_URL}images/bride.jpg`,
   initial: 'S',
 }
 
@@ -88,9 +88,9 @@ export interface CouplePhoto {
  * than a broken image, so the section never looks broken while you gather them.
  */
 export const couplePhotos: CouplePhoto[] = [
-  { src: '/images/couple-1.jpg' },
-  { src: '/images/couple-2.jpg' },
-  { src: '/images/couple-3.jpg' },
+  { src: `${import.meta.env.BASE_URL}images/couple-1.jpg` },
+  { src: `${import.meta.env.BASE_URL}images/couple-2.jpg` },
+  { src: `${import.meta.env.BASE_URL}images/couple-3.jpg` },
 ]
 
 /**
@@ -248,7 +248,7 @@ export const socials: SocialLink[] = []
 
 export const music = {
   /** Missing or undecodable file → the toggle disables itself silently. */
-  src: '/music/bg-music.mp3',
+  src: `${import.meta.env.BASE_URL}music/bg-music.mp3`,
   title: 'Background music',
   volume: 0.32,
   /** Try music on page entry, then retry from the opening gesture if blocked. */

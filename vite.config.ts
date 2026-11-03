@@ -6,6 +6,12 @@ import { fileURLToPath, URL } from 'node:url'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  /**
+   * Relative base: the production build is served from a GitHub Pages
+   * subfolder (fegno.github.io/adhil-shimnaz-website/), so every asset URL
+   * must resolve against the page, not the domain root.
+   */
+  base: './',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
