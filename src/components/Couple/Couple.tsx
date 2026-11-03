@@ -12,36 +12,35 @@ import { RevealGroup, RevealItem } from '../ui/Reveal'
 function ArchPanel({ person, relation }: { person: Person; relation: string }) {
   return (
     <TiltGlow max={4} className="mx-auto w-full max-w-[17rem]">
-      <div className="relative aspect-[5/6] w-full sm:aspect-[3/4]">
+      <div className="relative aspect-[3/4] w-full">
         {/* ivory pane inside the cusped arch */}
         <div className="absolute inset-0 [clip-path:url(#couple-arch-clip)] bg-gradient-to-b from-[#fffcf6] to-[#f3ead9] shadow-[var(--shadow-card)]" />
-        <CuspedArch className="absolute -inset-2 h-[calc(100%+1rem)] w-[calc(100%+1rem)] text-gold" />
+        <CuspedArch className="absolute -inset-1 h-[calc(100%+0.5rem)] w-[calc(100%+0.5rem)] text-gold md:-inset-2 md:h-[calc(100%+1rem)] md:w-[calc(100%+1rem)]" />
         {/* festive toran strung across the arch */}
-        <Toran className="absolute top-[24%] left-[4%] h-[13%] w-[92%] text-gold-deep/70" />
+        <Toran className="absolute top-[23%] left-[4%] h-[11%] w-[92%] text-gold-deep/70" />
 
-        <div className="absolute inset-x-0 bottom-[4%] top-[30%] flex flex-col items-center justify-center px-[10%] text-center">
+        <div className="absolute inset-x-0 bottom-[4%] top-[32%] flex flex-col items-center justify-center px-[8%] text-center">
           {/* initial, as a watermark */}
           <span
-            className="royal pointer-events-none absolute top-[2%] left-1/2 -translate-x-1/2 text-[7.5rem] leading-none text-gold/[0.12] select-none"
+            className="royal pointer-events-none absolute top-[2%] left-1/2 -translate-x-1/2 text-[4.5rem] leading-none text-gold/[0.12] select-none md:text-[7.5rem]"
             aria-hidden="true"
           >
             {person.initial}
           </span>
 
-          <h3 className="royal relative text-[clamp(0.95rem,1.9vw,1.25rem)] leading-snug tracking-[0.1em] text-ink">
+          <h3 className="royal relative text-[clamp(0.8rem,3.4vw,1.25rem)] leading-snug tracking-[0.06em] text-ink md:tracking-[0.1em]">
             {person.fullName}
           </h3>
-          <span className="relative mt-3 h-px w-16 bg-gradient-to-r from-transparent via-gold to-transparent" aria-hidden="true" />
-          <p className="relative mt-4 text-[0.65rem] tracking-[0.3em] text-gold-deep uppercase">{relation}</p>
-          <p className="display relative mt-2 text-[clamp(0.9rem,1.5vw,1.02rem)] leading-relaxed text-ink/80">
+          <span className="relative mt-2 h-px w-12 bg-gradient-to-r from-transparent via-gold to-transparent md:mt-3 md:w-16" aria-hidden="true" />
+          <p className="relative mt-2 text-[0.6rem] tracking-[0.22em] text-gold-deep uppercase md:mt-4 md:text-[0.65rem] md:tracking-[0.3em]">{relation}</p>
+          <p className="display relative mt-1 text-[clamp(0.75rem,3.2vw,1.02rem)] leading-snug text-ink/80 md:mt-2 md:leading-relaxed">
             {person.father}
-            <span className="mx-1.5 text-gold">&amp;</span>
-            <br className="sm:hidden" />
+            <span className="mx-1 text-gold">&amp;</span>
+            <br className="md:hidden" />
             {person.mother}
           </p>
         </div>
       </div>
-      <LotusPlinth className="mt-3 h-5 w-full text-gold/70 md:hidden" />
     </TiltGlow>
   )
 }
@@ -52,12 +51,17 @@ function ArchPanel({ person, relation }: { person: Person; relation: string }) {
  * Each of them stands in a cusped Mughal arch hung with a toran, their parents
  * beneath their name; a lotus medallion carrying the ampersand sits between
  * the arches, which stand on a lotus plinth. Outside, a peacock keeps watch
- * before a cypress, with an urn of flowers at its side. On phones the arches stack
- * and the garden gathers into a small row beneath them.
+ * before a cypress, with an urn of flowers at its side. Phones keep the arches
+ * side by side and gather the garden into one row beneath, so the whole
+ * section fits on a single screen.
  */
 export function Couple() {
   return (
-    <section id="couple" className="section-y relative overflow-hidden bg-ivory" aria-label="The Couple">
+    <section
+      id="couple"
+      className="relative overflow-hidden bg-ivory py-12 md:py-[clamp(4rem,8vw,7.5rem)]"
+      aria-label="The Couple"
+    >
       <LatticePattern
         id="couple-lattice"
         className="pointer-events-none absolute inset-0 text-gold/[0.06]"
@@ -81,7 +85,7 @@ export function Couple() {
           arabic="العروسان"
           title="The Couple"
           subtitle="Two families, one intention — brought together by the mercy of Allah."
-          className="mb-14 md:mb-20"
+          className="mb-8 max-md:gap-3 md:mb-20"
         />
 
         <div className="relative flex items-end justify-center gap-2 lg:gap-6">
@@ -93,19 +97,15 @@ export function Couple() {
           </div>
 
           <div className="w-full max-w-3xl min-w-0 flex-1">
-            <RevealGroup className="grid w-full items-center gap-6 md:grid-cols-[1fr_auto_1fr] md:gap-2">
+            <RevealGroup className="grid w-full grid-cols-[1fr_auto_1fr] items-center gap-1.5 md:gap-2">
               <RevealItem>
                 <ArchPanel person={groom} relation="Son of" />
               </RevealItem>
 
               <RevealItem>
-                <div className="flex items-center justify-center gap-2">
-                  <Peacock className="h-28 w-auto text-gold md:hidden" />
-                  <div className="relative flex h-24 w-24 shrink-0 items-center justify-center md:h-20 md:w-20 lg:h-24 lg:w-24">
-                    <LotusMedallion className="absolute inset-0 h-full w-full text-gold/45" />
-                    <span className="royal relative mt-1 text-3xl text-gold-deep">&amp;</span>
-                  </div>
-                  <Peacock className="h-28 w-auto text-gold md:hidden" flip />
+                <div className="relative mx-auto flex h-11 w-11 items-center justify-center md:h-20 md:w-20 lg:h-24 lg:w-24">
+                  <LotusMedallion className="absolute inset-0 h-full w-full text-gold/45" />
+                  <span className="royal relative mt-0.5 text-lg text-gold-deep md:mt-1 md:text-3xl">&amp;</span>
                 </div>
               </RevealItem>
 
@@ -115,9 +115,7 @@ export function Couple() {
             </RevealGroup>
 
             {/* the plinth the arches stand on */}
-            <div className="relative mt-3 hidden md:block" aria-hidden="true">
-              <LotusPlinth className="h-7 w-full text-gold/70" />
-            </div>
+            <LotusPlinth className="mt-2 h-5 w-full text-gold/70 md:mt-3 md:h-7" />
           </div>
 
           {/* right garden, mirrored */}
@@ -128,13 +126,15 @@ export function Couple() {
           </div>
         </div>
 
-        {/* phones: a garden row under the arches — cypresses and urns */}
-        <div className="mt-8 flex items-end justify-center gap-5 md:hidden" aria-hidden="true">
-          <Cypress className="h-36 w-auto text-gold/50" />
-          <FlowerUrn className="h-24 w-auto text-gold-deep/80" />
-          <Cypress className="h-28 w-auto text-gold/40" />
-          <FlowerUrn className="h-24 w-auto text-gold-deep/80" flip />
-          <Cypress className="h-36 w-auto text-gold/50" />
+        {/* phones: one compact garden row — cypress, peacock and urn each side */}
+        <div className="mt-3 flex items-end justify-center md:hidden" aria-hidden="true">
+          <Cypress className="h-24 w-auto text-gold/45" />
+          <Peacock className="-ml-3 h-[5.5rem] w-auto text-gold" />
+          <FlowerUrn className="-ml-2 h-14 w-auto text-gold-deep/80" />
+          <span className="w-4" />
+          <FlowerUrn className="-mr-2 h-14 w-auto text-gold-deep/80" flip />
+          <Peacock className="-mr-3 h-[5.5rem] w-auto text-gold" flip />
+          <Cypress className="h-24 w-auto text-gold/45" />
         </div>
       </div>
     </section>
