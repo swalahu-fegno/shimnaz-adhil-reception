@@ -6,23 +6,23 @@
    Fonts load async (see index.html), so first paint uses these. The
    size-adjust values line each fallback up with the real face, which
    keeps the swap from shifting layout — CLS stays flat instead of the
-   headline jumping when Playfair arrives.
+   headline jumping when Cormorant arrives.
    ------------------------------------------------------------------ */
 @font-face {
-  font-family: 'Playfair Fallback';
+  font-family: 'Cormorant Fallback';
   src: local('Times New Roman'), local('Times'), local('Georgia');
-  size-adjust: 116%;
-  ascent-override: 92%;
-  descent-override: 22%;
+  size-adjust: 92%;
+  ascent-override: 95%;
+  descent-override: 26%;
   line-gap-override: 0%;
 }
 
 @font-face {
-  font-family: 'Jost Fallback';
+  font-family: 'Poppins Fallback';
   src: local('Segoe UI'), local('Helvetica Neue'), local('Arial');
-  size-adjust: 96%;
-  ascent-override: 105%;
-  descent-override: 37%;
+  size-adjust: 106%;
+  ascent-override: 98%;
+  descent-override: 32%;
   line-gap-override: 0%;
 }
 
@@ -44,10 +44,10 @@
   --color-muted: #6b625a;
 
   /* Typography */
-  --font-display: 'Playfair Display', 'Playfair Fallback', 'Times New Roman', serif;
-  --font-body: 'Jost', 'Jost Fallback', ui-sans-serif, system-ui, sans-serif;
-  --font-royal: 'Cinzel', 'Playfair Display', 'Times New Roman', serif;
-  --font-arabic: 'Aref Ruqaa', 'Playfair Display', serif;
+  --font-display: 'Cormorant Garamond', 'Cormorant Fallback', 'Times New Roman', serif;
+  --font-body: 'Poppins', 'Poppins Fallback', ui-sans-serif, system-ui, sans-serif;
+  --font-royal: 'Cormorant Garamond', 'Cormorant Fallback', 'Times New Roman', serif;
+  --font-arabic: 'Amiri', 'Cormorant Garamond', serif;
 
   /* Motion */
   --ease-luxe: cubic-bezier(0.22, 1, 0.36, 1);
@@ -180,11 +180,13 @@
     }
   }
 
-  /* Engraved capitals — the 'NIKKAH' lettering on the card */
+  /* Engraved capitals — Cormorant set in spaced uppercase */
   .royal {
     font-family: var(--font-royal);
-    font-weight: 400;
-    letter-spacing: 0.08em;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-variant-numeric: lining-nums; /* Cormorant's default figures are old-style */
   }
 
   .display {

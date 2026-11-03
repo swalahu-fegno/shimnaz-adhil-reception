@@ -98,7 +98,7 @@ export function Footer() {
               {contact.phones.length > 0 && contact.phones.map((phone) => (
                 <li key={phone}>
                   {/*
-                    Jost, not the display serif. Playfair sets numerals as
+                    Poppins, not the display serif. Cormorant sets numerals as
                     old-style figures — digits at differing heights, some below
                     the baseline — which is beautiful in prose and awful in a
                     phone number you're meant to read digit by digit. Tabular
