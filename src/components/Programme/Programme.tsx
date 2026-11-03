@@ -36,7 +36,11 @@ export function Programme() {
   const thread = useSpring(scrollYProgress, { stiffness: 80, damping: 22 })
 
   return (
-    <section id="programme" className="section-y relative overflow-hidden bg-ivory" aria-label="Programme">
+    <section
+      id="programme"
+      className="relative overflow-hidden bg-ivory py-8 md:py-[clamp(4rem,8vw,7.5rem)]"
+      aria-label="Programme"
+    >
       <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-bg to-transparent" />
 
       <div className="shell relative">
@@ -45,13 +49,13 @@ export function Programme() {
           arabic="برنامج"
           title="The Evening"
           subtitle="Three moments, one blessed day."
-          className="mb-14 md:mb-20"
+          className="mb-6 max-md:gap-3 md:mb-20"
         />
 
-        <div className="grid items-center gap-14 md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] md:gap-20">
+        <div className="grid items-center gap-5 md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] md:gap-20">
           {/* Jharokha window */}
           <Reveal direction="scale">
-            <div className="relative mx-auto aspect-[3/4] w-full max-w-sm">
+            <div className="relative mx-auto aspect-[3/4] w-full max-w-[7.25rem] md:max-w-sm">
               <svg viewBox="0 0 300 400" className="absolute inset-0 h-full w-full" aria-hidden="true">
                 <defs>
                   <clipPath id="jharokha-clip">
@@ -74,14 +78,14 @@ export function Programme() {
               <div className="absolute inset-0 overflow-hidden" style={{ clipPath: 'inset(0 0 40% 0)' }}>
                 <Birds tone="text-gold-soft/70" />
               </div>
-              <CuspedArch className="absolute -inset-3 h-[calc(100%+1.5rem)] w-[calc(100%+1.5rem)] text-gold" />
-              <span className="absolute -bottom-3 left-1/2 h-px w-[115%] -translate-x-1/2 bg-gradient-to-r from-transparent via-gold to-transparent" />
+              <CuspedArch className="absolute -inset-1.5 h-[calc(100%+0.75rem)] w-[calc(100%+0.75rem)] text-gold md:-inset-3 md:h-[calc(100%+1.5rem)] md:w-[calc(100%+1.5rem)]" />
+              <span className="absolute -bottom-1.5 left-1/2 h-px w-[150%] -translate-x-1/2 bg-gradient-to-r from-transparent via-gold to-transparent md:-bottom-3 md:w-[115%]" />
             </div>
           </Reveal>
 
           {/* Timeline */}
           <div>
-            <div ref={timelineRef} className="relative">
+            <div ref={timelineRef} className="relative hidden md:block">
               <RevealGroup className="relative flex flex-col gap-10 pl-10">
                 {/* Faint track, and the gold thread that fills it as you scroll */}
                 <span className="absolute top-2 bottom-2 left-[0.6rem] w-px bg-gold/20" aria-hidden="true" />
@@ -101,25 +105,51 @@ export function Programme() {
               </RevealGroup>
             </div>
 
+            {/* Phones: the three moments side by side on a gold thread */}
+            <RevealGroup className="relative grid grid-cols-3 gap-2 text-center md:hidden">
+              <span
+                className="absolute top-[0.6rem] right-[16%] left-[16%] h-px bg-gradient-to-r from-gold/30 via-gold to-gold/30"
+                aria-hidden="true"
+              />
+              {programme.map((item) => (
+                <RevealItem key={item.time} className="relative flex flex-col items-center">
+                  <span
+                    className="tl-node is-lit flex h-5 w-5 rotate-45 items-center justify-center border border-gold bg-ivory"
+                    aria-hidden="true"
+                  >
+                    <span className="h-1.5 w-1.5 bg-ivory" />
+                  </span>
+                  <p className="royal mt-3 text-[0.72rem] tracking-[0.12em] text-gold-deep">{item.time}</p>
+                  <h3 className="display mt-0.5 text-[1.2rem] leading-tight text-ink">{item.title}</h3>
+                  <p className="sr-only">{item.note}</p>
+                </RevealItem>
+              ))}
+            </RevealGroup>
+
             {/* Dress code */}
             <Reveal direction="up" delay={0.2}>
-              <TiltGlow className="mt-14">
-              <div className="border border-gold/35 bg-bg/70 px-6 py-7 text-center">
-                <Lotus className="mx-auto mb-3 h-4 w-7 text-gold" />
-                <p className="eyebrow text-[0.55rem]">Dress Code</p>
-                <p className="display mt-2 text-2xl text-ink">{dressCode.colours}</p>
-                <div className="mt-5 flex justify-center gap-5">
-                  {dressSwatches.map((s) => (
-                    <div key={s.name} className="flex flex-col items-center gap-2">
-                      <span
-                        className="h-10 w-10 rounded-full border border-gold/60 shadow-card transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-translate-y-1 hover:scale-110"
-                        style={{ background: s.hex }}
-                      />
-                      <span className="text-[0.55rem] tracking-[0.18em] text-muted uppercase">{s.name}</span>
-                    </div>
-                  ))}
+              <TiltGlow className="mt-5 md:mt-14">
+              <div className="border border-gold/35 bg-bg/70 px-4 py-3 text-center md:px-6 md:py-7">
+                <Lotus className="mx-auto mb-3 hidden h-4 w-7 text-gold md:block" />
+                <div className="flex items-center justify-center gap-5 md:block">
+                  <div className="text-left md:text-center">
+                    <p className="eyebrow text-[0.55rem]">Dress Code</p>
+                    <p className="display mt-1 text-xl text-ink md:mt-2 md:text-2xl">{dressCode.colours}</p>
+                  </div>
+                  <div className="flex justify-center gap-3 md:mt-5 md:gap-5">
+                    {dressSwatches.map((s) => (
+                      <div key={s.name} className="flex flex-col items-center gap-2">
+                        <span
+                          className="h-8 w-8 rounded-full border border-gold/60 shadow-card transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-translate-y-1 hover:scale-110 md:h-10 md:w-10"
+                          style={{ background: s.hex }}
+                          title={s.name}
+                        />
+                        <span className="hidden text-[0.55rem] tracking-[0.18em] text-muted uppercase md:block">{s.name}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <p className="mx-auto mt-5 max-w-xs text-[0.75rem] leading-relaxed font-light text-muted italic">
+                <p className="mx-auto mt-2 max-w-xs text-[0.75rem] leading-relaxed font-light text-muted italic md:mt-5">
                   {dressCode.note}
                 </p>
               </div>
@@ -128,7 +158,7 @@ export function Programme() {
           </div>
         </div>
 
-        <LotusDivider className="mt-16" />
+        <LotusDivider className="mt-16 hidden md:flex" />
       </div>
     </section>
   )
