@@ -11,9 +11,9 @@
 @font-face {
   font-family: 'Playfair Fallback';
   src: local('Times New Roman'), local('Times'), local('Georgia');
-  size-adjust: 108%;
-  ascent-override: 98%;
-  descent-override: 23%;
+  size-adjust: 116%;
+  ascent-override: 92%;
+  descent-override: 22%;
   line-gap-override: 0%;
 }
 

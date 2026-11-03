@@ -53,7 +53,15 @@ export function Preloader({ onMusicIntent, onOpenStart, onOpen }: PreloaderProps
     window.setTimeout(onOpen, prefersReduced ? 0 : 2150)
   }, [onMusicIntent, onOpen, onOpenStart, prefersReduced])
 
-  const d = (delay: number) => ({ '--d': `${prefersReduced ? 0 : delay}s` }) as React.CSSProperties
+  // The static boot copy of this screen started its entrance animations at
+  // first paint; pick them up where they are rather than replaying them.
+  const [elapsed] = useState(() => {
+    if (typeof window === 'undefined') return 0
+    const t0 = (window as Window & { __bootT?: number }).__bootT
+    return t0 == null ? 0 : (performance.now() - t0) / 1000
+  })
+  const d = (delay: number) =>
+    ({ '--d': `${prefersReduced ? 0 : delay - elapsed}s` }) as React.CSSProperties
 
   /**
    * Scroll to open.
@@ -174,7 +182,7 @@ export function Preloader({ onMusicIntent, onOpenStart, onOpen }: PreloaderProps
       <div className="pl-content relative z-10 flex flex-col items-center px-6 text-center">
         {/* Monogram inside a cusped Mughal arch */}
         <div className="pl-scale relative mb-8 flex h-44 w-32 items-center justify-center md:h-56 md:w-40" style={d(0.1)}>
-          <CuspedArch className="absolute inset-0 h-full w-full text-gold" />
+          <CuspedArch className="absolute inset-0 h-full w-full text-gold" draw={false} />
           <div className="relative mt-6 flex items-center gap-2.5">
             <span className="royal text-4xl leading-none text-ivory md:text-5xl">{groom.initial}</span>
             <svg viewBox="0 0 12 12" className="h-2 w-2 text-gold" aria-hidden="true">
@@ -188,7 +196,7 @@ export function Preloader({ onMusicIntent, onOpenStart, onOpen }: PreloaderProps
           <p className="arabic text-xl text-gold md:text-2xl" lang="ar">
             {wedding.bismillah.arabic}
           </p>
-          <p className="max-w-xs text-[0.7rem] leading-relaxed font-light tracking-[0.08em] text-balance text-ivory/65">
+          <p className="max-w-xs text-xs leading-relaxed font-light tracking-[0.06em] text-balance text-ivory/65">
             {wedding.bismillah.translation}
           </p>
         </div>
@@ -215,14 +223,14 @@ export function Preloader({ onMusicIntent, onOpenStart, onOpen }: PreloaderProps
           style={d(0.95)}
           className="pl-rise group flex flex-col items-center gap-4 bg-transparent focus-visible:outline-gold"
         >
-          <span className="font-body text-[0.62rem] font-light tracking-[0.34em] text-gold/90 uppercase transition-colors group-hover:text-gold">
+          <span className="font-body text-xs font-light tracking-[0.28em] text-gold/90 uppercase transition-colors group-hover:text-gold">
             Tap the door to open
           </span>
           <Lotus className="pl-knock h-5 w-8 text-gold" />
         </button>
 
         <p
-          className="pl-rise mt-6 text-[0.55rem] font-light tracking-[0.3em] text-ivory/40 uppercase"
+          className="pl-rise mt-6 text-xs font-light tracking-[0.24em] text-ivory/50 uppercase"
           style={d(1.2)}
         >
           {wedding.dayLabel} · {wedding.dateLabel}

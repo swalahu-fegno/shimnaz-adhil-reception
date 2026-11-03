@@ -2,10 +2,11 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { fileURLToPath, URL } from 'node:url'
+import { deferEntry, inlineCss, prerenderPreloader } from './vite-plugins/firstPaint.ts'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [react(), tailwindcss(), prerenderPreloader(), inlineCss(), deferEntry()],
   /**
    * Relative base: the production build is served from a GitHub Pages
    * subfolder (fegno.github.io/adhil-shimnaz-website/), so every asset URL
@@ -37,7 +38,9 @@ export default defineConfig({
   },
   build: {
     target: 'es2020',
-    cssCodeSplit: true,
+    // One stylesheet, inlined into the HTML (see vite-plugins/firstPaint.ts).
+    // Split CSS would leave lazy chunks pointing at a file that no longer exists.
+    cssCodeSplit: false,
     rollupOptions: {
       output: {
         /**

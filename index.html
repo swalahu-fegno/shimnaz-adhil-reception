@@ -41,33 +41,10 @@
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
 
     <!--
-      Engraved capitals (Cinzel), display serif (Playfair Display), body sans (Jost)
-      and a Ruqaa calligraphic face for Arabic script.
-
-      Loaded without blocking render: the stylesheet is fetched at `print`
-      priority and promoted to `all` once it lands. A plain <link rel=stylesheet>
-      here costs ~2s of FCP on a throttled connection. font-display:swap means
-      text paints in the fallback immediately and swaps when the face arrives.
+      Fonts are self-hosted (public/fonts/fonts.css): Cinzel capitals, Playfair
+      Display, Jost body and Aref Ruqaa for Arabic. They are linked by a script
+      after first paint (below #boot), so they never hold up the door screen.
     -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&family=Aref+Ruqaa:wght@400;700&display=swap"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&family=Aref+Ruqaa:wght@400;700&display=swap"
-      media="print"
-      onload="this.media='all';this.onload=null"
-    />
-    <noscript>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&family=Aref+Ruqaa:wght@400;700&display=swap"
-      />
-    </noscript>
 
     <script type="application/ld+json">
       {
@@ -85,6 +62,7 @@
         }
       }
     </script>
+    <noscript><link rel="stylesheet" href="./fonts/fonts.css" /></noscript>
   </head>
   <body>
     <audio id="bg-music" src="./music/bg-music.mp3" preload="none" loop playsinline></audio>
@@ -130,53 +108,24 @@
     </script>
 
     <!--
-      Boot shell.
-
-      The whole page is client-rendered, so without this nothing paints until
-      React + Motion have parsed — measured at ~4s of render delay on a
-      throttled mobile CPU. This is plain HTML with inline styles (no external
-      CSS, no font, no JS), so it paints on the first frame.
-
-      It mimics the preloader's resting state exactly, and the real Preloader
-      mounts over it with the same emerald ground, so its removal in main.tsx
-      is invisible.
+      Boot shell: the real door screen, rendered to static HTML at build time
+      (vite-plugins/firstPaint.ts). It paints before any JavaScript loads, and
+      React mounts an identical copy over it, then main.tsx removes this one.
     -->
-    <div
-      id="boot"
-      style="
-        position: fixed;
-        inset: 0;
-        z-index: 99;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 1.25rem;
-        background: radial-gradient(ellipse at center, #3a3a3c, #232325 75%);
-      "
-    >
-      <!--
-        Sized to match the React monogram exactly (text-5xl / md:text-6xl).
-        If the shell's copy is smaller, React's paints later as a *larger*
-        element and steals LCP — which is what pushed LCP to 4.8s.
-      -->
-      <div
-        style="
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          font-family: 'Cinzel', 'Times New Roman', serif;
-          font-weight: 400;
-          font-size: 2.25rem;
-          line-height: 1;
-          color: #f8f5ef;
-        "
-      >
-        <span>A</span>
-        <span style="font-size: 0.5rem; color: #c8a96a">&#9670;</span>
-        <span>S</span>
-      </div>
-    </div>
+    <div id="boot"><!--preloader-ssr--></div>
+    <script>
+      window.__bootT = performance.now()
+      // Web fonts load right after the first frame: the door screen paints at
+      // once in metric-matched fallbacks, then swaps to the real faces.
+      requestAnimationFrame(function () {
+        setTimeout(function () {
+          var l = document.createElement('link')
+          l.rel = 'stylesheet'
+          l.href = './fonts/fonts.css'
+          document.head.appendChild(l)
+        }, 0)
+      })
+    </script>
 
     <div id="root"></div>
     <noscript>

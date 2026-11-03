@@ -59,8 +59,17 @@ export function cuspedArchPath(w: number, h: number): string {
 }
 
 /** Gold outline of a cusped arch, stretched to its container. */
-export function CuspedArch({ className, double = true }: { className?: string; double?: boolean }) {
-  const ref = useDrawIn<SVGSVGElement>({ duration: 2.2, stagger: 0.3 })
+export function CuspedArch({
+  className,
+  double = true,
+  draw = true,
+}: {
+  className?: string
+  double?: boolean
+  /** Draw the outline in on scroll; off where a static copy paints first */
+  draw?: boolean
+}) {
+  const ref = useDrawIn<SVGSVGElement>({ duration: 2.2, stagger: 0.3, enabled: draw })
   return (
     <svg
       ref={ref}

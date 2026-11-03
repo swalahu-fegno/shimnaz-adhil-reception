@@ -84,7 +84,8 @@ export function useDrawIn<T extends Element>({
   duration = 1.6,
   stagger = 0.06,
   when = true,
-}: { duration?: number; stagger?: number; when?: boolean } = {}) {
+  enabled = true,
+}: { duration?: number; stagger?: number; when?: boolean; enabled?: boolean } = {}) {
   const ref = useRef<T>(null)
   const prefersReduced = useReducedMotion()
   const prepared = useRef<{ strokes: SVGGeometryElement[]; fills: SVGElement[] } | null>(null)
@@ -92,7 +93,7 @@ export function useDrawIn<T extends Element>({
   // Hide the strokes once, on mount, so nothing flashes before it draws.
   useEffect(() => {
     const root = ref.current
-    if (!root || prefersReduced || prepared.current) return
+    if (!root || !enabled || prefersReduced || prepared.current) return
     const strokes = [...root.querySelectorAll<SVGGeometryElement>('path, circle, ellipse, rect, line, polyline, polygon')].filter(
       (el) =>
         !el.closest('[data-nodraw]') && getComputedStyle(el).stroke !== 'none' && typeof el.getTotalLength === 'function',
@@ -105,7 +106,7 @@ export function useDrawIn<T extends Element>({
     })
     fills.forEach((el) => (el.style.fillOpacity = '0'))
     prepared.current = { strokes, fills }
-  }, [prefersReduced])
+  }, [prefersReduced, enabled])
 
   useEffect(() => {
     const root = ref.current

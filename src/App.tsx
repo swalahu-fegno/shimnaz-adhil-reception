@@ -11,7 +11,8 @@ import { TapPetals } from './components/ui/Effects'
  * GSAP and Lenis (~275 KB) out of the entry chunk, so the preloader — which is
  * pure CSS — paints without waiting on any of them.
  */
-const Site = lazy(() => import('./Site'))
+const loadSite = () => import('./Site')
+const Site = lazy(loadSite)
 const DEBUG_MUSIC = false
 
 function logMusic(message: string, details?: Record<string, unknown>) {
@@ -25,6 +26,23 @@ export default function App() {
   const [revealed, setRevealed] = useState(hasHash)
   /** The doors have finished and the preloader is gone: unlock scrolling. */
   const [opened, setOpened] = useState(hasHash)
+  /**
+   * The invitation renders only once the guest shows intent — a touch, a
+   * scroll, a mouse move or a key — and finishes during the door swing.
+   * Rendering it at load cost slow phones ~500 ms of blocked main thread
+   * while they were still looking at the door. Its code is fetched on idle.
+   */
+  const [mountSite, setMountSite] = useState(hasHash)
+
+  useEffect(() => {
+    if (mountSite) return
+    const idle = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 1200))
+    idle(() => void loadSite())
+    const intents = ['pointerdown', 'pointermove', 'touchstart', 'keydown', 'wheel'] as const
+    const go = () => setMountSite(true)
+    intents.forEach((t) => window.addEventListener(t, go, { once: true, passive: true }))
+    return () => intents.forEach((t) => window.removeEventListener(t, go))
+  }, [mountSite])
 
   const { isPlaying, isAvailable, toggle, play } = useMusic({
     src: music.src,
@@ -48,6 +66,7 @@ export default function App() {
    */
   const handleOpenStart = useCallback(() => {
     logMusic('open start', { autoplayAfterOpen: music.autoplayAfterOpen })
+    setMountSite(true)
     setRevealed(true)
     if (music.autoplayAfterOpen) {
       void play()
@@ -89,15 +108,17 @@ export default function App() {
         while the preloader is up.
       */}
       <div style={{ visibility: revealed ? 'visible' : 'hidden' }}>
-        <Suspense fallback={null}>
-          <Site
-            revealed={revealed}
-            opened={opened}
-            isPlaying={isPlaying}
-            musicAvailable={isAvailable}
-            onToggleMusic={toggle}
-          />
-        </Suspense>
+        {mountSite && (
+          <Suspense fallback={null}>
+            <Site
+              revealed={revealed}
+              opened={opened}
+              isPlaying={isPlaying}
+              musicAvailable={isAvailable}
+              onToggleMusic={toggle}
+            />
+          </Suspense>
+        )}
       </div>
     </>
   )
