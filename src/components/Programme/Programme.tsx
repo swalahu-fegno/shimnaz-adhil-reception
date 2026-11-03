@@ -1,3 +1,7 @@
+import { useRef, useState } from 'react'
+import { motion, useMotionValueEvent, useScroll, useSpring, type MotionValue } from 'framer-motion'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { TiltGlow } from '../ui/Effects'
 import { dressCode, dressSwatches, programme, venue } from '../../data/wedding'
 import { SectionHeading } from '../ui/SectionHeading'
 import { Reveal, RevealGroup, RevealItem } from '../ui/Reveal'
@@ -11,7 +15,26 @@ import { Birds, CuspedArch, GardenScene, Lotus, LotusDivider, cuspedArchPath } f
  * moments of the day run down a gold thread, and the dress code closes the
  * section with the card's own three colours.
  */
+/** A diamond on the thread that lights up once the gold reaches it. */
+function TimelineNode({ progress, at }: { progress: MotionValue<number>; at: number }) {
+  const [lit, setLit] = useState(false)
+  useMotionValueEvent(progress, 'change', (v) => setLit(v >= at - 0.02))
+  return (
+    <span
+      className={`tl-node absolute top-1.5 -left-10 flex h-5 w-5 rotate-45 items-center justify-center border border-gold bg-ivory ${lit ? 'is-lit' : ''}`}
+      aria-hidden="true"
+    >
+      <span className={`h-1.5 w-1.5 transition-colors duration-500 ${lit ? 'bg-ivory' : 'bg-gold'}`} />
+    </span>
+  )
+}
+
 export function Programme() {
+  const prefersReduced = useReducedMotion()
+  const timelineRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({ target: timelineRef, offset: ['start 75%', 'end 55%'] })
+  const thread = useSpring(scrollYProgress, { stiffness: 80, damping: 22 })
+
   return (
     <section id="programme" className="section-y relative overflow-hidden bg-ivory" aria-label="Programme">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-bg to-transparent" />
@@ -58,29 +81,30 @@ export function Programme() {
 
           {/* Timeline */}
           <div>
-            <RevealGroup className="relative flex flex-col gap-10 pl-10">
-              <span
-                className="absolute top-2 bottom-2 left-[0.6rem] w-px bg-gradient-to-b from-gold/0 via-gold/70 to-gold/0"
-                aria-hidden="true"
-              />
-              {programme.map((item) => (
-                <RevealItem key={item.time} className="relative">
-                  <span
-                    className="absolute top-1.5 -left-10 flex h-5 w-5 rotate-45 items-center justify-center border border-gold bg-ivory"
-                    aria-hidden="true"
-                  >
-                    <span className="h-1.5 w-1.5 bg-gold" />
-                  </span>
-                  <p className="royal text-sm tracking-[0.25em] text-gold-deep">{item.time}</p>
-                  <h3 className="display mt-1 text-3xl text-ink md:text-4xl">{item.title}</h3>
-                  <p className="mt-1 text-[0.8rem] font-light text-muted">{item.note}</p>
-                </RevealItem>
-              ))}
-            </RevealGroup>
+            <div ref={timelineRef} className="relative">
+              <RevealGroup className="relative flex flex-col gap-10 pl-10">
+                {/* Faint track, and the gold thread that fills it as you scroll */}
+                <span className="absolute top-2 bottom-2 left-[0.6rem] w-px bg-gold/20" aria-hidden="true" />
+                <motion.span
+                  className="absolute top-2 bottom-2 left-[0.6rem] w-px origin-top bg-gradient-to-b from-gold via-gold to-gold-soft shadow-[0_0_6px_rgba(209,180,122,0.6)]"
+                  style={{ scaleY: prefersReduced ? 1 : thread }}
+                  aria-hidden="true"
+                />
+                {programme.map((item, i) => (
+                  <RevealItem key={item.time} className="relative">
+                    <TimelineNode progress={thread} at={i / Math.max(programme.length - 1, 1)} />
+                    <p className="royal text-sm tracking-[0.25em] text-gold-deep">{item.time}</p>
+                    <h3 className="display mt-1 text-3xl text-ink md:text-4xl">{item.title}</h3>
+                    <p className="mt-1 text-[0.8rem] font-light text-muted">{item.note}</p>
+                  </RevealItem>
+                ))}
+              </RevealGroup>
+            </div>
 
             {/* Dress code */}
             <Reveal direction="up" delay={0.2}>
-              <div className="mt-14 border border-gold/35 bg-bg/70 px-6 py-7 text-center">
+              <TiltGlow className="mt-14">
+              <div className="border border-gold/35 bg-bg/70 px-6 py-7 text-center">
                 <Lotus className="mx-auto mb-3 h-4 w-7 text-gold" />
                 <p className="eyebrow text-[0.55rem]">Dress Code</p>
                 <p className="display mt-2 text-2xl text-ink">{dressCode.colours}</p>
@@ -88,7 +112,7 @@ export function Programme() {
                   {dressSwatches.map((s) => (
                     <div key={s.name} className="flex flex-col items-center gap-2">
                       <span
-                        className="h-10 w-10 rounded-full border border-gold/60 shadow-card"
+                        className="h-10 w-10 rounded-full border border-gold/60 shadow-card transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-translate-y-1 hover:scale-110"
                         style={{ background: s.hex }}
                       />
                       <span className="text-[0.55rem] tracking-[0.18em] text-muted uppercase">{s.name}</span>
@@ -99,6 +123,7 @@ export function Programme() {
                   {dressCode.note}
                 </p>
               </div>
+              </TiltGlow>
             </Reveal>
           </div>
         </div>

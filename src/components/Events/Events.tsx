@@ -6,7 +6,8 @@ import { GlassCard } from '../ui/GlassCard'
 import { ButtonLink } from '../ui/Button'
 import { SectionHeading } from '../ui/SectionHeading'
 import { Reveal, RevealGroup, RevealItem } from '../ui/Reveal'
-import { Divider, LatticePattern, StarEight } from '../ui/Ornaments'
+import { Divider, Khatim, LatticePattern } from '../ui/Ornaments'
+import { TiltGlow } from '../ui/Effects'
 import { EventIcon } from '../ui/EventIcons'
 // VenueMap is commented out below — restore this import if you bring it back.
 
@@ -80,6 +81,7 @@ export function Events() {
         >
           {events.map((event) => (
             <RevealItem key={event.id} as="article" direction="up">
+              <TiltGlow max={5}>
               <GlassCard interactive corners className="h-full p-8 md:p-10">
                 {/* Arabic name as background texture */}
                 {event.arabicName && (
@@ -95,12 +97,13 @@ export function Events() {
                   {/* Icon medallion */}
                   <div className="relative mb-7 flex h-16 w-16 items-center justify-center">
                     <span className="absolute inset-0 rounded-full border border-gold/30" />
-                    <StarEight
-                      className="animate-spin-slow absolute inset-0 h-full w-full text-gold/20"
+                    <Khatim
+                      className="animate-spin-slow absolute -inset-1.5 h-[calc(100%+0.75rem)] w-[calc(100%+0.75rem)] text-gold/25"
+                      strokeWidth={0.8}
                       aria-hidden="true"
                     />
                     <span className="absolute inset-1 rounded-full bg-gold/[0.07]" />
-                    <EventIcon name={event.icon} className="relative h-7 w-7 text-emerald" />
+                    <EventIcon name={event.icon} className="relative h-7 w-7 text-emerald transition-transform duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-1 group-hover:scale-110" />
                   </div>
 
                   <h3 className="display text-[clamp(1.9rem,4vw,2.6rem)] leading-none text-ink">
@@ -204,6 +207,7 @@ export function Events() {
                   )}
                 </div>
               </GlassCard>
+              </TiltGlow>
             </RevealItem>
           ))}
         </RevealGroup>

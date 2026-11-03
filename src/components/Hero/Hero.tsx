@@ -1,12 +1,26 @@
-import { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { useEffect, useRef } from 'react'
+import { motion, useMotionValue, useScroll, useSpring, useTransform } from 'framer-motion'
 import { ChevronDown } from '../ui/MughalIcons'
 import { bride, groom, venue, wedding } from '../../data/wedding'
 import { GirihPattern, OrnateFrame } from '../ui/Ornaments'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { Birds, CuspedArch, GoldPalm, Lotus } from '../ui/Mughal'
+import { DrawOnView } from '../ui/Effects'
 
 const EASE = [0.22, 1, 0.36, 1] as const
+
+/** Each letter rises out of a blur a beat after the last. */
+function Letters({ text, start }: { text: string; start: number }) {
+  return (
+    <>
+      {[...text].map((ch, i) => (
+        <span key={i} className="letter-rise" style={{ '--d': `${start + i * 0.06}s` } as React.CSSProperties}>
+          {ch}
+        </span>
+      ))}
+    </>
+  )
+}
 
 const RISE = { hidden: { opacity: 0, y: 34 }, visible: { opacity: 1, y: 0 } }
 
@@ -46,6 +60,36 @@ export function Hero({ active, onScrollCue }: HeroProps) {
 
   const cardY = useTransform(scrollYProgress, [0, 1], ['0%', prefersReduced ? '0%' : '-10%'])
   const fade = useTransform(scrollYProgress, [0, 0.7], [1, prefersReduced ? 1 : 0])
+  // Pointer (or phone tilt) parallax: each plane drifts at its own depth
+  const px = useMotionValue(0)
+  const py = useMotionValue(0)
+  const sx = useSpring(px, { stiffness: 60, damping: 20 })
+  const sy = useSpring(py, { stiffness: 60, damping: 20 })
+  const palmX = useTransform(sx, (v) => v * -14)
+  const frameX = useTransform(sx, (v) => v * 6)
+  const frameY = useTransform(sy, (v) => v * 6)
+  const poolX = useTransform(sx, (v) => v * 40)
+  const poolY = useTransform(sy, (v) => v * 30)
+
+  useEffect(() => {
+    if (prefersReduced) return
+    const onMove = (e: PointerEvent) => {
+      px.set(e.clientX / window.innerWidth - 0.5)
+      py.set(e.clientY / window.innerHeight - 0.5)
+    }
+    const onTilt = (e: DeviceOrientationEvent) => {
+      if (e.gamma == null || e.beta == null) return
+      px.set(Math.max(-0.5, Math.min(0.5, e.gamma / 60)))
+      py.set(Math.max(-0.5, Math.min(0.5, (e.beta - 45) / 60)))
+    }
+    window.addEventListener('pointermove', onMove, { passive: true })
+    window.addEventListener('deviceorientation', onTilt, { passive: true })
+    return () => {
+      window.removeEventListener('pointermove', onMove)
+      window.removeEventListener('deviceorientation', onTilt)
+    }
+  }, [prefersReduced, px, py])
+
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', prefersReduced ? '0%' : '12%'])
 
   return (
@@ -65,7 +109,7 @@ export function Hero({ active, onScrollCue }: HeroProps) {
         <div className="absolute inset-0" style={{ maskImage: EDGE_MASK, WebkitMaskImage: EDGE_MASK }}>
           <GirihPattern id="hero-motif" className="absolute inset-0 text-gold/[0.22]" scale={60} />
         </div>
-        <div className="absolute inset-0" style={{ background: POOL }} />
+        <motion.div className="absolute inset-0" style={{ background: POOL, x: poolX, y: poolY }} />
         <div className="absolute inset-0" style={{ background: VIGNETTE }} />
       </motion.div>
 
@@ -73,6 +117,7 @@ export function Hero({ active, onScrollCue }: HeroProps) {
 
       {/* ---- Gold palms rising at the foot, as on the card -------------------- */}
       <motion.div
+        style={{ x: palmX }}
         className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-between px-5 text-gold/25 md:px-[5vw]"
         initial={{ opacity: 0, y: 30 }}
         animate={active ? { opacity: 1, y: 0 } : {}}
@@ -85,6 +130,7 @@ export function Hero({ active, onScrollCue }: HeroProps) {
 
       {/* ---- Ornamental frame ------------------------------------------------- */}
       <motion.div
+        style={{ x: frameX, y: frameY }}
         className="absolute inset-0 text-gold/60"
         initial={{ opacity: 0, scale: 1.04 }}
         animate={active ? { opacity: 1, scale: 1 } : {}}
@@ -106,7 +152,9 @@ export function Hero({ active, onScrollCue }: HeroProps) {
         >
           {/* Arch crest */}
           <motion.div variants={RISE} transition={{ duration: 0.9, ease: EASE }} className="mb-6">
-            <CuspedArch className="h-12 w-9 text-gold/80" />
+            <DrawOnView duration={2.2} when={active}>
+              <CuspedArch className="h-12 w-9 text-gold/80" />
+            </DrawOnView>
           </motion.div>
 
           <motion.div variants={RISE} transition={{ duration: 0.9, ease: EASE }} className="mb-8 flex items-center gap-4">
@@ -118,17 +166,25 @@ export function Hero({ active, onScrollCue }: HeroProps) {
           </motion.div>
 
           {/* Names — bride first, as on the family's card */}
-          <motion.p
-            variants={RISE}
-            transition={{ duration: 1.1, ease: EASE }}
-            className="display flex flex-col items-center leading-[0.9] text-ivory"
+          <p
+            className={`display flex flex-col items-center leading-[0.9] text-ivory [perspective:600px] ${active ? 'is-active' : ''}`}
             style={{ textShadow: '0 0 60px rgba(20,20,22,0.6)' }}
             aria-hidden="true"
           >
-            <span className="text-[clamp(3.4rem,13vw,9rem)]">{bride.firstName}</span>
-            <span className="foil animate-foil my-3 text-[clamp(1.75rem,4.5vw,3rem)] italic md:my-4">&amp;</span>
-            <span className="text-[clamp(3.4rem,13vw,9rem)]">{groom.firstName}</span>
-          </motion.p>
+            <span className="text-[clamp(3.4rem,13vw,9rem)]">
+              <Letters text={bride.firstName} start={0.55} />
+            </span>
+            <span
+              className="letter-rise foil animate-foil my-3 text-[clamp(1.75rem,4.5vw,3rem)] italic md:my-4"
+              style={{ '--d': '1.05s' } as React.CSSProperties}
+            >
+              &amp;
+            </span>
+            <span className="text-[clamp(3.4rem,13vw,9rem)]">
+              <Letters text={groom.firstName} start={1.2} />
+            </span>
+            <span className="gold-thread mt-5 block h-px w-40 bg-gradient-to-r from-transparent via-gold to-transparent md:w-64" />
+          </p>
 
           <motion.div variants={RISE} transition={{ duration: 0.9, ease: EASE }} className="mt-10 flex items-center gap-4">
             <Lotus className="h-3 w-5 text-gold/80" />

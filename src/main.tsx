@@ -22,3 +22,8 @@ requestAnimationFrame(() => {
     document.getElementById('boot')?.remove()
   })
 })
+
+// Block copying, cutting, right-click and dragging content out of the page.
+for (const type of ['copy', 'cut', 'contextmenu', 'dragstart', 'selectstart'] as const) {
+  document.addEventListener(type, (e) => e.preventDefault())
+}

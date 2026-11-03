@@ -43,7 +43,18 @@ function Digit({ value, label }: { value: number; label: string }) {
       </div>
 
       {/* Hairline under each numeral */}
-      <span className="mt-3 h-px w-8 bg-gold/50 transition-all duration-500 group-hover:w-12 group-hover:bg-gold" />
+      <span className="relative mt-3 h-px w-8 bg-gold/50 transition-all duration-500 group-hover:w-12 group-hover:bg-gold">
+        {/* A spark runs along the hairline each time the number turns */}
+        {!prefersReduced && (
+          <motion.span
+            key={text}
+            className="absolute inset-y-[-1px] left-0 w-3 rounded-full bg-gold-soft shadow-[0_0_8px_rgba(227,211,174,0.9)]"
+            initial={{ x: 0, opacity: 0 }}
+            animate={{ x: [0, 20], opacity: [0, 1, 0] }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+          />
+        )}
+      </span>
 
       <span className="mt-3 font-body text-[0.5rem] font-light tracking-[0.32em] text-ivory/50 uppercase md:text-[0.58rem]">
         {label}

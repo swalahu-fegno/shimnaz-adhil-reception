@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { bride, groom, wedding } from '../../data/wedding'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { CuspedArch, Lotus } from '../ui/Mughal'
+import { burstPetals } from '../ui/Effects'
 import { GirihPattern } from '../ui/Ornaments'
 
 const DEBUG_MUSIC = true
@@ -44,10 +45,12 @@ export function Preloader({ onMusicIntent, onOpenStart, onOpen }: PreloaderProps
     openedRef.current = true // ref, not state: the listeners below close over
     logMusic('preloader opening')
     setOpening(true) //          the first render and would re-fire otherwise
+    // A few petals drift out through the gap
+    window.setTimeout(() => burstPetals(window.innerWidth / 2, window.innerHeight * 0.5, 10, 120), 450)
     onMusicIntent()
     onOpenStart() // reveal the Hero before the doors expose it
     // Hand off just before the panels finish, so Hero is already fading up
-    window.setTimeout(onOpen, prefersReduced ? 0 : 1900)
+    window.setTimeout(onOpen, prefersReduced ? 0 : 2150)
   }, [onMusicIntent, onOpen, onOpenStart, prefersReduced])
 
   const d = (delay: number) => ({ '--d': `${prefersReduced ? 0 : delay}s` }) as React.CSSProperties
@@ -125,7 +128,7 @@ export function Preloader({ onMusicIntent, onOpenStart, onOpen }: PreloaderProps
 
   return (
     <div
-      className={`fixed inset-0 z-[100] flex items-center justify-center overflow-hidden ${
+      className={`pl-root fixed inset-0 z-[100] flex items-center justify-center overflow-hidden ${
         opening ? 'is-opening pointer-events-none' : ''
       }`}
       role="dialog"
@@ -147,6 +150,14 @@ export function Preloader({ onMusicIntent, onOpenStart, onOpen }: PreloaderProps
               className={`absolute inset-y-5 border border-gold/25 md:inset-y-8 ${
                 side === 'left' ? 'right-3 left-5 md:left-8' : 'right-5 left-3 md:right-8'
               }`}
+            />
+            {/* Warm light catching this leaf's inner edge — it rides the door
+                as it swings, so the light travels outward with the opening */}
+            <div
+              className={`pl-edge-light absolute inset-y-0 w-24 ${
+                side === 'left' ? 'right-0 pl-edge-l' : 'left-0 pl-edge-r'
+              }`}
+              aria-hidden="true"
             />
             {/* gold seam where the leaves meet */}
             <div

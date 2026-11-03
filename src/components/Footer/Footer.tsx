@@ -17,14 +17,6 @@ const SOCIAL_ICONS: Record<SocialLink['icon'], ComponentType<{ className?: strin
 export function Footer() {
   return (
     <footer className="relative overflow-hidden bg-emerald-deep" aria-label="Thank you">
-      {/* ---- The card's garden in gold line, as dusk falls into charcoal ------- */}
-      <div className="relative h-[42vw] max-h-[24rem] min-h-[14rem] overflow-hidden bg-gradient-to-b from-bg via-emerald to-emerald-deep" aria-hidden="true">
-        <GardenScene className="absolute bottom-0 left-1/2 h-full w-auto max-w-none -translate-x-1/2 text-gold/70" />
-        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-bg to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-emerald-deep to-transparent" />
-        <Birds tone="text-gold-soft/60" />
-      </div>
-
       {/* ---- Background: ornamental light and deep emerald ------------------ */}
       <div className="absolute inset-0" aria-hidden="true">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_30%,rgba(200,169,106,0.16),transparent_70%)]" />
@@ -160,7 +152,43 @@ export function Footer() {
 
         {/* Colophon */}
         <Reveal direction="fade" delay={0.55}>
-          <div className="mt-16 flex flex-col items-center gap-3 border-t border-gold/15 pt-8">
+          {/* The card's garden in gold line, edge to edge, resting on the
+              closing rule. The terrace rail runs the full width (aligned with
+              the scene's own rail), with palms standing along it. */}
+          <div
+            className="relative left-1/2 mt-16 h-44 w-screen -translate-x-1/2 overflow-hidden text-gold/70 md:h-64"
+            aria-hidden="true"
+          >
+            {/* Wide rail: one baluster repeated at the scene's own pitch and
+                scale (slice keeps proportion; centred so the two rails meet). */}
+            <svg
+              viewBox="0 0 4000 30"
+              preserveAspectRatio="xMidYMax slice"
+              className="absolute inset-x-0 bottom-0 h-[12.5%] w-full"
+            >
+              <defs>
+                <pattern id="footer-rail" width="20" height="30" patternUnits="userSpaceOnUse">
+                  <g fill="none" stroke="currentColor" strokeWidth="1.6">
+                    <path d="M10 7 C4 12 4 16 10 18 C16 20 16 24 10 26 M10 7 C16 12 16 16 10 18 C4 20 4 24 10 26" />
+                  </g>
+                </pattern>
+              </defs>
+              <rect width="4000" height="30" fill="url(#footer-rail)" />
+              <path d="M0 4 H4000 M0 7 H4000 M0 26 H4000 M0 29 H4000" stroke="currentColor" strokeWidth="0.8" />
+            </svg>
+            <div className="absolute inset-x-0 bottom-[12.5%] flex items-end justify-between px-[3vw]">
+              {[0.55, 0.8, 0.62].map((h, i) => (
+                <GoldPalm key={`l${i}`} className={`w-auto ${i === 1 ? '' : 'hidden sm:block'}`} style={{ height: `calc(${h} * 11rem)` }} />
+              ))}
+              <span className="flex-1" />
+              {[0.62, 0.8, 0.55].map((h, i) => (
+                <GoldPalm key={`r${i}`} className={`w-auto -scale-x-100 ${i === 1 ? '' : 'hidden sm:block'}`} style={{ height: `calc(${h} * 11rem)` }} />
+              ))}
+            </div>
+            <GardenScene className="absolute bottom-0 left-1/2 h-full w-auto max-w-none -translate-x-1/2" />
+            <Birds tone="text-gold-soft/60" />
+          </div>
+          <div className="flex flex-col items-center gap-3 border-t border-gold/25 pt-8">
             <p className="text-[0.6rem] leading-relaxed font-light text-balance text-ivory/40">
               Made with love, and a great many duas.
             </p>

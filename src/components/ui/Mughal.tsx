@@ -1,4 +1,5 @@
 import type { CSSProperties, SVGProps } from 'react'
+import { useDrawIn } from './Effects'
 
 /**
  * Mughal ornament set — the royal-court vocabulary for this invitation.
@@ -59,8 +60,10 @@ export function cuspedArchPath(w: number, h: number): string {
 
 /** Gold outline of a cusped arch, stretched to its container. */
 export function CuspedArch({ className, double = true }: { className?: string; double?: boolean }) {
+  const ref = useDrawIn<SVGSVGElement>({ duration: 2.2, stagger: 0.3 })
   return (
     <svg
+      ref={ref}
       viewBox="0 0 200 300"
       preserveAspectRatio="none"
       className={className}
@@ -82,10 +85,18 @@ export function CuspedArch({ className, double = true }: { className?: string; d
   )
 }
 
+/** Deterministic per-palm tempo, so neighbouring palms sway out of step. */
+let palmCount = 0
+function nextSway() {
+  const n = palmCount++
+  return { dur: 5 + ((n * 37) % 23) / 10, delay: -((n * 53) % 41) / 10 }
+}
+
 /** The date palm from the card — the couple's emblem. */
 export function GoldPalm({ className, ...props }: SVGProps<SVGSVGElement>) {
   // Angles from vertical; every frond arcs up and over, then droops.
   const fronds = [-118, -95, -72, -50, -28, -10, 10, 28, 50, 72, 95, 118]
+  const sway = nextSway()
   return (
     <svg viewBox="0 0 100 120" className={className} fill="none" aria-hidden="true" {...props}>
       <g stroke="currentColor" strokeLinecap="round">
@@ -94,6 +105,9 @@ export function GoldPalm({ className, ...props }: SVGProps<SVGSVGElement>) {
         {[46, 54, 62, 70, 78, 86, 94, 102].map((y) => (
           <path key={y} d={`M46.8 ${y} Q50 ${y + 1.6} 52.6 ${y - 1}`} strokeWidth="0.7" opacity="0.75" />
         ))}
+        {/* The crown sways on the breeze, pivoting where it meets the trunk.
+            Each palm gets its own tempo so a row never moves in unison. */}
+        <g className="palm-sway" style={{ animationDuration: `${sway.dur}s`, animationDelay: `${sway.delay}s` }}>
         {fronds.map((a) => {
           const r = (a * Math.PI) / 180
           const len = 40 - Math.abs(a) / 12
@@ -123,6 +137,7 @@ export function GoldPalm({ className, ...props }: SVGProps<SVGSVGElement>) {
         <path d="M47 40 q-2 6 -1 10 M53 40 q2 6 1 10" strokeWidth="0.8" />
         <circle cx="46" cy="51" r="1.4" fill="currentColor" />
         <circle cx="54" cy="51" r="1.4" fill="currentColor" />
+        </g>
         {/* ground */}
         <path d="M36 113 Q48 109 62 113" strokeWidth="0.9" />
       </g>
@@ -148,8 +163,9 @@ export function Lotus({ className, ...props }: SVGProps<SVGSVGElement>) {
 
 /** Lotus flanked by fading rules — the section divider. */
 export function LotusDivider({ className }: { className?: string }) {
+  const ref = useDrawIn<HTMLDivElement>({ duration: 1.2 })
   return (
-    <div className={`flex items-center justify-center gap-4 ${className ?? ''}`} aria-hidden="true">
+    <div ref={ref} className={`lotus-divider flex items-center justify-center gap-4 ${className ?? ''}`} aria-hidden="true">
       <span className="h-px w-20 bg-gradient-to-r from-transparent to-gold/70 md:w-32" />
       <Lotus className="h-5 w-8 text-gold" />
       <span className="h-px w-20 bg-gradient-to-l from-transparent to-gold/70 md:w-32" />
@@ -268,25 +284,69 @@ export function Balustrade({ className }: { className?: string }) {
  * Everything is `currentColor`, so it reads as gold foil on ivory or charcoal.
  */
 export function GardenScene({ className }: { className?: string }) {
+  const ref = useDrawIn<SVGSVGElement>({ duration: 1.3, stagger: 0.01 })
   return (
-    <svg viewBox="0 0 400 240" className={className} fill="none" aria-hidden="true" preserveAspectRatio="xMidYMax meet">
+    <svg ref={ref} viewBox="0 0 400 240" className={className} fill="none" aria-hidden="true" preserveAspectRatio="xMidYMax meet">
       <g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
         {/* hills */}
         <path d="M0 150 Q40 118 80 136 Q120 100 170 128 Q215 96 260 126 Q300 108 340 130 Q370 120 400 138" strokeWidth="0.8" opacity="0.55" />
         <path d="M0 158 Q60 140 110 152 Q170 134 230 150 Q300 136 400 152" strokeWidth="0.6" opacity="0.4" />
-        {/* water */}
+        {/* water: the lines flow slowly toward the right */}
         {[168, 176, 184, 192].map((y, i) => (
-          <path key={y} d={`M${60 + i * 12} ${y} H${340 - i * 12}`} strokeWidth="0.5" opacity={0.5 - i * 0.08} strokeDasharray="14 8" />
+          <path
+            key={y}
+            data-nodraw
+            className="water-flow"
+            style={{ animationDuration: `${7 + i * 2.5}s` }}
+            d={`M${60 + i * 12} ${y} H${340 - i * 12}`}
+            strokeWidth="0.5"
+            opacity={0.5 - i * 0.08}
+            strokeDasharray="14 8"
+          />
         ))}
-        {/* sailboat */}
-        <path d="M222 166 Q234 172 248 166 Z" strokeWidth="0.9" fill="currentColor" fillOpacity="0.2" />
-        <path d="M235 166 V132 M235 134 Q250 148 246 164 H235 M235 138 Q226 150 228 162 H235" strokeWidth="0.8" />
+        {/* glints of light on the water */}
+        {[
+          [120, 172, 0],
+          [205, 181, 1.3],
+          [290, 175, 2.4],
+          [160, 189, 3.1],
+          [255, 190, 0.7],
+        ].map(([x, y, d]) => (
+          <path
+            key={`${x}${y}`}
+            data-nodraw
+            className="water-glint"
+            style={{ animationDelay: `${d}s` }}
+            d={`M${x} ${y} h7`}
+            strokeWidth="0.9"
+          />
+        ))}
+        {/* sailboat: drifts across the lake and rocks on the swell */}
+        <g className="boat-drift">
+          <g className="boat-rock">
+            <path d="M222 166 Q234 172 248 166 Z" strokeWidth="0.9" fill="currentColor" fillOpacity="0.2" />
+            <path d="M235 166 V132 M235 134 Q250 148 246 164 H235 M235 138 Q226 150 228 162 H235" strokeWidth="0.8" />
+          </g>
+          {/* its reflection, broken by the water */}
+          <path data-nodraw className="boat-reflect" d="M226 172 h18 M229 176 h12 M232 180 h6" strokeWidth="0.5" opacity="0.35" />
+        </g>
       </g>
       <Chhatri x="70" y="78" width="110" height="145" />
       <GoldPalm x="-18" y="40" width="120" height="190" />
       <GoldPalm x="262" y="96" width="70" height="120" />
       <g transform="translate(425 0) scale(-1 1)">
         <GoldPalm x="0" y="30" width="125" height="200" />
+      </g>
+      {/* mist drifting low over the lake */}
+      <defs>
+        <filter id="garden-mist" x="-30%" y="-100%" width="160%" height="300%">
+          <feGaussianBlur stdDeviation="6" />
+        </filter>
+      </defs>
+      <g data-nodraw filter="url(#garden-mist)" aria-hidden="true">
+        <ellipse data-nodraw className="mist mist-a" cx="140" cy="160" rx="90" ry="7" fill="#e3d3ae" fillOpacity="0.18" />
+        <ellipse data-nodraw className="mist mist-b" cx="280" cy="172" rx="110" ry="6" fill="#f8f5ef" fillOpacity="0.14" />
+        <ellipse data-nodraw className="mist mist-c" cx="200" cy="150" rx="140" ry="5" fill="#e3d3ae" fillOpacity="0.1" />
       </g>
       <svg x="0" y="206" width="400" height="30" viewBox="0 0 200 30" preserveAspectRatio="none">
         <Balustrade />

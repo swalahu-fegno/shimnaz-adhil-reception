@@ -2,6 +2,7 @@ import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { Preloader } from './components/Loading/Preloader'
 import { useMusic } from './hooks/useMusic'
 import { music } from './data/wedding'
+import { TapPetals } from './components/ui/Effects'
 
 /**
  * The whole invitation, behind a dynamic import.
@@ -73,6 +74,9 @@ export default function App() {
 
   return (
     <>
+      {/* Every tap answers with a few gold petals */}
+      {opened && <TapPetals />}
+
       {!opened && (
         <Preloader
           onMusicIntent={handleMusicIntent}

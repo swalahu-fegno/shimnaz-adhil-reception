@@ -1,6 +1,7 @@
 import type { SVGProps } from 'react'
 import { cn } from '../../utils/cn'
 import { cuspedArchPath } from './Mughal'
+import { useDrawIn } from './Effects'
 
 /* ============================================================================
  * ORNAMENT LIBRARY — Mughal court
@@ -133,8 +134,9 @@ export function Divider({ className, variant = 'star', width = '100%' }: Divider
 /** Flowering vine either side of a fleur in a cusped cartouche. */
 export function ArabesqueDivider({ className }: { className?: string }) {
   const leaves = [40, 70, 100, 130, 160]
+  const ref = useDrawIn<HTMLDivElement>({ duration: 1.8, stagger: 0.03 })
   return (
-    <div className={cn('relative flex w-full items-center justify-center text-gold', className)}>
+    <div ref={ref} className={cn('relative flex w-full items-center justify-center text-gold', className)}>
       <svg viewBox="0 0 400 40" fill="none" className="h-9 w-full max-w-md" aria-hidden="true">
         <g stroke="currentColor" strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round">
           {[1, -1].map((dir) => (
@@ -167,8 +169,9 @@ export function ArabesqueDivider({ className }: { className?: string }) {
  * and a vine of blossoms and leaves. Rotate at the call site for each corner.
  */
 export function CornerFlourish({ className, ...props }: SVGProps<SVGSVGElement>) {
+  const ref = useDrawIn<SVGSVGElement>({ duration: 1.8, stagger: 0.05 })
   return (
-    <svg viewBox="0 0 120 120" fill="none" aria-hidden="true" className={className} {...props}>
+    <svg ref={ref} viewBox="0 0 120 120" fill="none" aria-hidden="true" className={className} {...props}>
       <g stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
         <path d="M0 0 H60 M0 0 V60" opacity="0.6" />
         <path d="M6 6 H44 M6 6 V44" opacity="0.35" />
