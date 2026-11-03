@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { bride, groom, wedding } from '../../data/wedding'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
-import { CuspedArch, Lotus } from '../ui/Mughal'
+import { cuspedArchPath } from '../ui/Mughal'
+import { ChevronDown } from '../ui/MughalIcons'
 import { burstPetals } from '../ui/Effects'
 import { GirihPattern } from '../ui/Ornaments'
 
@@ -23,6 +24,38 @@ interface PreloaderProps {
 }
 
 /**
+ * The lotus seal, drawn stroke by stroke — in CSS, so the static boot copy of
+ * this screen draws itself too, before any JavaScript.
+ *
+ * `pathLength="1"` normalises every shape so one dasharray rule animates them
+ * all. The order follows how the seal would be laid out by hand: the outer
+ * rings, the scalloped arch, then the ring of lotus petals around it.
+ */
+function LotusSeal({ d }: { d: (delay: number) => React.CSSProperties }) {
+  const el = (delay: number, opacity = 1) => ({ ...d(delay), '--o': opacity }) as React.CSSProperties
+  const petals = Array.from({ length: 16 }, (_, i) => (i * 360) / 16)
+  const petal = (deg: number) => {
+    const r = (deg * Math.PI) / 180
+    const p = (rad: number, a: number) => `${(100 + Math.sin(a) * rad).toFixed(2)} ${(100 - Math.cos(a) * rad).toFixed(2)}`
+    return `M${p(70, r)} Q${p(84, r - 0.19)} ${p(95, r)} Q${p(84, r + 0.19)} ${p(70, r)}Z`
+  }
+  return (
+    <svg viewBox="0 0 200 200" fill="none" className="seal-draw h-full w-full" aria-hidden="true">
+      <g stroke="currentColor" strokeWidth="0.9" strokeLinejoin="round" strokeLinecap="round">
+        <circle data-draw cx="100" cy="100" r="96" pathLength="1" style={el(0, 0.3)} />
+        <circle data-draw cx="100" cy="100" r="70" pathLength="1" style={el(0.15, 0.55)} />
+        {/* scalloped arch, framing the initials */}
+        <path data-draw d={cuspedArchPath(84, 112)} transform="translate(58 44)" pathLength="1" style={el(0.45)} />
+        {/* ring of lotus petals */}
+        {petals.map((deg, i) => (
+          <path key={deg} data-draw d={petal(deg)} pathLength="1" style={el(0.7 + i * 0.03, 0.75)} />
+        ))}
+      </g>
+    </svg>
+  )
+}
+
+/**
  * The invitation opening experience.
  *
  * Deliberately built without Framer Motion. This is the first paint, and
@@ -31,8 +64,8 @@ interface PreloaderProps {
  * which is exactly backwards. Plain CSS runs it, and the rest of the site
  * streams in behind this screen while the guest reads the Bismillah.
  *
- * Sequence: two plain charcoal door leaves hold a monogram in a Mughal arch,
- * the Bismillah and the invitation line. A tap (or scroll) swings the leaves
+ * Sequence: on two plain charcoal door leaves, a lotus seal draws itself
+ * around the monogram while the Bismillah and the invitation line rise. A tap (or scroll) swings the leaves
  * inward on their hinges, revealing the Hero beneath.
  */
 export function Preloader({ onMusicIntent, onOpenStart, onOpen }: PreloaderProps) {
@@ -141,7 +174,7 @@ export function Preloader({ onMusicIntent, onOpenStart, onOpen }: PreloaderProps
       }`}
       role="dialog"
       aria-modal="true"
-      aria-label="Tap the door to open the invitation"
+      aria-label="Tap or scroll to open the invitation"
     >
       {/* --- Doors: two quiet charcoal leaves that swing open on their hinges.
           Kept plain on purpose so the type in the middle reads first. */}
@@ -181,9 +214,12 @@ export function Preloader({ onMusicIntent, onOpenStart, onOpen }: PreloaderProps
       {/* --- Content -------------------------------------------------------- */}
       <div className="pl-content relative z-10 flex flex-col items-center px-6 text-center">
         {/* Monogram inside a cusped Mughal arch */}
-        <div className="pl-scale relative mb-8 flex h-44 w-32 items-center justify-center md:h-56 md:w-40" style={d(0.1)}>
-          <CuspedArch className="absolute inset-0 h-full w-full text-gold" draw={false} />
-          <div className="relative mt-6 flex items-center gap-2.5">
+        {/* Seal + monogram: a lotus seal that draws itself, stroke by stroke */}
+        <div className="relative mb-8 flex h-48 w-48 items-center justify-center md:h-56 md:w-56">
+          <div className="absolute inset-0 text-gold">
+            <LotusSeal d={d} />
+          </div>
+          <div className="pl-scale relative mt-3 flex items-center gap-2.5" style={d(0.35)}>
             <span className="royal text-4xl leading-none text-ivory md:text-5xl">{groom.initial}</span>
             <svg viewBox="0 0 12 12" className="h-2 w-2 text-gold" aria-hidden="true">
               <path d="M6 0 L12 6 L6 12 L0 6 Z" fill="currentColor" />
@@ -224,9 +260,15 @@ export function Preloader({ onMusicIntent, onOpenStart, onOpen }: PreloaderProps
           className="pl-rise group flex flex-col items-center gap-4 bg-transparent focus-visible:outline-gold"
         >
           <span className="font-body text-xs font-light tracking-[0.28em] text-gold/90 uppercase transition-colors group-hover:text-gold">
-            Tap the door to open
+            Tap or scroll to open
           </span>
-          <Lotus className="pl-knock h-5 w-8 text-gold" />
+          {/* A gold thread falling into a lotus bud — "there is more below" */}
+          <span className="relative flex h-14 w-6 items-center justify-center" aria-hidden="true">
+            <span className="pl-thread absolute top-0 h-8 w-px bg-gradient-to-b from-transparent via-gold/70 to-gold" />
+            <span className="pl-cue absolute bottom-0 text-gold">
+              <ChevronDown className="h-4 w-4" strokeWidth={1} />
+            </span>
+          </span>
         </button>
 
         <p
