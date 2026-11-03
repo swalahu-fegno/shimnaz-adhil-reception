@@ -69,7 +69,7 @@ export function CuspedArch({
   /** Draw the outline in on scroll; off where a static copy paints first */
   draw?: boolean
 }) {
-  const ref = useDrawIn<SVGSVGElement>({ duration: 2.2, stagger: 0.3, enabled: draw })
+  const ref = useDrawIn<SVGSVGElement>({ duration: 1.1, stagger: 0.1, enabled: draw })
   return (
     <svg
       ref={ref}
@@ -466,7 +466,7 @@ export function FloralVine({ className, flip = false }: { className?: string; fl
  * Faces right; flip it to face left. The train shimmers very softly.
  */
 export function Peacock({ className, flip = false }: { className?: string; flip?: boolean }) {
-  const ref = useDrawIn<SVGSVGElement>({ duration: 1.8, stagger: 0.03 })
+  const ref = useDrawIn<SVGSVGElement>({ duration: 0.9, stagger: 0.01 })
   // A full train fanning down and back along the ground
   const feathers = [
     { ex: 4, ey: 150 },
@@ -599,7 +599,7 @@ export function BlossomSpray({ className, flip = false }: { className?: string; 
  * of the invitation card.
  */
 export function LotusMedallion({ className }: { className?: string }) {
-  const ref = useDrawIn<SVGSVGElement>({ duration: 1.6, stagger: 0.05 })
+  const ref = useDrawIn<SVGSVGElement>({ duration: 0.9, stagger: 0.02 })
   return (
     <svg ref={ref} viewBox="0 0 100 100" className={className} fill="none" aria-hidden="true">
       <g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
@@ -808,7 +808,7 @@ export function Lantern({ className }: { className?: string }) {
  * the knots and tasselled drops between — strung across the top of each arch.
  */
 export function Toran({ className }: { className?: string }) {
-  const ref = useDrawIn<SVGSVGElement>({ duration: 1.3, stagger: 0.02 })
+  const ref = useDrawIn<SVGSVGElement>({ duration: 0.8, stagger: 0.01 })
   const knots = [0, 40, 80, 120, 160, 200]
   return (
     <svg ref={ref} viewBox="0 0 200 60" className={className} fill="none" aria-hidden="true" preserveAspectRatio="none">
@@ -836,7 +836,7 @@ export function Toran({ className }: { className?: string }) {
  * garden, drawn as layered tiers of foliage on a slim trunk.
  */
 export function Cypress({ className }: { className?: string }) {
-  const ref = useDrawIn<SVGSVGElement>({ duration: 1.6, stagger: 0.04 })
+  const ref = useDrawIn<SVGSVGElement>({ duration: 0.8, stagger: 0.01 })
   return (
     <svg ref={ref} viewBox="0 0 60 200" className={className} fill="none" aria-hidden="true">
       <g className="cypress-sway" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
@@ -858,7 +858,7 @@ export function Cypress({ className }: { className?: string }) {
 
 /** An urn of flowers on a little foot — set at the base of each arch. */
 export function FlowerUrn({ className, flip = false }: { className?: string; flip?: boolean }) {
-  const ref = useDrawIn<SVGSVGElement>({ duration: 1.3, stagger: 0.04 })
+  const ref = useDrawIn<SVGSVGElement>({ duration: 0.8, stagger: 0.01 })
   return (
     <svg
       ref={ref}
@@ -890,7 +890,7 @@ export function FlowerUrn({ className, flip = false }: { className?: string; fli
 
 /** A carved plinth with a band of lotus buds — what the arches stand on. */
 export function LotusPlinth({ className }: { className?: string }) {
-  const ref = useDrawIn<SVGSVGElement>({ duration: 1.2, stagger: 0.01 })
+  const ref = useDrawIn<SVGSVGElement>({ duration: 0.7, stagger: 0.004 })
   return (
     <svg ref={ref} viewBox="0 0 400 30" className={className} fill="none" aria-hidden="true" preserveAspectRatio="none">
       <g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">

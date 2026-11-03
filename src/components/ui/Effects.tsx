@@ -140,7 +140,8 @@ export function useDrawIn<T extends Element>({
           (duration + spread) * 1000 + 100,
         )
       },
-      { threshold: 0.2 },
+      // Start as soon as the ornament edges into view
+      { threshold: 0.01, rootMargin: '0px 0px 10% 0px' },
     )
     io.observe(root)
     return () => io.disconnect()
