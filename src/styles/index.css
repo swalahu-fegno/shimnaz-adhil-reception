@@ -4678,3 +4678,11 @@ html.envelope-up, html.envelope-up body { background: #1d2217 !important; }
 .op.stage-reveal { opacity: 0; transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1); background: transparent; }
 .op.stage-lift { background: #1d2217; }
 .op:not(.stage-idle) .op-hint { opacity: 0; transition: opacity 0.3s ease; }
+/* open → zoom into the white inside until it fills → white fades to home */
+.op.stage-reveal { background: #f4f0e7; opacity: 1; animation: op-white-out 1.1s cubic-bezier(0.4, 0, 0.2, 1) 0.95s both; transition: none; }
+.op.stage-reveal .env7 {
+  transform-origin: 50% 22%;
+  transform: scale(5.5); opacity: 1;
+  transition: transform 1.1s cubic-bezier(0.6, 0, 0.25, 1);
+}
+@keyframes op-white-out { from { opacity: 1; } to { opacity: 0; } }

@@ -42,7 +42,7 @@ export function Preloader({ onMusicIntent, onOpenStart, onOpen }: PreloaderProps
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     // press the seal → it lifts and the flap opens, with the hero already
     // waiting underneath → the envelope drifts toward you and fades away.
-    const t = reduced ? [0, 0, 500] : [150, 1300, 3000]
+    const t = reduced ? [0, 0, 500] : [150, 1300, 3400]
     setStage('press')
     window.setTimeout(() => {
       onOpenStart()
