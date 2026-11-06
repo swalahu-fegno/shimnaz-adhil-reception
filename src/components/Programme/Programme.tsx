@@ -48,7 +48,7 @@ export function Programme() {
           eyebrow={venue.name}
           arabic="برنامج"
           title="The Evening"
-          subtitle="Three moments, one blessed day."
+          subtitle="Two moments, one blessed evening."
           className="mb-6 max-md:gap-3 md:mb-20"
         />
 

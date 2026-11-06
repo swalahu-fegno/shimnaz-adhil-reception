@@ -61,7 +61,7 @@ export const groom: Person = {
 
 export const bride: Person = {
   firstName: 'Shimnaz',
-  fullName: 'Shimnaz Fathima Nazar',
+  fullName: 'Shimnaz Nazar',
   father: 'PA Nazar',
   mother: 'Shahnaz Nazar',
   image: `${import.meta.env.BASE_URL}images/bride.jpg`,
@@ -88,9 +88,9 @@ export interface CouplePhoto {
  * than a broken image, so the section never looks broken while you gather them.
  */
 export const couplePhotos: CouplePhoto[] = [
-  { src: `${import.meta.env.BASE_URL}images/couple-1.jpg` },
-  { src: `${import.meta.env.BASE_URL}images/couple-2.jpg` },
-  { src: `${import.meta.env.BASE_URL}images/couple-3.jpg` },
+  { src: `${import.meta.env.BASE_URL}images/couple-1.webp` },
+  { src: `${import.meta.env.BASE_URL}images/couple-2.webp` },
+  { src: `${import.meta.env.BASE_URL}images/couple-3.webp` },
 ]
 
 /**
@@ -104,19 +104,19 @@ export const couplePhotos: CouplePhoto[] = [
 export const couplePhotoAspect = '5 / 6'
 
 /* -------------------------------------------------------------------------- */
-/*  HOSTS — the invitation is extended by the bride's parents                 */
+/*  HOSTS — the invitation is extended by the groom's parents                 */
 /* -------------------------------------------------------------------------- */
 
 export const hosts = {
   label: 'Hosted by',
-  grandfather: 'Mr. PA Nazar',
-  grandmother: 'Mrs. Shahnaz Nazar',
+  grandfather: 'Mr. Ahammed Kutty KP',
+  grandmother: 'Mrs. Sakeena M',
 } as const
 
 /** Dress code — a suggestion, not a rule. */
 export const dressCode = {
-  colours: 'Grey & Gold',
-  note: 'Not mandatory — your presence is our priority.',
+  colours: 'Earthy Browns',
+  note: 'Your presence is our priority; the dress code is purely a suggestion.',
 } as const
 
 /* -------------------------------------------------------------------------- */
@@ -125,14 +125,14 @@ export const dressCode = {
 
 export const wedding = {
   /** Primary date — the countdown target. ISO 8601, IST (+05:30). */
-  date: '2026-12-03T17:30:00+05:30',
+  date: '2026-12-09T17:00:00+05:30',
   /** Pre-formatted so the Hero never waits on a date library */
-  dateLabel: '3 December 2026',
-  dayLabel: 'Thursday',
+  dateLabel: '9 December 2026',
+  dayLabel: 'Wednesday',
   /** The time column of the card's date block */
-  timeNote: ['5 PM Onwards', 'Nikkah at 5:30 PM'],
+  timeNote: ['Reception at 5 PM', 'Dinner at 7:30 PM'],
   // VERIFY: Umm al-Qura reckoning. Local moon sighting may differ by a day.
-  hijriLabel: '22 Jumada al-Akhirah 1448',
+  hijriLabel: '28 Jumada al-Akhirah 1448',
   quote: {
     text: 'And among His signs is that He created for you mates from among yourselves, that you may dwell in tranquillity with them, and He has put love and mercy between your hearts.',
     source: 'Surah Ar-Rum, 30:21',
@@ -142,7 +142,7 @@ export const wedding = {
     translation: 'In the Name of Allah, the Most Compassionate, the Most Merciful',
   },
   invitationMessage:
-    'Request the honour of your presence at the wedding of their beloved daughter',
+    'Request the honour of your presence at the wedding reception of their beloved son',
   invitationSubtext:
     'May Allah bless you, and shower His blessings upon you, and join you together in goodness.',
 } as const
@@ -152,13 +152,13 @@ export const wedding = {
 /* -------------------------------------------------------------------------- */
 
 export const venue = {
-  name: 'Wasava Cliff House',
+  name: 'Royal Convention Centre',
   // VERIFY: exact Google Maps pin from the client.
-  address: 'Burnacherry, Kannur, Kerala',
-  mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Wasava+Cliff+House+Burnacherry+Kannur',
-  directionsUrl: 'https://www.google.com/maps/dir/?api=1&destination=Wasava+Cliff+House+Burnacherry+Kannur',
+  address: 'Pattambi, Palakkad, Kerala',
+  mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Royal+Convention+Centre+Pattambi',
+  directionsUrl: 'https://www.google.com/maps/dir/?api=1&destination=Royal+Convention+Centre+Pattambi',
   /** Keyless embed — `output=embed` needs no API key and no billing account. */
-  embedUrl: 'https://maps.google.com/maps?q=Wasava+Cliff+House+Burnacherry+Kannur&z=15&output=embed',
+  embedUrl: 'https://maps.google.com/maps?q=Royal+Convention+Centre+Pattambi&z=15&output=embed',
 } as const
 
 /* -------------------------------------------------------------------------- */
@@ -167,15 +167,14 @@ export const venue = {
 
 export const events: WeddingEvent[] = [
   {
-    id: 'nikkah',
-    name: 'Nikkah',
-    arabicName: 'نكاح',
-    dateTime: '2026-12-03T17:30:00+05:30',
-    timeLabel: '5:30 PM',
+    id: 'reception',
+    name: 'Reception',
+    dateTime: '2026-12-09T17:00:00+05:30',
+    timeLabel: '5:00 PM',
     venue: venue.name,
     address: venue.address,
     description:
-      'Guests are welcomed from 5:00 PM onwards. The solemnisation of our marriage, followed by dua — we would be honoured to have you witness it.',
+      'Join us from 5:00 PM as we celebrate the beginning of our new life together, with family and friends.',
     icon: 'nikkah',
     mapsUrl: venue.mapsUrl,
   },
@@ -183,7 +182,7 @@ export const events: WeddingEvent[] = [
     id: 'dinner',
     name: 'Dinner',
     arabicName: 'وليمة',
-    dateTime: '2026-12-03T19:30:00+05:30',
+    dateTime: '2026-12-09T19:30:00+05:30',
     timeLabel: '7:30 PM',
     venue: venue.name,
     address: venue.address,
@@ -198,22 +197,24 @@ export const events: WeddingEvent[] = [
 /* -------------------------------------------------------------------------- */
 
 export const programme = [
-  { time: '5:00 PM', title: 'Arrival', note: 'Welcome from 5 PM onwards' },
-  { time: '5:30 PM', title: 'Nikkah', note: 'The solemnisation, followed by dua' },
-  // VERIFY: 7:30 PM dinner came from the first brief; the latest card omits it.
+  { time: '5:00 PM', title: 'Reception', note: 'Welcome from 5 PM onwards' },
   { time: '7:30 PM', title: 'Dinner', note: 'An evening of food and gratitude' },
 ] as const
 
-/** Swatches shown with the dress code: grey and gold. */
+/** Swatches shown with the dress code: the groom side's brown palette. */
 export const dressSwatches = [
-  { name: 'Charcoal Grey', hex: '#3A3A3C' },
-  { name: 'Champagne Gold', hex: '#D1B47A' },
+  { name: 'Bistre', hex: '#3D211A' },
+  { name: 'Coffee', hex: '#6F4D38' },
+  { name: 'Chamoisee', hex: '#A07856' },
+  { name: 'Khaki', hex: '#CBB799' },
+  { name: 'Beige', hex: '#F5F5DC' },
 ] as const
 
 /* -------------------------------------------------------------------------- */
 /*  SHARING OUR JOY — family standing with the couple                          */
 /* -------------------------------------------------------------------------- */
 
+// VERIFY: these names came from the bride's side (nikkah card).
 export const sharingOurJoy = {
   title: 'Sharing Our Joy',
   subtitle: 'With love and prayers from those who stand beside us.',
@@ -259,8 +260,8 @@ export const music = {
 /* -------------------------------------------------------------------------- */
 
 export const site = {
-  title: `${groom.firstName} & ${bride.firstName} — Nikkah Invitation`,
-  shareText: `You are cordially invited to the Nikkah of ${groom.firstName} & ${bride.firstName}, ${wedding.dateLabel}.`,
+  title: `${groom.firstName} & ${bride.firstName} — Wedding Reception`,
+  shareText: `You are cordially invited to the Wedding Reception of ${groom.firstName} & ${bride.firstName}, ${wedding.dateLabel}.`,
   url: typeof window !== 'undefined' ? window.location.href : '',
 } as const
 
@@ -269,8 +270,8 @@ export const site = {
 /* -------------------------------------------------------------------------- */
 
 export const theme = {
-  bg: '#FFFDF8',
-  gold: '#C8A96A',
+  bg: '#F3EEE2',
+  gold: '#A07856',
   goldSoft: '#E3D3AE',
   goldDeep: '#A8863F',
   emerald: '#3A3A3C',

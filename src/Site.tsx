@@ -1,31 +1,8 @@
-import { lazy, Suspense, useCallback, useEffect } from 'react'
-import { Hero } from './components/Hero/Hero'
-import { Invitation } from './components/Invitation/Invitation'
+import { useCallback, useEffect } from 'react'
 import { ScrollProgress } from './components/ScrollProgress/ScrollProgress'
 import { FloatingDock } from './components/FloatingDock/FloatingDock'
-import { FloatingPatterns } from './components/FloatingPatterns/FloatingPatterns'
+import { Countdown, DressCode, Evening, Footer, Hero, Photos } from './components/Reception/Sections'
 import { useLenis, scrollToSection } from './hooks/useLenis'
-
-/**
- * Everything below the fold is split again. Hero and Invitation ride along with
- * this chunk because they're on screen the moment the doors open; the rest
- * stream in while the guest is still reading the Bismillah.
- */
-const Couple = lazy(() => import('./components/Couple/Couple').then((m) => ({ default: m.Couple })))
-const Countdown = lazy(() =>
-  import('./components/Countdown/Countdown').then((m) => ({ default: m.Countdown })),
-)
-/** Events now carries the venue map too — they were one question, asked twice. */
-const Events = lazy(() => import('./components/Events/Events').then((m) => ({ default: m.Events })))
-const Programme = lazy(() =>
-  import('./components/Programme/Programme').then((m) => ({ default: m.Programme })),
-)
-const Footer = lazy(() => import('./components/Footer/Footer').then((m) => ({ default: m.Footer })))
-
-/** Reserves vertical space so lazy sections don't collapse the scroll height. */
-function SectionFallback() {
-  return <div className="min-h-[60vh]" aria-hidden="true" />
-}
 
 interface SiteProps {
   /** The doors are parting — play the Hero entrance now, not after they finish. */
@@ -107,33 +84,18 @@ export default function Site({
 
       <a
         href="#invitation"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-[1px] focus:bg-emerald focus:px-4 focus:py-2 focus:text-[0.7rem] focus:tracking-widest focus:text-ivory focus:uppercase"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-[1px] focus:bg-olive focus:px-4 focus:py-2 focus:text-[0.7rem] focus:tracking-widest focus:text-ivory focus:uppercase"
       >
         Skip to invitation
       </a>
 
       <main id="main">
-        {/* `revealed`, not `opened`: the entrance must already be underway as
-            the doors part, or the Hero snaps in a beat late. */}
         <Hero active={revealed} onScrollCue={goToInvitation} />
-
-        {/* Ambient ornaments span the ivory body, behind every section */}
-        <div className="relative">
-          <FloatingPatterns className="fixed inset-0 -z-10" />
-
-          <Invitation />
-
-          <Suspense fallback={<SectionFallback />}>
-            <Couple />
-            <Countdown />
-            <Events />
-            <Programme />
-          </Suspense>
-        </div>
-
-        <Suspense fallback={<SectionFallback />}>
-          <Footer />
-        </Suspense>
+        <Photos />
+        <Countdown />
+        <Evening />
+        <DressCode />
+        <Footer />
       </main>
 
       <FloatingDock

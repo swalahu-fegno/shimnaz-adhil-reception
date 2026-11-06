@@ -4,6 +4,7 @@ import { Cypress, CuspedArch, FlowerUrn, LotusMedallion, LotusPlinth, Peacock, T
 import { TiltGlow } from '../ui/Effects'
 import { SectionHeading } from '../ui/SectionHeading'
 import { RevealGroup, RevealItem } from '../ui/Reveal'
+import { CoupleSlider } from './CoupleSlider'
 
 /**
  * One arched panel — a palace window framing one of the couple: a large faint
@@ -134,6 +135,10 @@ export function Couple() {
           <FlowerUrn className="-mr-2 h-14 w-auto text-gold-deep/80" flip />
           <Peacock className="-mr-3 h-[5.5rem] w-auto text-gold" flip />
           <Cypress className="h-24 w-auto text-gold/45" />
+        </div>
+
+        <div className="mx-auto mt-12 max-w-md md:mt-16">
+          <CoupleSlider />
         </div>
       </div>
     </section>

@@ -62,27 +62,27 @@ export function Invitation() {
                     {wedding.invitationMessage}
                   </p>
 
-                  {/* NIKKAH, engraved */}
+                  {/* RECEPTION, engraved */}
                   <h2 className="royal foil animate-foil mt-5 text-[clamp(2.4rem,10vw,4.75rem)] leading-none tracking-[0.06em] md:mt-5">
-                    Nikkah
+                    Reception
                   </h2>
 
                   <p className="royal mt-3 text-[clamp(0.85rem,2.6vw,1.2rem)] tracking-[0.14em] text-ink md:mt-4">
-                    {bride.fullName}
+                    {groom.fullName}
                   </p>
                   <div className="my-1 flex items-center justify-center gap-3 md:my-1.5" aria-hidden="true">
                     <span className="h-px w-10 bg-gold/70 md:w-16" />
                     <span className="royal text-base text-gold-deep">&amp;</span>
                     <span className="h-px w-10 bg-gold/70 md:w-16" />
                   </div>
-                  <p className="royal text-[clamp(0.85rem,2.6vw,1.2rem)] tracking-[0.14em] text-ink">{groom.fullName}</p>
+                  <p className="royal text-[clamp(0.85rem,2.6vw,1.2rem)] tracking-[0.14em] text-ink">{bride.fullName}</p>
                   <p className="display text-sm text-ink/60 italic md:mt-1">Insha Allah</p>
 
                   {/* Date block, as on the card */}
                   <Lotus className="mt-5 hidden h-4 w-7 text-gold md:block" />
                   <div className="mt-5 flex items-center gap-3 md:mt-2 md:flex-col md:gap-0">
                     <span className="royal text-[0.62rem] tracking-[0.3em] text-ink md:text-xs">December</span>
-                    <span className="royal text-[clamp(2.2rem,7vw,3.25rem)] leading-none text-gold-deep">03</span>
+                    <span className="royal text-[clamp(2.2rem,7vw,3.25rem)] leading-none text-gold-deep">09</span>
                     <span className="royal text-[0.62rem] tracking-[0.45em] text-ink md:text-xs">2026</span>
                   </div>
 

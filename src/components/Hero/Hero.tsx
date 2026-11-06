@@ -97,10 +97,10 @@ export function Hero({ active, onScrollCue }: HeroProps) {
       ref={sectionRef}
       id="hero"
       className="relative flex h-[100svh] min-h-[36rem] items-center justify-center overflow-hidden bg-emerald-deep"
-      aria-label="Nikkah invitation"
+      aria-label="Wedding reception invitation"
     >
       <h1 className="sr-only">
-        Nikkah of {groom.fullName} &amp; {bride.fullName} — {wedding.dayLabel}, {wedding.dateLabel},{' '}
+        Wedding Reception of {groom.fullName} &amp; {bride.fullName} — {wedding.dayLabel}, {wedding.dateLabel},{' '}
         {venue.name}
       </h1>
 
@@ -160,19 +160,19 @@ export function Hero({ active, onScrollCue }: HeroProps) {
           <motion.div variants={RISE} transition={{ duration: 0.9, ease: EASE }} className="mb-8 flex items-center gap-4">
             <span className="h-px w-10 bg-gradient-to-r from-transparent to-gold/70" />
             <span className="font-body text-[0.6rem] font-light tracking-[0.42em] text-gold uppercase md:text-[0.68rem]">
-              Nikkah Invitation
+              Wedding Reception
             </span>
             <span className="h-px w-10 bg-gradient-to-l from-transparent to-gold/70" />
           </motion.div>
 
-          {/* Names — bride first, as on the family's card */}
+          {/* Names — groom first, for the groom's family */}
           <p
             className={`display flex flex-col items-center leading-[0.9] text-ivory [perspective:600px] ${active ? 'is-active' : ''}`}
             style={{ textShadow: '0 0 60px rgba(20,20,22,0.6)' }}
             aria-hidden="true"
           >
             <span className="text-[clamp(3.4rem,13vw,9rem)]">
-              <Letters text={bride.firstName} start={0.55} />
+              <Letters text={groom.firstName} start={0.55} />
             </span>
             <span
               className="letter-rise foil animate-foil my-3 text-[clamp(1.75rem,4.5vw,3rem)] italic md:my-4"
@@ -181,7 +181,7 @@ export function Hero({ active, onScrollCue }: HeroProps) {
               &amp;
             </span>
             <span className="text-[clamp(3.4rem,13vw,9rem)]">
-              <Letters text={groom.firstName} start={1.2} />
+              <Letters text={bride.firstName} start={1.2} />
             </span>
             <span className="gold-thread mt-5 block h-px w-40 bg-gradient-to-r from-transparent via-gold to-transparent md:w-64" />
           </p>
