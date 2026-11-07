@@ -48,8 +48,8 @@ function Line({ active, i, children, className }: { active: boolean; i: number; 
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: 14, filter: 'blur(6px)' }}
-      animate={active ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {}}
+      initial={{ opacity: 0, y: 14 }}
+      animate={active ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 1.4, delay: 1.0 + i * 0.22, ease: EASE }}
     >
       {children}
@@ -283,9 +283,7 @@ export function Hero({ active, onScrollCue }: { active: boolean; onScrollCue: ()
           blurred at first, then clearing into focus. */}
       <motion.div
         className="absolute inset-0"
-        initial={{ scale: 1.1, filter: 'brightness(1.12) saturate(0.85) blur(5px)' }}
-        animate={active ? { scale: 1, filter: 'brightness(1) saturate(1) blur(0px)' } : {}}
-        transition={{ duration: 3.4, ease: EASE }}
+        initial={false}
       >
         <HeroScene className="absolute inset-0 h-full w-full" />
         {/* the same olive dusk wash the painted backdrops use */}
@@ -301,12 +299,12 @@ export function Hero({ active, onScrollCue }: { active: boolean; onScrollCue: ()
 
       <motion.div
         className="hero-sky-text relative mx-5 mt-[9svh] w-full max-w-md px-4 text-center text-[#3f3a24] md:max-w-lg"
-        initial={{ opacity: 0, scale: 0.94, filter: 'blur(8px)' }}
-        animate={active ? { opacity: 1, scale: 1, filter: 'blur(0px)' } : {}}
+        initial={{ opacity: 0 }}
+        animate={active ? { opacity: 1 } : {}}
         transition={{ duration: 1.8, delay: 0.55, ease: EASE }}
       >
         {/* soft sky haze so the writing reads over the clouds */}
-        <div className="pointer-events-none absolute -inset-x-10 -inset-y-8 bg-[radial-gradient(ellipse_at_center,rgba(244,238,224,0.75),rgba(244,238,224,0.35)_55%,transparent_75%)] blur-md" />
+        <div className="pointer-events-none absolute -inset-x-10 -inset-y-8 bg-[radial-gradient(ellipse_at_center,rgba(244,238,224,0.75),rgba(244,238,224,0.35)_55%,transparent_75%)]" />
 
         <div className="relative">
           <Line active={active} i={0}>
@@ -363,6 +361,11 @@ export function Hero({ active, onScrollCue }: { active: boolean; onScrollCue: ()
           ))}
         </div>
         <div className="inv-glass" aria-hidden="true" />
+        {/* the parchment's two rolls part as you scroll, unrolling the invitation */}
+        <div className="scroll-rolls" aria-hidden="true">
+          <span className="scroll-roll scroll-roll-top" />
+          <span className="scroll-roll scroll-roll-bot" />
+        </div>
         {/* butterflies drifting over the card */}
         <svg className="inv-bflies" viewBox="0 0 400 860" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
           {[1, 2].map((n) => (
@@ -392,17 +395,12 @@ export function Hero({ active, onScrollCue }: { active: boolean; onScrollCue: ()
         <span className="inv-corner inv-corner-tr" aria-hidden="true" />
         <span className="inv-corner inv-corner-bl" aria-hidden="true" />
         <span className="inv-corner inv-corner-br" aria-hidden="true" />
-        <span className="inv-seal" aria-hidden="true">
-          <i>A&amp;S</i>
-        </span>
         <OliveBranch className="inv-branch inv-branch-l pointer-events-none absolute w-36 text-olive/55" />
         <OliveBranch className="inv-branch inv-branch-r pointer-events-none absolute w-36 text-olive/55" />
 
         <div className="relative mx-auto flex h-full max-w-md flex-col items-center justify-center px-16 pt-14 pb-6 text-center">
-          <div className="inv-line inv-mono" style={{ '--i': 0 } as React.CSSProperties}>
-            <span className="script">A</span>
-            <i>&amp;</i>
-            <span className="script">S</span>
+          <div className="inv-line inv-stamp-top" style={{ '--i': 0 } as React.CSSProperties}>
+            <img src={img('gold-seal.webp')} alt="" draggable={false} />
           </div>
           <p className="inv-line arabic mt-4 text-base text-walnut" lang="ar" style={{ '--i': 1 } as React.CSSProperties}>
             {wedding.bismillah.arabic}
@@ -513,8 +511,10 @@ export function Photos() {
         ))}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_45%,rgba(60,62,34,0.2),rgba(40,42,22,0.75))]" />
         <div className="relative z-[200] mt-[11svh] text-center">
-          <Kicker className="opacity-75">Two hearts, one story</Kicker>
-          <h2 className="script mt-2 text-[clamp(3rem,12vw,4.6rem)] leading-none">Us</h2>
+          <Kicker className="us-gold-kicker opacity-90">Two hearts, one story</Kicker>
+          <h2 className="mt-1 leading-none">
+            <img src={img('title-us.webp')} alt="Us" className="us-title-img mx-auto" draggable={false} />
+          </h2>
         </div>
 
         <div className="relative mt-[4svh] h-[58svh] w-full">
@@ -548,7 +548,14 @@ function UsCard({ src, i, n, progress }: { src: string; i: number; n: number; pr
       <span className="us-photo">
         <img src={src} alt={`${groom.firstName} and ${bride.firstName}`} draggable={false} loading="lazy" />
       </span>
-      <figcaption className="us-caption">{['where it began', 'side by side', 'forever, inshaAllah'][i % 3]}</figcaption>
+      <figcaption className="us-caption">
+        <img
+          src={img(`cap-${i % 3}.webp`)}
+          alt={['where it began', 'side by side', 'forever, inshaAllah'][i % 3]}
+          className="us-cap-img"
+          draggable={false}
+        />
+      </figcaption>
       <span className="us-tape" aria-hidden="true" />
     </motion.figure>
   )
@@ -577,7 +584,7 @@ function UsCounter({ progress, n }: { progress: MotionValue<number>; n: number }
   return (
     <div className="relative z-[200] mt-auto mb-[10svh] flex items-center gap-3 text-[0.7rem] tracking-[0.3em] text-[#efe6cf]/80">
       {Array.from({ length: n }, (_, i) => (
-        <span key={i} className={`h-1.5 rounded-full transition-all duration-500 ${i + 1 === k ? 'w-6 bg-[#efe6cf]' : 'w-1.5 bg-[#efe6cf]/40'}`} />
+        <span key={i} className={`us-dot h-1.5 rounded-full transition-all duration-500 ${i + 1 === k ? 'is-on w-6' : 'w-1.5'}`} />
       ))}
     </div>
   )
@@ -596,26 +603,29 @@ export function Countdown() {
     ['Seconds', t.seconds],
   ] as const
   return (
-    <section id="countdown" className="relative overflow-hidden px-6 py-28 text-center text-[#f6efdc] md:py-36" aria-label="Countdown to the reception">
-      <div className="painting" style={{ backgroundImage: `url(${img('painting-dusk.webp')})` }} />
+    <section id="countdown" className="cd-gold relative overflow-hidden px-6 py-24 text-center md:py-32" aria-label="Countdown to the reception">
+      <div className="cd-paper" aria-hidden="true" />
       <div className="relative">
         <Fade>
-          <Kicker className="opacity-80">Counting the days</Kicker>
-          <h2 className="script mt-3 text-[clamp(2.6rem,10vw,4.2rem)] leading-none">Until our forever begins</h2>
+          <Kicker className="cd-kicker">Counting the days</Kicker>
+          <h2 className="cd-title script mt-3 text-[clamp(2.6rem,10vw,4.2rem)] leading-none">Until our forever begins</h2>
         </Fade>
-        <Fade delay={0.15} className="mx-auto mt-12 grid max-w-md grid-cols-4 gap-3">
+        <Fade delay={0.15} className="mx-auto mt-12 grid max-w-md grid-cols-4 gap-2">
           {cells.map(([label, n]) => (
-            <div key={label} className="border border-[#f6efdc]/35 bg-[#1e1c0e]/25 px-1 py-4 backdrop-blur-[2px]">
-              <p className="display text-[clamp(1.9rem,7vw,2.8rem)] leading-none tabular-nums">{pad(n)}</p>
-              <p className="mt-2 text-[0.5rem] tracking-[0.28em] uppercase opacity-75">{label}</p>
+            <div key={label} className="flex flex-col items-center">
+              <div className="cd-seal">
+                <span className="display tabular-nums">{pad(n)}</span>
+              </div>
+              <p className="cd-label mt-2 text-[0.5rem] tracking-[0.28em] uppercase">{label}</p>
             </div>
           ))}
         </Fade>
         <Fade delay={0.25}>
-          <p className="mt-10 text-[0.62rem] tracking-[0.36em] uppercase opacity-85">
+          <div className="cd-rule mx-auto mt-10" aria-hidden="true" />
+          <p className="cd-date mt-6 text-[0.62rem] tracking-[0.36em] uppercase">
             {wedding.dayLabel} · {wedding.dateLabel}
           </p>
-          <p className="display mt-2 text-sm italic opacity-70">{wedding.hijriLabel}</p>
+          <p className="cd-hijri display mt-2 text-sm italic">{wedding.hijriLabel}</p>
         </Fade>
       </div>
     </section>
@@ -640,11 +650,13 @@ export function Evening() {
   const thread = useTransform(p, [0, 1], [0, 1])
   const sky = useTransform(p, [0, 0.9], [0, 1])
   return (
-    <>
+    <div className="evn-page">
       <section ref={ref} id="events" className="evn relative overflow-hidden px-6 pt-24 pb-24 text-center">
         <Fade>
           <Kicker className="evn-kicker">Save the date</Kicker>
-          <h2 className="script evn-title mt-2 text-[clamp(3rem,12vw,4.6rem)] leading-none">The Evening</h2>
+          <h2 className="mt-2 leading-none">
+            <img src={img('title-evening.webp')} alt="The Evening" className="evn-title-img mx-auto" draggable={false} />
+          </h2>
           <p className="evn-date mt-3 text-[0.62rem] tracking-[0.32em] uppercase">
             {wedding.dayLabel} · {wedding.dateLabel}
           </p>
@@ -669,7 +681,9 @@ export function Evening() {
               <span className="evn-node" aria-hidden="true" />
               <div className="evn-moment">
                 <p className="display evn-time text-[0.7rem] tracking-[0.34em] uppercase">{m.time}</p>
-                <p className="script evn-name mt-1 text-[clamp(2.4rem,10vw,3.2rem)] leading-none">{m.title}</p>
+                <p className="evn-name mt-1 leading-none">
+                  <img src={img(`title-${m.title.toLowerCase()}.webp`)} alt={m.title} className="evn-name-img" draggable={false} />
+                </p>
                 <p className="display evn-note mt-2 text-base italic">{m.note}</p>
               </div>
             </Fade>
@@ -677,11 +691,13 @@ export function Evening() {
         </div>
       </section>
 
-      <section className="venue relative px-6 pt-6 pb-24 text-center">
+      <section className="venue gold-sec relative px-6 pt-6 pb-24 text-center">
         <Fade>
           <Sprig className="text-[#8a7a55]" />
           <Kicker className="mt-8 text-[#6f5a3e]">The venue</Kicker>
-          <h2 className="script mt-2 text-[clamp(2.6rem,11vw,3.6rem)] leading-none text-[#4a4a2a]">Where we gather</h2>
+          <h2 className="mt-2 leading-none">
+            <img src={img('title-gather.webp')} alt="Where we gather" className="gold-title-img mx-auto" draggable={false} />
+          </h2>
           <p className="display mt-4 text-xl tracking-[0.14em] text-[#3d3324] uppercase">{venue.name}</p>
           <p className="mt-1 text-[0.62rem] tracking-[0.3em] text-[#6f5a3e] uppercase">{venue.address}</p>
           <div className="venue-facts">
@@ -703,7 +719,7 @@ export function Evening() {
           </div>
         </Fade>
       </section>
-    </>
+    </div>
   )
 }
 
@@ -713,15 +729,22 @@ export function Evening() {
 
 export function DressCode() {
   return (
-    <section id="programme" className="dress relative px-6 pt-10 pb-16 text-center">
+    <section id="programme" className="gold-sec dress relative px-6 pt-10 pb-16 text-center">
       <Fade>
         <Sprig className="text-[#8a7a55]" />
         <Kicker className="mt-6 text-[#6f5a3e]">Dress code</Kicker>
-        <h2 className="script mt-2 text-[clamp(2.4rem,10vw,3.2rem)] leading-none text-[#4a4a2a]">{dressCode.colours}</h2>
+        <h2 className="mt-2 leading-none">
+          <img src={img('title-dress.webp')} alt={dressCode.colours} className="gold-title-img mx-auto" draggable={false} />
+        </h2>
       </Fade>
 
       {/* fabric swatches pinned on a card, fanned slightly */}
-      <Fade delay={0.12} className="mx-auto mt-8 flex max-w-sm items-end justify-center">
+      <motion.div
+        className="mx-auto mt-8 flex max-w-sm items-end justify-center"
+        initial="hide"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.3 }}
+      >
         {dressSwatches.map((sw, i) => {
           const mid = (dressSwatches.length - 1) / 2
           const off = i - mid
@@ -730,17 +753,18 @@ export function DressCode() {
               key={sw.hex}
               className="dress-swatch"
               style={{ zIndex: 10 - Math.abs(off) }}
-              initial={{ y: 30, rotate: 0, opacity: 0 }}
-              whileInView={{ y: Math.abs(off) * 6, rotate: off * 6, opacity: 1 }}
-              viewport={{ once: true, margin: '-10% 0px' }}
-              transition={{ duration: 1, delay: 0.15 + i * 0.08, ease: EASE }}
+              variants={{
+                hide: { y: 30, rotate: 0, opacity: 0 },
+                show: { y: Math.abs(off) * 6, rotate: off * 6, opacity: 1 },
+              }}
+              transition={{ duration: 0.9, delay: 0.1 + i * 0.08, ease: EASE }}
             >
               <span className="dress-chip" style={{ backgroundColor: sw.hex }} />
               <span className="dress-name">{sw.name}</span>
             </motion.div>
           )
         })}
-      </Fade>
+      </motion.div>
 
       <Fade delay={0.2}>
         <p className="display mx-auto mt-10 max-w-[17rem] text-[1.05rem] leading-snug text-[#4a3f2c] italic">{dressCode.note}</p>
@@ -805,7 +829,9 @@ export function Footer() {
       </div>
       <div className="relative">
         <Fade>
-          <p className="script text-[clamp(3rem,12vw,5rem)] leading-none">Thank you</p>
+          <p className="leading-none">
+            <img src={img('title-thankyou.webp')} alt="Thank you" className="ty-title-img mx-auto" draggable={false} />
+          </p>
           <p className="arabic mt-6 text-2xl" lang="ar">
             بَارَكَ اللَّهُ لَنَا وَلَكُمْ
           </p>
@@ -817,16 +843,18 @@ export function Footer() {
           <p className="display mt-2 text-lg tracking-[0.12em] uppercase">
             {hosts.grandfather} &amp; {hosts.grandmother}
           </p>
-          <p className="script mt-10 text-[clamp(2.4rem,10vw,3.5rem)] leading-tight">
-            {groom.firstName} &amp; {bride.firstName}
+          <p className="mt-10 leading-tight">
+            <img src={img('title-couple.webp')} alt={`${groom.firstName} & ${bride.firstName}`} className="ty-couple-img mx-auto" draggable={false} />
           </p>
           <p className="mt-3 text-[0.6rem] tracking-[0.36em] uppercase opacity-75">
             {wedding.dayLabel} · {wedding.dateLabel}
           </p>
         </Fade>
         {/* a garden view resting on the line, like the nikkah's palace skyline */}
-        <div className="ty-garden relative left-1/2 mt-12 w-screen -translate-x-1/2" aria-hidden="true">
-          <ThankYouArch />
+        {/* the gold seal between two raised gold flourishes */}
+        <div className="ty-ornament" aria-hidden="true">
+          <img src={img('ty-flourish.webp')} alt="" className="ty-flourish" draggable={false} />
+          <img src={img('gold-seal.webp')} alt="" className="ty-seal" draggable={false} />
         </div>
         <div className="flex flex-col items-center gap-3 border-t border-[#b38a45]/40 pt-6">
           <p className="text-[0.6rem] text-[#6f5a3e]/70">Made with love, and a great many duas.</p>

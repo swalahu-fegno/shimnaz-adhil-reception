@@ -14,7 +14,7 @@ interface FloatingDockProps {
 }
 
 const buttonBase = cn(
-  'group glass relative flex h-12 w-12 items-center justify-center rounded-full',
+  'gold-btn group glass relative flex h-12 w-12 items-center justify-center rounded-full',
   'border-gold/35 text-gold-deep shadow-[var(--shadow-card)]',
   'transition-colors duration-500 hover:border-gold hover:text-gold',
 )
@@ -57,7 +57,7 @@ export function FloatingDock({
       </div>
 
       {/* ---- The rest, stacked right ------------------------------------- */}
-      <div className="fixed right-5 bottom-5 z-40 flex flex-col items-center gap-3 md:right-7 md:bottom-7">
+      <div className="fixed right-5 bottom-5 z-40 flex flex-row items-center gap-3 md:right-7 md:bottom-7">
         {/* WhatsApp */}
         {/* <motion.a
           href={`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(site.shareText)}`}
@@ -71,7 +71,7 @@ export function FloatingDock({
           <WhatsApp className="h-[1.15rem] w-[1.15rem]" />
         </motion.a> */}
 
-        {/* Scroll to top, above Share — only once there's something to go back to */}
+        {/* Scroll to top, left of Share — only once there's something to go back to */}
         <AnimatePresence>
           {scrolled && (
             <motion.button

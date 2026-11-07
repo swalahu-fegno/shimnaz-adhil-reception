@@ -37,7 +37,9 @@ export default function App() {
   useEffect(() => {
     if (mountSite) return
     const idle = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 1200))
-    idle(() => void loadSite())
+    // Build the site (and the garden) underneath while the opening page is
+    // up, so it is fully painted before the doors part — not on the tap.
+    idle(() => void loadSite().then(() => window.setTimeout(() => setMountSite(true), 300)))
     const intents = ['pointerdown', 'pointermove', 'touchstart', 'keydown', 'wheel'] as const
     const go = () => setMountSite(true)
     intents.forEach((t) => window.addEventListener(t, go, { once: true, passive: true }))

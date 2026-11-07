@@ -27,7 +27,7 @@ export function MusicButton({ isPlaying, onToggle, className }: MusicButtonProps
       aria-label={isPlaying ? 'Pause background music' : 'Play background music'}
       aria-pressed={isPlaying}
       className={cn(
-        'group glass relative flex h-12 w-12 items-center justify-center rounded-full',
+        'gold-btn group glass relative flex h-12 w-12 items-center justify-center rounded-full',
         'border-gold/35 text-gold-deep shadow-[var(--shadow-card)]',
         'transition-colors duration-500 hover:border-gold hover:text-gold',
         className,

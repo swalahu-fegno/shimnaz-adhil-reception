@@ -4695,3 +4695,738 @@ html.envelope-up, html.envelope-up body { background: #1d2217 !important; }
 .op.stage-lift { background: #f4f0e7; }
 .op.stage-reveal { animation-delay: 0.45s; }
 .op:not(.stage-idle) .env7 { animation: none; }
+
+/* First glow version: the envelope opens from the top again */
+.op-d0,
+.op-d1 {
+  scale: 1 1;
+}
+
+/* ---------- Opening page in the client's look ----------
+   Same layout and motion as the nikkah opening, but on their olive felt
+   paper with cream, blind-pressed type (like their pressed save-the-dates). */
+.pl-olive .pl-paper {
+  background: #66693f url('/images/olive-paper.webp') center / 520px auto;
+}
+.pl-olive .pl-door-l .pl-paper { background-position: right center; }
+.pl-olive .pl-door-r .pl-paper { background-position: left center; }
+.pl-olive .pl-seam { background-image: linear-gradient(to bottom, transparent, rgba(245, 240, 220, 0.45), transparent) !important; }
+.pl-olive .pl-door-l { box-shadow: inset -10px 0 18px -14px rgba(20, 20, 8, 0.6); }
+.pl-olive .pl-door-r { box-shadow: inset 10px 0 18px -14px rgba(20, 20, 8, 0.6); }
+/* pressed into the paper: light edge above, shadow below */
+.pl-olive .pl-seal svg { filter: drop-shadow(0 1px 0 rgba(255, 250, 230, 0.25)) drop-shadow(0 -1px 0 rgba(25, 25, 10, 0.35)); }
+.pl-olive .royal,
+.pl-olive .display { color: #f3ecd6 !important; text-shadow: 0 1px 0 rgba(25, 25, 10, 0.35), 0 -1px 0 rgba(255, 250, 230, 0.12); }
+.pl-olive .pl-content svg.text-gold,
+.pl-olive .text-gold,
+.pl-olive .text-gold\/90 { color: #e9dfc0 !important; }
+.pl-olive .text-ivory\/65 { color: rgba(243, 236, 214, 0.8) !important; }
+.pl-olive .text-ivory\/50 { color: rgba(243, 236, 214, 0.7) !important; }
+.pl-olive .pl-rule { background-image: linear-gradient(to right, transparent, rgba(243, 236, 214, 0.7), transparent) !important; }
+.pl-olive .pl-thread { background-image: linear-gradient(to bottom, transparent, rgba(243, 236, 214, 0.7), #f3ecd6) !important; }
+/* calmer paper so the small type reads */
+.pl-olive .pl-paper { background-size: 1100px auto; }
+.pl-olive .pl-paper::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 55% at 50% 48%, rgba(70, 72, 40, 0.55), rgba(70, 72, 40, 0.25) 70%, rgba(40, 42, 20, 0.35)); }
+.pl-olive .text-ivory\/65, .pl-olive .text-ivory\/50, .pl-olive .text-gold\/90 { text-shadow: 0 1px 2px rgba(25, 25, 10, 0.5); }
+.pl-olive .pl-paper { background-size: 360px auto; }
+.pl-olive .pl-paper::after { background: radial-gradient(ellipse 80% 60% at 50% 48%, rgba(96, 99, 60, 0.72), rgba(88, 91, 54, 0.6) 70%, rgba(58, 60, 32, 0.6)); }
+
+/* ---------- Opening: smooth premium felt paper (no photo texture) ---------- */
+.pl-olive .pl-paper {
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.98  0 0 0 0 0.96  0 0 0 0 0.86  0 0 0 0.07 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' seed='5' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1  0 0 0 0 0.1  0 0 0 0 0.04  0 0 0 0.12 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),
+    radial-gradient(ellipse 90% 60% at 30% 18%, rgba(255, 246, 210, 0.16), transparent 60%),
+    radial-gradient(ellipse 120% 90% at 50% 45%, #6e7147 0%, #63663e 50%, #4c4e2d 100%) !important;
+  background-size: 240px 240px, 240px 240px, 100% 100%, 100vw 100% !important;
+}
+.pl-olive .pl-door-l .pl-paper { background-position: 0 0, 0 0, 0 0, 0 0 !important; }
+.pl-olive .pl-door-r .pl-paper { background-position: 0 0, 0 0, -50vw 0, -50vw 0 !important; }
+.pl-olive .pl-paper::after { background: radial-gradient(ellipse 85% 70% at 50% 50%, transparent 55%, rgba(30, 32, 14, 0.45)) !important; }
+/* the seal blind-pressed into the paper, like the client's lace oval */
+.pl-olive .pl-seal { color: #7d8152 !important; }
+.pl-olive .pl-seal svg { filter: drop-shadow(-1px -1px 0 rgba(255, 250, 225, 0.22)) drop-shadow(1.2px 1.5px 1px rgba(25, 26, 10, 0.55)) !important; }
+.pl-olive .seal-fill { fill: #73774a; }
+.pl-olive .royal { color: #f1e9d0 !important; text-shadow: 0 1px 1px rgba(25, 26, 10, 0.5) !important; }
+.pl-olive .pl-paper::after { display: none !important; }
+.pl-olive .pl-veil { background: radial-gradient(ellipse 85% 70% at 50% 50%, transparent 55%, rgba(30, 32, 14, 0.45)) !important; }
+.pl-olive .pl-door-l, .pl-olive .pl-door-r { box-shadow: none !important; }
+/* one continuous sheet across both doors */
+.pl-olive .pl-paper { background-size: 240px 240px, 240px 240px, 100vw 100%, 100vw 100% !important; }
+/* A & S stamped (debossed) into the paper, like a blind press */
+.pl-olive .pl-scale .royal {
+  font-family: var(--font-script) !important;
+  font-size: 3.4rem !important;
+  color: #5d6037 !important;
+  text-shadow: 0 1.5px 0 rgba(255, 248, 220, 0.28), 0 -1px 1px rgba(20, 21, 8, 0.65) !important;
+}
+.pl-olive .pl-scale svg { color: #5d6037 !important; filter: drop-shadow(0 1px 0 rgba(255, 248, 220, 0.28)) drop-shadow(0 -1px 0 rgba(20, 21, 8, 0.6)); }
+/* A & S hot-stamped in gold foil, pressed into the paper */
+.pl-olive .pl-scale .royal {
+  color: transparent !important;
+  background: linear-gradient(160deg, #8a6a2c 0%, #e8cf8a 28%, #fff1c4 42%, #c9a24e 58%, #f1dc9c 74%, #9a7836 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: none !important;
+  filter: drop-shadow(0 1px 0 rgba(20, 21, 8, 0.55)) drop-shadow(0 0 6px rgba(240, 210, 130, 0.25));
+  padding: 0.1em 0.12em;
+}
+.pl-olive .pl-scale svg { color: #d9b45e !important; filter: drop-shadow(0 1px 0 rgba(20, 21, 8, 0.55)); }
+/* the ring around it in fine gold foil too */
+.pl-olive .pl-seal { color: #c9a24e !important; }
+.pl-olive .seal-fill { fill: rgba(201, 162, 78, 0.35); }
+.pl-olive .pl-seal svg { filter: drop-shadow(0 1px 0 rgba(20, 21, 8, 0.5)) !important; }
+/* rendered felt paper with a blind-pressed border (scripts/render-opening-paper.py) */
+.pl-olive .pl-paper {
+  background: #5f6339 url('/images/opening-paper.webp') 0 0 / 100vw 100% no-repeat !important;
+}
+.pl-olive .pl-door-r .pl-paper { background-position: -50vw 0 !important; }
+.pl-olive .pl-veil { background: radial-gradient(ellipse 60% 40% at 50% 42%, rgba(255, 244, 205, 0.08), transparent 70%) !important; }
+.gold-stamp { filter: drop-shadow(0 0 18px rgba(240, 200, 110, 0.18)); }
+.gold-stamp .gs-shine { animation: gs-shine 5.5s ease-in-out 1.2s infinite; }
+@keyframes gs-shine { 0% { transform: rotate(25deg) translateX(0); } 45%, 100% { transform: rotate(25deg) translateX(300px); } }
+.gold-stamp .gs-shine { transform-box: view-box; transform-origin: 100px 100px; }
+/* all opening text in gold foil */
+.pl-olive .pl-content p,
+.pl-olive .pl-content button > span:first-child {
+  color: transparent !important;
+  background: linear-gradient(100deg, #b8893a 0%, #f3d98f 30%, #fff1c4 45%, #d4a64c 62%, #f0d48a 80%, #a97c30 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: none !important;
+  filter: drop-shadow(0 1px 0 rgba(20, 21, 8, 0.5));
+}
+.pl-olive .pl-rule { background-image: linear-gradient(to right, transparent, #d9b45e, transparent) !important; }
+.pl-olive .pl-thread { background-image: linear-gradient(to bottom, transparent, #d9b45e, #f0d48a) !important; }
+.pl-olive .pl-cue { color: #e6c77a !important; }
+/* the gold seal is a rendered image now; a soft gleam glides over it */
+.gold-stamp { filter: none; width: 11rem; height: 11rem; }
+.gold-stamp .gs-shine {
+  position: absolute; inset: 14%;
+  border-radius: 50%;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 250, 225, 0.45) 50%, transparent 65%) -150% 0 / 250% 100% no-repeat;
+  mix-blend-mode: soft-light;
+  animation: gs-gleam 5.5s ease-in-out 1.2s infinite;
+  transform: none;
+}
+@keyframes gs-gleam { 0% { background-position: -150% 0; } 45%, 100% { background-position: 250% 0; } }
+/* the invitation's seal is the same rendered gold seal as the opening */
+.inv-seal {
+  background: none !important;
+  box-shadow: none !important;
+  border: 0 !important;
+  width: 92px !important;
+  height: 92px !important;
+  filter: none !important;
+}
+.inv-seal::before, .inv-seal::after { display: none !important; }
+.inv-seal img { width: 100%; height: 100%; display: block; }
+/* "Us" title in polished gold, like the seal */
+.us-gold {
+  color: transparent !important;
+  background: linear-gradient(100deg, #7a5418 0%, #c8973a 22%, #f6dc94 40%, #fff3cc 48%, #d4a548 62%, #8f6420 80%, #c99a3e 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  padding: 0.12em 0.25em 0.2em;
+  filter: drop-shadow(0 1px 0 rgba(255, 245, 210, 0.6)) drop-shadow(0 2px 3px rgba(90, 60, 15, 0.3));
+}
+.us-gold-kicker { color: #a57a2e !important; }
+.us-gold {
+  background: linear-gradient(100deg, #6a4612 0%, #a8792a 25%, #e2bb62 42%, #f3d88e 50%, #b8872f 64%, #7a5418 85%, #a87a2c 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  filter: drop-shadow(0 1px 0 rgba(255, 248, 220, 0.8)) drop-shadow(0 2px 4px rgba(80, 52, 10, 0.35)) !important;
+}
+.us-gold-kicker { color: #8f6a26 !important; }
+/* Us photo dots in gold */
+.us-dot { background: linear-gradient(100deg, #8f6420, #c99a3e); opacity: 0.45; box-shadow: 0 1px 0 rgba(255, 248, 220, 0.7); }
+.us-dot.is-on { opacity: 1; background: linear-gradient(100deg, #7a5418, #d4a548 35%, #f6dc94 50%, #c08c34 70%, #7a5418); box-shadow: 0 1px 0 rgba(255, 248, 220, 0.8), 0 1px 4px rgba(120, 85, 20, 0.4); }
+.us-title-img { height: clamp(4.2rem, 17vw, 6rem); width: auto; }
+/* opening lines rendered in raised gold, like the seal */
+.open-gold-bismillah { height: 3.6rem; width: auto; margin: -0.6rem auto -0.4rem; }
+.open-gold-invited { height: 2.9rem; width: auto; margin: 0 auto; max-width: 92vw; }
+.pl-olive .pl-content p:has(> .open-gold-invited) { background: none !important; filter: none !important; }
+.open-gold-bismillah { height: 4.6rem; margin: -0.8rem auto -0.6rem; }
+.open-gold-invited { height: 3.1rem; }
+
+/* ---------- Floating buttons as small gold seals ---------- */
+.gold-btn {
+  background: url('/images/gold-button.webp') center / 128% 128% no-repeat !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  color: #4e3410 !important;
+  filter: drop-shadow(0 3px 5px rgba(30, 22, 6, 0.35));
+}
+.gold-btn > svg, .gold-btn > span { filter: drop-shadow(0 1px 0 rgba(255, 240, 200, 0.75)); }
+.gold-btn:hover { color: #2f1f08 !important; }
+.gold-btn .border-gold\/50 { border-color: rgba(201, 162, 78, 0.8) !important; }
+
+/* ---------- Hero text raised like the stamp, in its own colours ---------- */
+.hero-sky-text .relative :is(p, h1, h2, span):not(:has(*)) {
+  background-image: linear-gradient(
+    172deg,
+    color-mix(in srgb, currentColor 55%, #fff6dc) 0%,
+    currentColor 38%,
+    color-mix(in srgb, currentColor 70%, #fff6dc) 52%,
+    currentColor 64%,
+    color-mix(in srgb, currentColor 72%, #000) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 -0.5px 0 rgba(255, 252, 238, 0.9)) drop-shadow(0 1.5px 1px rgba(40, 34, 14, 0.38));
+  padding-inline: 0.12em;
+}
+/* the gold seal crowns the invitation card */
+.inv-stamp-top { width: 88px; height: 88px; margin: 0 auto 4px; }
+.inv-stamp-top img { width: 100%; height: 100%; display: block; }
+/* hero text: always visible — keep its own colour, raised with light and shadow */
+.hero-sky-text .relative :is(p, h1, h2, span):not(:has(*)) {
+  background-image: none !important;
+  -webkit-text-fill-color: currentColor !important;
+  color: inherit;
+  filter: none !important;
+  text-shadow: 0 -1px 0 rgba(255, 252, 238, 0.95), 0 1px 1px rgba(40, 34, 14, 0.35), 0 2px 6px rgba(40, 34, 14, 0.12) !important;
+}
+.us-cap-img { height: 2.6rem; width: auto; max-width: 92%; margin: 0 auto; display: block; }
+
+/* ---------- Invitation on a parchment scroll (scripts/render-parchment.py) ---------- */
+.hero-invite .inv-glass {
+  width: calc(var(--cw) * 1.06) !important;
+  height: calc(var(--ch) * 1.14) !important;
+  background: url('/images/parchment.webp') center / 100% 100% no-repeat !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+.hero-invite .inv-glass::before,
+.hero-invite .inv-glass::after { display: none !important; }
+.hero-invite { --ch: min(76svh, 44rem); }
+.hero-invite .inv-glass { height: calc(var(--ch) * 1.12) !important; }
+
+/* ---------- The parchment unrolls as you scroll ----------
+   --u runs 0 → 1: the two rolls start together in the middle and part to
+   the top and bottom; the sheet is revealed between them; then the words
+   are written on. Only transform / clip-path / opacity change — cheap. */
+.hero-invite { --u: clamp(0, var(--q) * 1.7, 1); }
+.hero-invite .inv-glass {
+  background-image: url('/images/parchment-sheet.webp') !important;
+  clip-path: inset(calc((1 - var(--u)) * 47%) 0 calc((1 - var(--u)) * 47%) 0);
+}
+.scroll-rolls {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  translate: -50% -50%;
+  width: calc(var(--cw) * 1.06);
+  height: calc(var(--ch) * 1.12);
+  pointer-events: none;
+  z-index: 3;
+  opacity: clamp(0, var(--q) * 8, 1);
+}
+.scroll-roll {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6.3%;
+  background: url('/images/parchment-roll.webp') center / 100% 100% no-repeat;
+  filter: drop-shadow(0 3px 3px rgba(30, 24, 8, 0.35));
+}
+.scroll-roll-top { top: 0; transform: translateY(calc((1 - var(--u)) * (var(--ch) * 1.12 * 0.4685))); }
+.scroll-roll-bot { bottom: 0; transform: translateY(calc((1 - var(--u)) * (var(--ch) * -1.12 * 0.4685))) scaleY(-1); }
+/* the gold border and the words come once it is open */
+.hero-invite .inv-frame,
+.hero-invite .inv-corner { opacity: clamp(0, (var(--u) - 0.85) * 7, 1) !important; }
+.hero-invite .inv-line { --t: clamp(0, (var(--q) - 0.55 - var(--i, 0) * 0.03) * 6, 1) !important; }
+
+/* ---------- Old-style unrolling: top roll held, bottom roll travels down ----------
+   Everything on the card is clipped just below the travelling roll, so the
+   parchment and its writing come out from under it as you scroll. */
+.hero-invite {
+  --u: clamp(0, var(--q) / 0.85, 1);
+  --S: calc(var(--ch) * 1.12);
+  --R: calc(var(--S) * 0.063);
+  clip-path: inset(0 0 calc(48% + var(--S) / 2 - var(--u) * (var(--S) - var(--R)) - var(--R)) 0);
+}
+.hero-invite .inv-glass { clip-path: none !important; }
+.scroll-rolls { opacity: 1; }
+.scroll-roll-top { top: 0; transform: none !important; z-index: 2; }
+.scroll-roll-bot {
+  top: 0 !important;
+  bottom: auto !important;
+  transform: translateY(calc(var(--u) * (var(--S) - var(--R)))) scaleY(-1) !important;
+  z-index: 3;
+}
+/* the rolled paper turns as it travels */
+.scroll-roll-bot { background-position: center calc(var(--u) * 900%); background-size: 100% 100%; }
+.hero-invite .inv-frame,
+.hero-invite .inv-corner { opacity: 1 !important; }
+.hero-invite .inv-line { --t: 1 !important; }
+.scroll-rolls { opacity: clamp(0, var(--q) * 10, 1) !important; }
+
+/* ---------- Invitation card in the gold theme ---------- */
+/* every line of writing in deep polished gold, readable on the parchment */
+.hero-invite > .relative :is(p, span):not(.h-px) {
+  color: #8a6420 !important;
+  background-image: linear-gradient(100deg, #6a4612 0%, #a8792a 22%, #d9ae55 40%, #f0d288 50%, #b8872f 62%, #7a5418 82%, #a87a2c 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+  filter: drop-shadow(0 1px 0 rgba(255, 248, 220, 0.75)) drop-shadow(0 1px 1px rgba(70, 45, 8, 0.25));
+}
+.hero-invite > .relative p > span { filter: none; }
+/* the little lines either side of "with" */
+.hero-invite .h-px {
+  opacity: 1 !important;
+  background: linear-gradient(90deg, transparent, #b8872f 30%, #f0d288 50%, #b8872f 70%, transparent) !important;
+  box-shadow: 0 1px 0 rgba(255, 248, 220, 0.6);
+}
+/* the bow ornament, border and corner flourishes in gold */
+.hero-invite svg:not(.inv-bflies) { color: #b8872f !important; filter: drop-shadow(0 1px 0 rgba(255, 248, 220, 0.7)) drop-shadow(0 1px 1px rgba(70, 45, 8, 0.3)); }
+.hero-invite .inv-frame, .hero-invite .inv-frame * { stroke: #b8872f !important; }
+.hero-invite .inv-corner { color: #b8872f !important; border-color: #b8872f !important; filter: drop-shadow(0 1px 0 rgba(255, 248, 220, 0.7)); }
+.hero-invite > .relative :is(p, span):not(.h-px) {
+  background-image: linear-gradient(180deg, #9a6f24 0%, #b8862e 45%, #7a5418 100%) !important;
+  filter: drop-shadow(0 1px 0 rgba(255, 248, 220, 0.7)) drop-shadow(0 1px 1px rgba(70, 45, 8, 0.3)) !important;
+}
+/* card text: solid deep gold so it shows in every browser */
+.hero-invite > .relative :is(p, span):not(.h-px) {
+  background-image: none !important;
+  -webkit-text-fill-color: #8a6320 !important;
+  color: #8a6320 !important;
+  filter: none !important;
+  text-shadow: 0 1px 0 rgba(255, 248, 220, 0.85), 0 -0.5px 0 rgba(80, 52, 10, 0.25) !important;
+}
+.hero-invite > .relative :is(p, span):not(.h-px) { -webkit-text-fill-color: #6b4810 !important; color: #6b4810 !important; }
+/* keep every line well inside the gold border */
+.hero-invite > .relative {
+  padding-left: calc(50vw - var(--cw) / 2 + 2.4rem) !important;
+  padding-right: calc(50vw - var(--cw) / 2 + 2.4rem) !important;
+  max-width: none !important;
+}
+.hero-invite > .relative p { max-width: 100% !important; overflow-wrap: anywhere; }
+.hero-invite > .relative .italic { font-size: 0.88rem !important; }
+.hero-invite .inv-write { font-size: clamp(2rem, 9vw, 3.2rem) !important; white-space: nowrap; }
+
+/* ---------- Counting the days, in the gold theme ---------- */
+.cd-gold { background: #5f6339; }
+.cd-paper { position: absolute; inset: 0; background: url('/images/opening-paper.webp') center / 100% 100% no-repeat; }
+.cd-gold .cd-kicker, .cd-gold .cd-label, .cd-gold .cd-date, .cd-gold .cd-hijri { color: #e6c77a !important; opacity: 1 !important; text-shadow: 0 1px 1px rgba(20, 21, 8, 0.6); }
+.cd-gold .cd-hijri { color: #d9bf86 !important; }
+.cd-title {
+  color: transparent;
+  background: linear-gradient(180deg, #fff1c4 0%, #e9c46e 40%, #c8963a 70%, #f0d48a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  padding: 0.1em 0.2em 0.2em;
+  filter: drop-shadow(0 1px 0 rgba(20, 21, 8, 0.6)) drop-shadow(0 2px 6px rgba(20, 21, 8, 0.35));
+}
+/* each number set in a small gold seal */
+.cd-seal {
+  width: clamp(4.1rem, 19vw, 5.2rem);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  background: url('/images/gold-button.webp') center / 118% 118% no-repeat;
+  filter: drop-shadow(0 4px 6px rgba(20, 16, 4, 0.45));
+}
+.cd-seal span {
+  font-size: clamp(1.3rem, 5.6vw, 1.75rem);
+  line-height: 1;
+  color: #4e3410;
+  text-shadow: 0 1px 0 rgba(255, 240, 200, 0.8), 0 -1px 0 rgba(60, 38, 8, 0.35);
+}
+.cd-rule { width: 9rem; height: 1px; background: linear-gradient(90deg, transparent, #d9b45e, transparent); }
+
+/* ---------- The Evening in the gold theme ---------- */
+.evn-title-img { height: clamp(4.6rem, 19vw, 6.4rem); width: auto; }
+.evn-name-img { height: clamp(3.2rem, 13vw, 4.2rem); width: auto; margin-left: -0.6rem; }
+.evn .evn-kicker, .evn .evn-date, .evn .evn-time { color: #8a6320 !important; opacity: 1 !important; text-shadow: 0 1px 0 rgba(255, 248, 220, 0.8); }
+.evn .evn-note { color: #6b4810 !important; opacity: 1 !important; }
+.evn .evn-line { background: rgba(184, 135, 47, 0.3) !important; }
+.evn .evn-line-gold { background: linear-gradient(180deg, #f0d288, #b8872f 50%, #8a6320) !important; }
+.evn .evn-node { background: radial-gradient(circle at 35% 30%, #fff1c4, #d4a548 45%, #8a6320 100%) !important; border-color: #b8872f !important; box-shadow: 0 1px 2px rgba(70, 45, 8, 0.4) !important; }
+.evn .evn-window { border-color: #c39a45 !important; box-shadow: 0 0 0 1px #c39a45, 0 0 0 5px rgba(250, 242, 220, 0.9), 0 0 0 6px #b8872f, 0 14px 30px -12px rgba(60, 40, 8, 0.45) !important; }
+.evn .evn-time { color: #6b4810 !important; font-size: 0.8rem !important; font-weight: 500; }
+
+/* ---------- Venue and dress code in the gold theme ---------- */
+.gold-title-img { height: clamp(4rem, 16vw, 5.4rem); width: auto; max-width: 92vw; }
+.gold-sec .kicker, .gold-sec [class*='text-[#6f5a3e]'], .gold-sec [class*='text-[#3d3324]'] { color: #8a6320 !important; text-shadow: 0 1px 0 rgba(255, 248, 220, 0.8); }
+.gold-sec [class*='text-[#8a7a55]'] { color: #b8872f !important; filter: drop-shadow(0 1px 0 rgba(255, 248, 220, 0.7)); }
+.gold-sec p { color: #6b4810; }
+/* times pill */
+.venue .venue-facts { border-color: #c39a45 !important; box-shadow: 0 0 0 3px rgba(250, 242, 220, 0.9), 0 0 0 4px rgba(184, 135, 47, 0.55) !important; }
+.venue .venue-facts b { color: #8a6320 !important; }
+.venue .venue-facts span { color: #6b4810 !important; }
+.venue .venue-facts i { background: #c39a45 !important; }
+/* buttons: polished gold, and gold-edged cream */
+.venue .vbtn-solid {
+  background: linear-gradient(180deg, #f0d288 0%, #c8963a 45%, #9a6f24 100%) !important;
+  color: #3e2a0a !important;
+  border: 1px solid #8a6320 !important;
+  box-shadow: inset 0 1px 0 rgba(255, 246, 215, 0.8), 0 6px 16px -6px rgba(90, 60, 10, 0.55) !important;
+  text-shadow: 0 1px 0 rgba(255, 240, 200, 0.6);
+}
+.venue .vbtn:not(.vbtn-solid) { border-color: #c39a45 !important; color: #6b4810 !important; }
+.venue .vbtn svg { stroke: currentColor; }
+.venue [class*='text-[#3d3324]'] { color: #6b4810 !important; font-weight: 500; }
+
+/* ---------- Thank you in the gold theme ---------- */
+.ty-title-img { height: clamp(4.8rem, 20vw, 7rem); width: auto; filter: drop-shadow(0 0 18px rgba(255, 236, 180, 0.55)); }
+.ty-couple-img { height: clamp(3.8rem, 15vw, 5rem); width: auto; max-width: 92vw; filter: drop-shadow(0 0 14px rgba(255, 236, 180, 0.5)); }
+.heaven-footer > .relative p:not(:has(img)) { color: #6b4810 !important; opacity: 1 !important; text-shadow: 0 1px 0 rgba(255, 248, 225, 0.85), 0 0 10px rgba(255, 244, 210, 0.7); }
+.heaven-footer .arabic { color: #8a6320 !important; }
+.heaven-footer [class*='text-[#b38a45]'] { color: #b8872f !important; filter: drop-shadow(0 1px 0 rgba(255, 248, 220, 0.8)); }
+.heaven-footer .border-t { border-color: rgba(184, 135, 47, 0.55) !important; }
+.ty-title-img, .ty-couple-img { filter: none !important; }
+
+/* ---------- Thank you, compact ---------- */
+.heaven-footer { padding-top: 3.5rem !important; padding-bottom: 1.5rem !important; }
+.heaven-footer .ty-title-img { height: clamp(3.6rem, 15vw, 5rem); }
+.heaven-footer .ty-couple-img { height: clamp(2.8rem, 11vw, 3.6rem); }
+.heaven-footer > .relative .mt-10 { margin-top: 1.25rem !important; }
+.heaven-footer > .relative .mt-8 { margin-top: 1rem !important; }
+.heaven-footer > .relative .mt-6 { margin-top: 0.75rem !important; }
+.heaven-footer > .relative .mt-12 { margin-top: 1.5rem !important; }
+.heaven-footer .display.text-lg { font-size: 0.95rem !important; }
+.heaven-footer .ty-garden { max-height: 38vh; overflow: hidden; }
+.heaven-footer .pt-6 { padding-top: 0.9rem !important; }
+.heaven-footer { padding-top: 2.5rem !important; }
+.heaven-footer > .relative .mt-12 { margin-top: 0.5rem !important; }
+.heaven-footer .ty-garden { max-height: 26vh; }
+.heaven-footer .ty-garden svg, .heaven-footer .ty-garden img { max-height: 26vh; width: auto; margin: 0 auto; display: block; }
+.heaven-footer > .relative .ty-garden { margin-top: -2.6rem !important; }
+.ty-ornament { position: relative; margin: 1.6rem auto 1.4rem; width: min(92vw, 30rem); display: grid; place-items: center; }
+.ty-flourish { width: 100%; height: auto; grid-area: 1 / 1; }
+.ty-seal { width: clamp(4.4rem, 19vw, 5.6rem); height: auto; grid-area: 1 / 1; }
+
+/* ---------- Venue buttons: olive pressed paper with a gold edge, like the opening ---------- */
+.venue .vbtn,
+.venue .vbtn-solid {
+  background: #5f6339 url('/images/opening-paper.webp') center / 260% auto !important;
+  color: #ecd08a !important;
+  border: 1px solid #c9a24e !important;
+  box-shadow:
+    inset 0 0 0 3px rgba(95, 99, 57, 0.95),
+    inset 0 0 0 4px rgba(217, 180, 94, 0.75),
+    inset 0 1px 0 rgba(255, 246, 215, 0.25),
+    0 8px 18px -8px rgba(40, 32, 8, 0.55) !important;
+  text-shadow: 0 1px 1px rgba(20, 21, 8, 0.6) !important;
+  letter-spacing: 0.04em;
+}
+.venue .vbtn svg { stroke: #ecd08a !important; filter: drop-shadow(0 1px 1px rgba(20, 21, 8, 0.6)); }
+.venue .vbtn:hover { color: #fff1c4 !important; }
+.venue a.vbtn:not(.vbtn-solid), .venue a.vbtn.vbtn-solid { color: #ecd08a !important; border-color: #c9a24e !important; }
+.venue a.vbtn:not(.vbtn-solid) { padding-left: 1.05rem !important; padding-right: 1.15rem !important; gap: 0.45rem !important; font-size: 0.95em; }
+/* Save the date (The Evening): compact */
+.evn { min-height: 0 !important; padding-top: 3.5rem !important; padding-bottom: 2.5rem !important; }
+.evn > div:has(.evn-window) { margin-top: 1.5rem !important; }
+/* venue buttons in polished gold, like the seal */
+.venue a.vbtn:not(.vbtn-solid), .venue a.vbtn.vbtn-solid {
+  background: linear-gradient(175deg, #fff0bf 0%, #e8c26c 22%, #b98a33 52%, #e4bd66 78%, #9a6f24 100%) !important;
+  color: #3f2a09 !important;
+  border: 1px solid #8a6320 !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 250, 225, 0.9),
+    inset 0 -2px 3px rgba(90, 58, 10, 0.35),
+    inset 0 0 0 3px rgba(255, 236, 170, 0.25),
+    0 8px 18px -8px rgba(80, 52, 10, 0.6) !important;
+  text-shadow: 0 1px 0 rgba(255, 244, 205, 0.7) !important;
+  font-weight: 500;
+}
+.venue .vbtn svg { stroke: #3f2a09 !important; filter: drop-shadow(0 1px 0 rgba(255, 244, 205, 0.7)) !important; }
+
+/* ---------- The Evening: Reception and Dinner stacked vertically ---------- */
+.evn > .relative.mx-auto.mt-14 {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  width: min(86vw, 22rem) !important;
+  margin-top: 2rem !important;
+}
+.evn > .relative.mx-auto.mt-14 > .relative { flex: none !important; width: 100%; padding-top: 1.4rem !important; }
+.evn > .relative.mx-auto.mt-14 > .relative + .relative { margin-top: 0 !important; }
+/* the horizontal thread is replaced by a short gold thread between the two */
+.evn > .relative.mx-auto.mt-14 > .evn-line { display: none !important; }
+.evn > .relative.mx-auto.mt-14 > .relative:first-of-type::after {
+  content: '';
+  display: block;
+  width: 1.5px;
+  height: 2.4rem;
+  margin: 0.9rem auto 0.2rem;
+  background: linear-gradient(180deg, transparent, #b8872f 30%, #b8872f 70%, transparent);
+}
+.evn .evn-name-img { margin-left: 0 !important; }
+.evn .evn-name-img { display: block; margin: 0 auto !important; }
+
+/* ---------- Venue buttons as gold seals, like the music button ---------- */
+.venue a.vbtn:not(.vbtn-solid), .venue a.vbtn.vbtn-solid {
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  flex-direction: column !important;
+  gap: 0.45rem !important;
+  min-width: 6.5rem;
+  color: #6b4810 !important;
+  text-shadow: 0 1px 0 rgba(255, 248, 220, 0.8) !important;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+.venue .vbtn svg {
+  width: 3.6rem !important;
+  height: 3.6rem !important;
+  padding: 1.05rem;
+  box-sizing: border-box;
+  background: url('/images/gold-button.webp') center / 128% 128% no-repeat;
+  stroke: #4e3410 !important;
+  border-radius: 50%;
+  filter: drop-shadow(0 3px 5px rgba(30, 22, 6, 0.35)) !important;
+  transition: transform 0.3s;
+}
+.venue .vbtn:hover svg { transform: translateY(-2px); }
+.venue .flex.flex-wrap.justify-center.gap-3 { gap: 2.2rem !important; }
+/* venue seal buttons stacked vertically, labels in gold */
+.venue .flex.flex-wrap.justify-center.gap-3 { flex-direction: column !important; align-items: center !important; gap: 1.3rem !important; }
+.venue a.vbtn:not(.vbtn-solid), .venue a.vbtn.vbtn-solid { color: #8a6320 !important; letter-spacing: 0.08em; }
+/* venue: two wide polished-gold buttons, stacked, label inside */
+.venue .flex.flex-wrap.justify-center.gap-3 { flex-direction: column !important; align-items: center !important; gap: 0.85rem !important; }
+.venue a.vbtn:not(.vbtn-solid), .venue a.vbtn.vbtn-solid {
+  flex-direction: row !important;
+  justify-content: center;
+  width: min(78vw, 18rem);
+  min-width: 0;
+  height: 3.3rem;
+  padding: 0 1.4rem !important;
+  gap: 0.6rem !important;
+  border-radius: 999px;
+  background: linear-gradient(175deg, #fff0bf 0%, #e8c26c 22%, #b98a33 52%, #e4bd66 78%, #9a6f24 100%) !important;
+  border: 1px solid #8a6320 !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 250, 225, 0.9),
+    inset 0 -2px 3px rgba(90, 58, 10, 0.35),
+    inset 0 0 0 3px rgba(255, 236, 170, 0.25),
+    0 8px 18px -8px rgba(80, 52, 10, 0.6) !important;
+  color: #3f2a09 !important;
+  text-shadow: 0 1px 0 rgba(255, 244, 205, 0.7) !important;
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
+}
+.venue .vbtn svg {
+  width: 1.15rem !important;
+  height: 1.15rem !important;
+  padding: 0 !important;
+  background: none !important;
+  border-radius: 0;
+  stroke: #3f2a09 !important;
+  filter: drop-shadow(0 1px 0 rgba(255, 244, 205, 0.7)) !important;
+}
+.venue a.vbtn:not(.vbtn-solid), .venue a.vbtn.vbtn-solid { display: inline-flex !important; align-items: center !important; width: min(72vw, 16.5rem) !important; height: 3.2rem !important; min-height: 0 !important; max-width: none !important; white-space: nowrap !important; padding: 0 1.2rem !important; flex: none !important; }
+/* venue buttons in the same rendered gold as the music button (scripts/render-gold-pill.py) */
+.venue a.vbtn:not(.vbtn-solid), .venue a.vbtn.vbtn-solid {
+  background: url('/images/gold-pill.webp') center / 100% 100% no-repeat !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  filter: drop-shadow(0 4px 6px rgba(30, 22, 6, 0.35));
+  color: #4e3410 !important;
+  text-shadow: 0 1px 0 rgba(255, 240, 200, 0.75) !important;
+}
+.venue .vbtn svg { stroke: #4e3410 !important; }
+
+/* ---------- Venue map (scripts/render-gold-map.py) ---------- */
+.venue-map { display: block; border-radius: 6px; overflow: hidden; box-shadow: 0 0 0 1px #b8872f, 0 0 0 4px rgba(250, 242, 220, 0.9), 0 0 0 5px rgba(184, 135, 47, 0.6), 0 14px 30px -12px rgba(50, 36, 8, 0.5); }
+.venue-map img { display: block; width: 100%; height: auto; }
+
+/* ---------- Save the date + venue as one page ---------- */
+.venue { background: transparent !important; }
+#events + .venue, .evn + .venue { margin-top: 0 !important; }
+.evn { padding-bottom: 1.5rem !important; }
+.venue { padding-top: 0.5rem !important; padding-bottom: 3rem !important; }
+.venue > div:first-child > svg:first-child { display: none !important; }
+.venue > div:first-child .kicker, .venue > div:first-child > :nth-child(2) { margin-top: 0.5rem !important; }
+/* one paper behind both */
+.evn-page {
+  background-color: #efe8d8;
+  background-image: radial-gradient(ellipse 90% 45% at 50% 25%, rgba(255, 252, 242, 0.9), rgba(226, 216, 194, 0.55)), url('/images/olive-paper.webp');
+  background-blend-mode: normal, luminosity;
+  background-size: auto, 300px 300px;
+}
+.evn-page .evn, .evn-page .venue { background: transparent !important; }
+.evn-page .venue-facts { display: none !important; }
+.evn-page .venue [class*='text-[#6f5a3e]'] { color: #7a5418 !important; }
+
+/* ---------- Save the date + venue: one compact page ---------- */
+.evn-page .evn { padding-top: 2.5rem !important; padding-bottom: 0.5rem !important; }
+.evn-page .evn-title-img { height: clamp(3.6rem, 15vw, 4.8rem); }
+.evn-page .evn > div:has(.evn-window) { margin-top: 1rem !important; width: min(44vw, 10.5rem) !important; }
+.evn-page .evn > .relative.mx-auto.mt-14 { margin-top: 1.1rem !important; }
+.evn-page .evn > .relative.mx-auto.mt-14 > .relative { padding-top: 1.1rem !important; }
+.evn-page .evn > .relative.mx-auto.mt-14 > .relative:first-of-type::after { height: 1.2rem; margin: 0.5rem auto 0; }
+.evn-page .evn-name-img { height: clamp(2.5rem, 10vw, 3.1rem); }
+.evn-page .evn-note { margin-top: 0.2rem !important; font-size: 0.85rem !important; }
+.evn-page .venue { padding-top: 0 !important; padding-bottom: 2.5rem !important; }
+.evn-page .venue .gold-title-img { height: clamp(3rem, 12vw, 4rem); }
+.evn-page .venue > div:first-child > :nth-child(2) { margin-top: 1.2rem !important; }
+.evn-page .venue > div:first-child > :nth-child(4) { margin-top: 0.6rem !important; font-size: 1.05rem !important; }
+.evn-page .venue .mt-8, .evn-page .venue .mt-7 { margin-top: 1rem !important; }
+.evn-page .venue a.vbtn { height: 2.9rem !important; }
+.evn-page .venue .flex.flex-wrap.justify-center.gap-3 { gap: 0.6rem !important; }
+.evn-page .evn-window { width: min(40vw, 9rem) !important; margin-inline: auto; }
+.evn-page .evn > div:has(.evn-window) { width: auto !important; }
+.evn-page .venue > div:first-child > :nth-child(1),
+.evn-page .venue > div:first-child > :nth-child(2) { display: none !important; }
+.evn-page .venue > div:first-child > :nth-child(3) { margin-top: 1.4rem !important; }
+.evn-page .evn > div:first-child p { margin-top: 0.4rem !important; }
+.evn-page .evn-window { height: 10.5rem !important; aspect-ratio: auto !important; }
+
+/* ---------- Reception and Dinner as a vertical stepper ---------- */
+.evn-page .evn > .relative.mx-auto.mt-14 {
+  counter-reset: step;
+  align-items: stretch !important;
+  width: min(80vw, 17rem) !important;
+  text-align: left !important;
+}
+.evn-page .evn > .relative.mx-auto.mt-14 > .relative {
+  counter-increment: step;
+  position: relative;
+  padding: 0.15rem 0 0 3.4rem !important;
+  min-height: 4.6rem;
+}
+.evn-page .evn > .relative.mx-auto.mt-14 > .relative + .relative { margin-top: 0.9rem !important; }
+.evn-page .evn > .relative.mx-auto.mt-14 > .relative:first-of-type::after { display: none !important; }
+/* numbered gold seal */
+.evn-page .evn > .relative.mx-auto.mt-14 > .relative::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0.2rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: grid;
+  place-items: center;
+  background: url('/images/gold-button.webp') center / 128% 128% no-repeat;
+  color: #4e3410;
+  font-family: var(--font-display, 'Cormorant Garamond', serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-shadow: 0 1px 0 rgba(255, 240, 200, 0.8);
+  filter: drop-shadow(0 2px 3px rgba(30, 22, 6, 0.35));
+  z-index: 1;
+}
+/* the gold line joining the steps */
+.evn-page .evn > .relative.mx-auto.mt-14 > .relative:first-of-type .evn-node { display: none; }
+.evn-page .evn .evn-node { display: none !important; }
+.evn-page .evn > .relative.mx-auto.mt-14 > .relative:not(:last-of-type) > .evn-moment::after {
+  content: '';
+  position: absolute;
+  left: 1.2rem;
+  top: 2.9rem;
+  bottom: -0.9rem;
+  width: 1.5px;
+  background: linear-gradient(180deg, #d9b45e, #b8872f);
+}
+.evn-page .evn-moment { text-align: left; }
+.evn-page .evn-name-img { margin: 0.1rem 0 0 -0.3rem !important; }
+.evn-page .evn .evn-time { letter-spacing: 0.26em; }
+/* no garden window in the Evening */
+.evn > div:has(.evn-window) { display: none !important; }
+
+/* ---------- Stepper markers: gold icons instead of numbers ---------- */
+.evn-page .evn > .relative.mx-auto.mt-14 > .relative::before {
+  content: '' !important;
+  background: center / 100% 100% no-repeat !important;
+  width: 2.6rem !important; height: 2.6rem !important;
+  filter: drop-shadow(0 1px 0 rgba(255, 248, 220, 0.85)) drop-shadow(0 2px 2px rgba(70, 45, 8, 0.35)) !important;
+}
+.evn-page .evn > .relative.mx-auto.mt-14 > .relative:first-of-type::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23fff0bf'/><stop offset='.35' stop-color='%23d9ae55'/><stop offset='.65' stop-color='%239a6f24'/><stop offset='1' stop-color='%23e4bd66'/></linearGradient></defs><g fill='none' stroke='url(%23g)' stroke-width='2.6'><circle cx='19' cy='28' r='10'/><circle cx='29' cy='28' r='10'/></g><path d='M24 6l3 5h-6z' fill='url(%23g)'/><path d='M20.5 11h7l-3.5 4z' fill='url(%23g)'/></svg>") !important; }
+.evn-page .evn > .relative.mx-auto.mt-14 > .relative:last-of-type::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23fff0bf'/><stop offset='.35' stop-color='%23d9ae55'/><stop offset='.65' stop-color='%239a6f24'/><stop offset='1' stop-color='%23e4bd66'/></linearGradient></defs><g fill='none' stroke='url(%23g)' stroke-width='2.6' stroke-linecap='round'><path d='M8 33a16 16 0 0 1 32 0z'/><path d='M5 37h38'/><path d='M24 13v4'/></g><circle cx='24' cy='11' r='2.6' fill='url(%23g)'/></svg>") !important; }
+.evn-page .evn > .relative.mx-auto.mt-14 > .relative:not(:last-of-type) > .evn-moment::after { top: 3.1rem !important; }
+/* "Where we gather" is now a small subtitle: show it (it is the venue block's 3rd child) */
+.evn-page .venue > div:first-child > .venue-sub { display: block !important; margin-top: 1.6rem !important; color: #8a6320 !important; }
+.evn-page .venue > div:first-child > .venue-sub + p { margin-top: 0.4rem !important; }
+
+/* ---------- Countdown without badges: gold numerals in a fine gold frame ---------- */
+.cd-gold .grid.grid-cols-4 {
+  gap: 0 !important;
+  padding: 1.1rem 0.4rem;
+  width: min(90vw, 24rem);
+  border: 1px solid rgba(217, 180, 94, 0.85);
+  box-shadow: inset 0 0 0 4px rgba(95, 99, 57, 0.6), inset 0 0 0 5px rgba(217, 180, 94, 0.45);
+}
+.cd-gold .grid.grid-cols-4 > div { position: relative; }
+.cd-gold .grid.grid-cols-4 > div + div::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 12%; bottom: 12%;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, #d9b45e 30%, #d9b45e 70%, transparent);
+}
+.cd-gold .cd-seal {
+  width: auto !important;
+  aspect-ratio: auto !important;
+  background: none !important;
+  filter: none !important;
+}
+.cd-gold .cd-seal span {
+  font-size: clamp(2rem, 9vw, 2.7rem) !important;
+  color: #f0d48a !important;
+  text-shadow: 0 1px 0 rgba(60, 40, 8, 0.7), 0 -1px 0 rgba(255, 245, 210, 0.35), 0 0 12px rgba(240, 210, 140, 0.25) !important;
+  font-weight: 500;
+}
+.cd-gold .cd-label { margin-top: 0.35rem !important; }
+.cd-gold .grid.grid-cols-4 { width: min(76vw, 22rem) !important; margin-left: auto !important; margin-right: auto !important; }
+
+/* ---------- Countdown: each number in a slim raised-gold arch ---------- */
+.cd-gold .grid.grid-cols-4 { border: 0 !important; box-shadow: none !important; padding: 0 !important; gap: 0.55rem !important; width: min(84vw, 22rem) !important; }
+.cd-gold .grid.grid-cols-4 > div + div::before { display: none !important; }
+.cd-gold .cd-seal {
+  width: 100% !important;
+  height: clamp(5.2rem, 24vw, 6.4rem) !important;
+  border-radius: 999px 999px 4px 4px / 46% 46% 4px 4px !important;
+  /* gold edge: a bright and a dark line, so it reads as raised metal */
+  border: 2px solid #d9b45e !important;
+  box-shadow:
+    inset 0 0 0 1px #7a5418,
+    inset 0 0 0 4px rgba(95, 99, 57, 0.9),
+    inset 0 0 0 5px rgba(240, 210, 140, 0.55),
+    inset 0 10px 18px -8px rgba(255, 240, 200, 0.18),
+    0 0 0 1px #8a6320,
+    0 6px 12px -6px rgba(20, 16, 4, 0.6) !important;
+  background: linear-gradient(180deg, rgba(40, 42, 22, 0.35), rgba(40, 42, 22, 0.1)) !important;
+  padding-top: 0.6rem;
+}
+.cd-gold .cd-seal span { font-size: clamp(1.7rem, 7.5vw, 2.3rem) !important; }
+.cd-gold .cd-label { margin-top: 0.55rem !important; }
+.cd-gold .cd-seal { border-radius: 50% 50% 4px 4px / 40% 40% 4px 4px !important; }
+
+/* ---------- Real-phone fixes (Chrome on Android) ---------- */
+/* pinned scenes fill the screen even after the address bar hides */
+.sticky.h-\[100svh\], .hero-stage { height: 100lvh !important; }
+/* opening page: keep the date clear of the gold corner flourishes */
+.pl-olive .pl-content { padding-bottom: 7vh; }
+@media (max-height: 820px) {
+  .pl-olive .gold-stamp { width: 8.5rem !important; height: 8.5rem !important; margin-bottom: 1.2rem !important; }
+  .pl-olive .pl-rule { margin-top: 1.2rem !important; margin-bottom: 1.2rem !important; }
+  .pl-olive .open-gold-invited { margin-bottom: 0 !important; }
+  .pl-olive .pl-content > p.display { margin-bottom: 1.6rem !important; }
+}
+
+/* ---- mobile fixes (Nov 7) ---- */
+/* hero: the huge blurred, blended, rotating rays layer made Android Chrome
+   flash grey tiles while scrolling — keep it light */
+.hero-rays { width: 150vmax; filter: none; mix-blend-mode: normal; }
+.hero-stage .hp-svg { filter: none; }
+/* soft hand-off from the olive countdown into the evening page */
+.evn-page { position: relative; }
+.evn-page::before {
+  content: ''; position: absolute; inset: -1px 0 auto; height: 4.5rem; z-index: 2; pointer-events: none;
+  background: linear-gradient(180deg, #5f6339, rgba(95, 99, 57, 0));
+}
+/* keep the credit line clear of the floating dock */
+.heaven-footer { padding-bottom: calc(6rem + env(safe-area-inset-bottom)) !important; }

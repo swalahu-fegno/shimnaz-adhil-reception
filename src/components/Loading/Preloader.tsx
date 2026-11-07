@@ -1,172 +1,309 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { bride, groom } from '../../data/wedding'
+import { bride, groom, wedding } from '../../data/wedding'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { ChevronDown } from '../ui/MughalIcons'
+
+const DEBUG_MUSIC = false
+
+function logMusic(message: string, details?: Record<string, unknown>) {
+  if (!DEBUG_MUSIC) return
+  console.log('[music]', message, details ?? '')
+}
 
 interface PreloaderProps {
   /** Fires on the earliest user interaction that indicates they are opening. */
   onMusicIntent: () => void
-  /** Fires as the envelope dissolves — the invitation underneath must show now. */
+  /** Fires the instant the button is pressed — the doors are about to part, so
+      whatever is underneath needs to be visible *now*. */
   onOpenStart: () => void
-  /** Fires once the envelope has gone and this screen can retire. */
+  /** Fires once the doors have finished parting and this screen can retire. */
   onOpen: () => void
 }
 
-type Stage = 'idle' | 'press' | 'lift' | 'reveal'
-
+/**
+ * The lotus seal, drawn stroke by stroke — in CSS, so the static boot copy of
+ * this screen draws itself too, before any JavaScript.
+ *
+ * `pathLength="1"` normalises every shape so one dasharray rule animates them
+ * all. The order follows how the seal would be laid out by hand: the outer
+ * rings, the scalloped arch, then the ring of lotus petals around it.
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function LotusSeal({ d }: { d: (delay: number) => React.CSSProperties }) {
+  const el = (delay: number, opacity = 1) => ({ ...d(delay), '--o': opacity }) as React.CSSProperties
+  const petals = Array.from({ length: 16 }, (_, i) => (i * 360) / 16)
+  const petal = (deg: number) => {
+    const r = (deg * Math.PI) / 180
+    const p = (rad: number, a: number) => `${(100 + Math.sin(a) * rad).toFixed(2)} ${(100 - Math.cos(a) * rad).toFixed(2)}`
+    return `M${p(70, r)} Q${p(84, r - 0.19)} ${p(95, r)} Q${p(84, r + 0.19)} ${p(70, r)}Z`
+  }
+  return (
+    <svg viewBox="0 0 200 200" fill="none" className="seal-draw h-full w-full" aria-hidden="true">
+      <g stroke="currentColor" strokeWidth="0.9" strokeLinejoin="round" strokeLinecap="round">
+        <circle data-draw cx="100" cy="100" r="96" pathLength="1" style={el(0, 0.3)} />
+        <circle data-draw cx="100" cy="100" r="70" pathLength="1" style={el(0.15, 0.55)} />
+        {/* scalloped arch, framing the initials */}
+        <ellipse data-draw cx="100" cy="102" rx="40" ry="52" pathLength="1" style={el(0.45)} />
+        {/* ring of lotus petals */}
+        {/* ...then each petal fills with gold in turn, going round the circle */}
+        {petals.map((deg, i) => (
+          <path
+            key={deg}
+            data-draw
+            className="seal-fill"
+            d={petal(deg)}
+            pathLength="1"
+            style={{ ...el(0.7 + i * 0.03, 0.75), '--f': d(1.55 + i * 0.09)['--d' as keyof React.CSSProperties] } as React.CSSProperties}
+          />
+        ))}
+      </g>
+    </svg>
+  )
+}
 
 /**
- * The opening screen: an illustrated olive envelope that fills the phone.
+ * The invitation opening experience.
  *
- * Every part is a rendered illustration layer (public/images/opener, made from
- * the real paper texture the groom side chose): the folded body with the line
- * blind-pressed into it, the top flap with its hot-stamped gold "A&S", and the
- * wax seal. All layers share one canvas, so they stay aligned at any size.
+ * Deliberately built without Framer Motion. This is the first paint, and
+ * pulling Motion into the entry chunk cost ~3.2s of scripting on a throttled
+ * mobile CPU — the seal couldn't appear until an animation library had parsed,
+ * which is exactly backwards. Plain CSS runs it, and the rest of the site
+ * streams in behind this screen while the guest reads the Bismillah.
  *
- * Tap (or scroll): the seal gives under the finger and lifts away, the flap
- * tilts open toward you, and the envelope drifts toward you and fades —
- * straight onto the painted invitation waiting underneath.
+ * Sequence: on two charcoal panels, a lotus seal draws itself around the
+ * monogram while the Bismillah and the invitation line rise. A tap (or
+ * scroll) blooms the seal outward and slides the panels apart, revealing the
+ * Hero beneath — the same opening as the reference invitation.
  */
-/**
- * A blind-embossed lace doily around the oval window: scalloped edge,
- * a ring of petals, dotted mesh and an inner bead ring, all in the paper's
- * own colour, lifted by a dark shadow below-right and a light edge above-left.
- */
-
 export function Preloader({ onMusicIntent, onOpenStart, onOpen }: PreloaderProps) {
-  const [stage, setStage] = useState<Stage>('idle')
-  const started = useRef(false)
+  const prefersReduced = useReducedMotion()
+  const [opening, setOpening] = useState(false)
+  const openedRef = useRef(false)
 
-  const open = useCallback(() => {
-    if (started.current) return
-    started.current = true
+  const handleOpen = useCallback(() => {
+    if (openedRef.current) return
+    openedRef.current = true // ref, not state: the listeners below close over
+    logMusic('preloader opening')
+    setOpening(true) //          the first render and would re-fire otherwise
     onMusicIntent()
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    // press the seal → it lifts and the flap opens, with the hero already
-    // waiting underneath → the envelope drifts toward you and fades away.
-    const t = reduced ? [0, 0, 500] : [150, 1400, 3000]
-    setStage('press')
-    window.setTimeout(() => {
-      onOpenStart()
-      setStage('lift')
-    }, t[0])
-    window.setTimeout(() => setStage('reveal'), t[1])
-    window.setTimeout(onOpen, t[2])
-  }, [onMusicIntent, onOpenStart, onOpen])
+    onOpenStart() // reveal the Hero before the doors expose it
+    // Hand off just before the panels finish, so Hero is already fading up
+    window.setTimeout(onOpen, prefersReduced ? 0 : 1150)
+  }, [onMusicIntent, onOpen, onOpenStart, prefersReduced])
 
-  // Safari tints its status bar and toolbar from the page's background.
-  // While the envelope is up, give the page the envelope's own olive so the
-  // bars melt into the paper; hand it back once the envelope has gone.
+  // The static boot copy of this screen started its entrance animations at
+  // first paint; pick them up where they are rather than replaying them.
+  const [elapsed] = useState(() => {
+    if (typeof window === 'undefined') return 0
+    const t0 = (window as Window & { __bootT?: number }).__bootT
+    return t0 == null ? 0 : (performance.now() - t0) / 1000
+  })
+  const d = (delay: number) =>
+    ({ '--d': `${prefersReduced ? 0 : delay - elapsed}s` }) as React.CSSProperties
+
+  /**
+   * Scroll to open.
+   *
+   * The page is locked while this screen is up, so native `scroll` never fires.
+   * Wheel, touchmove and keyboard scroll keys are opening gestures. Pointerdown
+   * also opens because browsers require a tap/click-style activation for audio.
+   */
   useEffect(() => {
-    const root = document.documentElement
-    root.classList.add('envelope-up')
-    return () => root.classList.remove('envelope-up')
+    if (prefersReduced) return
+
+    const onPointerDown = (e: PointerEvent) => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      logMusic('preloader pointerdown open', { pointerType: e.pointerType })
+      onMusicIntent()
+      handleOpen()
+    }
+    const onClick = () => {
+      logMusic('preloader click unlock')
+      onMusicIntent()
+    }
+    const onWheel = (e: WheelEvent) => {
+      if (e.deltaY > 0) {
+        logMusic('preloader wheel open', { deltaY: e.deltaY })
+        onMusicIntent()
+        handleOpen()
+      }
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if (['ArrowDown', 'PageDown', ' ', 'Spacebar', 'Enter'].includes(e.key)) {
+        logMusic('preloader key open', { key: e.key })
+        onMusicIntent()
+        handleOpen()
+      }
+    }
+    let touchStart = 0
+    const onTouchStart = (e: TouchEvent) => {
+      touchStart = e.touches[0]?.clientY ?? 0
+      logMusic('preloader touchstart', { touchStart })
+      onMusicIntent()
+    }
+    const onTouchEnd = () => {
+      logMusic('preloader touchend unlock')
+      onMusicIntent()
+    }
+    const onTouchMove = (e: TouchEvent) => {
+      const distance = touchStart - (e.touches[0]?.clientY ?? 0)
+      if (distance > 24) {
+        logMusic('preloader touchmove open', { distance })
+        handleOpen()
+      }
+    }
+
+    window.addEventListener('pointerdown', onPointerDown, { passive: true })
+    window.addEventListener('click', onClick, { passive: true })
+    window.addEventListener('wheel', onWheel, { passive: true })
+    window.addEventListener('keydown', onKey)
+    window.addEventListener('touchstart', onTouchStart, { passive: true })
+    window.addEventListener('touchend', onTouchEnd, { passive: true })
+    window.addEventListener('touchmove', onTouchMove, { passive: true })
+
+    return () => {
+      window.removeEventListener('pointerdown', onPointerDown)
+      window.removeEventListener('click', onClick)
+      window.removeEventListener('wheel', onWheel)
+      window.removeEventListener('keydown', onKey)
+      window.removeEventListener('touchstart', onTouchStart)
+      window.removeEventListener('touchend', onTouchEnd)
+      window.removeEventListener('touchmove', onTouchMove)
+    }
+  }, [handleOpen, onMusicIntent, prefersReduced])
+
+  // Decode the garden's pictures while the opening is showing, so the hero is
+  // fully painted the moment the doors part (on a phone it otherwise appeared
+  // piece by piece).
+  useEffect(() => {
+    const base = `${import.meta.env.BASE_URL}images/hero/`
+    const names = [...Array.from({ length: 12 }, (_, i) => `l${i}.webp`), 'grain.webp']
+    const keep: HTMLImageElement[] = []
+    const t = window.setTimeout(() => {
+      names.forEach((n) => {
+        const im = new Image()
+        im.src = base + n
+        im.decode().catch(() => {})
+        keep.push(im)
+      })
+    }, 400)
+    return () => window.clearTimeout(t)
   }, [])
 
-  // A scroll or swipe also opens it — many guests never think to tap.
+  // The reception page starts with an olive tint for Safari's bars; this
+  // opening sits on olive paper, so drop that tint while it shows.
   useEffect(() => {
-    const onWheel = (e: WheelEvent) => e.deltaY > 8 && open()
-    let y0 = 0
-    const onStart = (e: TouchEvent) => (y0 = e.touches[0]?.clientY ?? 0)
-    const onMove = (e: TouchEvent) => y0 - (e.touches[0]?.clientY ?? 0) > 40 && open()
-    window.addEventListener('wheel', onWheel, { passive: true })
-    window.addEventListener('touchstart', onStart, { passive: true })
-    window.addEventListener('touchmove', onMove, { passive: true })
+    document.documentElement.classList.remove('envelope-up')
+    const meta = document.querySelector('meta[name="theme-color"]')
+    const prev = meta?.getAttribute('content')
+    meta?.setAttribute('content', '#5f6140')
     return () => {
-      window.removeEventListener('wheel', onWheel)
-      window.removeEventListener('touchstart', onStart)
-      window.removeEventListener('touchmove', onMove)
-    }
-  }, [open])
-
-  // Depth: the layers drift a few pixels against each other as the phone
-  // tilts or the pointer moves — the seal most, the paper least.
-  const rootRef = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    const el = rootRef.current
-    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    let raf = 0
-    const set = (x: number, y: number) => {
-      cancelAnimationFrame(raf)
-      raf = requestAnimationFrame(() => {
-        el.style.setProperty('--px', Math.max(-1, Math.min(1, x)).toFixed(3))
-        el.style.setProperty('--py', Math.max(-1, Math.min(1, y)).toFixed(3))
-      })
-    }
-    const onPointer = (e: PointerEvent) =>
-      set((e.clientX / window.innerWidth) * 2 - 1, (e.clientY / window.innerHeight) * 2 - 1)
-    const onTilt = (e: DeviceOrientationEvent) => {
-      if (e.gamma == null || e.beta == null) return
-      set(e.gamma / 25, (e.beta - 45) / 25)
-    }
-    window.addEventListener('pointermove', onPointer, { passive: true })
-    window.addEventListener('deviceorientation', onTilt, { passive: true })
-    return () => {
-      cancelAnimationFrame(raf)
-      window.removeEventListener('pointermove', onPointer)
-      window.removeEventListener('deviceorientation', onTilt)
+      if (prev) meta?.setAttribute('content', prev)
     }
   }, [])
 
   return (
     <div
-      ref={rootRef}
-      className={`op stage-${stage}`}
+      className={`pl-root pl-olive fixed inset-0 z-[100] flex items-center justify-center overflow-hidden ${
+        opening ? 'is-opening pointer-events-none' : ''
+      }`}
       role="dialog"
-      aria-label="Wedding reception invitation"
+      aria-modal="true"
+      aria-label="Tap or scroll to open the invitation"
     >
-      {/* Full-screen forest-green envelope (client's generated image), cut
-          into a body and a flap layer; the gold monogram is drawn live. */}
-      <div className="env7">
-        <svg className="env7-layer" viewBox="0 0 853 1844" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-          <image href={`${import.meta.env.BASE_URL}images/opener/env-base.webp`} width="853" height="1844" />
-        </svg>
-        <svg className="env7-layer env7-flapback" viewBox="0 0 853 1844" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-          <image href={`${import.meta.env.BASE_URL}images/opener/env-flapback.webp`} width="853" height="1844" />
-        </svg>
-        <svg className="env7-layer env7-flap" viewBox="0 0 853 1844" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-          <defs>
-            <linearGradient id="e7-gold" x1="0" y1="0" x2="0.35" y2="1">
-              <stop offset="0" stopColor="#f6e2a6" />
-              <stop offset="0.35" stopColor="#d8b25f" />
-              <stop offset="0.6" stopColor="#a87b33" />
-              <stop offset="0.8" stopColor="#e9cd85" />
-              <stop offset="1" stopColor="#b38a3e" />
-            </linearGradient>
-          </defs>
-          <image href={`${import.meta.env.BASE_URL}images/opener/env-flap.webp`} width="853" height="1844" />
-          <g transform="translate(462 880) rotate(-9)" className="env7-mono">
-            <text textAnchor="middle" fill="#0f130b" opacity="0.55" transform="translate(1.5 3)">{groom.firstName[0]}<tspan dx="-14">&amp;</tspan><tspan dx="-12">{bride.firstName[0]}</tspan></text>
-            <text textAnchor="middle" fill="url(#e7-gold)" stroke="#f8e9b8" strokeWidth="0.6" strokeOpacity="0.5">{groom.firstName[0]}<tspan dx="-14">&amp;</tspan><tspan dx="-12">{bride.firstName[0]}</tspan></text>
-          </g>
-        </svg>
-      </div>
-
-      <div className="op-motes" aria-hidden="true">
-        {Array.from({ length: 14 }, (_, i) => (
-          <span
-            key={i}
-            style={
-              {
-                left: `${(i * 37 + 11) % 100}%`,
-                '--dx': `${((i % 5) - 2) * 14}px`,
-                animationDelay: `${(i * 1.9) % 13}s`,
-                animationDuration: `${13 + (i % 4) * 3}s`,
-                width: `${3 + (i % 3)}px`,
-                height: `${3 + (i % 3)}px`,
-              } as React.CSSProperties
-            }
-          />
+      {/* --- Panels: two charcoal leaves that slide apart on open, as on the
+          reference invitation. Kept plain so the type in the middle reads. */}
+      <div className="pl-stage absolute inset-0">
+        {(['left', 'right'] as const).map((side) => (
+          <div
+            key={side}
+            className={`pl-door door-leaf absolute inset-y-0 w-1/2 ${
+              side === 'left' ? 'pl-door-l left-0' : 'pl-door-r right-0'
+            }`}
+          >
+            {/* the client's olive felt paper, as on their pressed cards */}
+            <div className="pl-paper absolute inset-0" />
+            {/* gold seam where the leaves meet */}
+            <div
+              className={`pl-seam absolute inset-y-0 w-px bg-gradient-to-b from-transparent via-gold/60 to-transparent ${
+                side === 'left' ? 'right-0' : 'left-0'
+              }`}
+            />
+          </div>
         ))}
+        <div className="pl-veil pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,248,220,0.14),rgba(40,42,22,0.0)_45%,rgba(30,32,16,0.35)_100%)]" />
       </div>
 
-      <button type="button" className="op-hit" onClick={open} aria-label="Open the invitation" />
+      {/* --- Content -------------------------------------------------------- */}
+      <div className="pl-content relative z-10 flex flex-col items-center px-6 text-center">
+        {/* Monogram inside a cusped Mughal arch */}
+        {/* Seal + monogram: a lotus seal that draws itself, stroke by stroke */}
+        {/* A & S in a gold wax seal stamp, pressed onto the paper */}
+        <div className="pl-scale gold-stamp relative mb-8 h-40 w-40" style={d(0.2)}>
+          {/* rendered gold seal (scripts/render-gold-seal.py) */}
+          <img src={`${import.meta.env.BASE_URL}images/gold-seal.webp`} alt="" className="h-full w-full" draggable={false} />
+          <span className="gs-shine" aria-hidden="true" />
+        </div>
 
-      <p className="op-hint" aria-hidden="true">
-        <svg viewBox="0 0 24 24" className="env4-hand"><path d="M9 11V4.5a1.5 1.5 0 0 1 3 0V10m0-1.5a1.5 1.5 0 0 1 3 0V11m0-1a1.5 1.5 0 0 1 3 0v4.5c0 3.6-2.4 6.5-6 6.5-2.6 0-4.2-1.3-5.4-3.4L4.3 14a1.4 1.4 0 0 1 2.3-1.6L9 15" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" /><path d="M7 4.5a4 4 0 0 1 7 0" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" /></svg>
-        Tap to open
-      </p>
+        <div className="pl-rise flex flex-col items-center gap-3" style={d(0.4)}>
+          <img
+            src={`${import.meta.env.BASE_URL}images/open-bismillah.webp`}
+            alt={wedding.bismillah.arabic}
+            lang="ar"
+            className="open-gold-bismillah"
+            draggable={false}
+          />
+          <p className="max-w-xs text-xs leading-relaxed font-light tracking-[0.06em] text-balance text-ivory/65">
+            {wedding.bismillah.translation}
+          </p>
+        </div>
 
-      {/* The light the envelope dissolves into */}
-      <div className="bloom" aria-hidden="true" />
+        <div
+          className="pl-rule my-8 h-px w-40 bg-gradient-to-r from-transparent via-gold/70 to-transparent"
+          style={d(0.6)}
+        />
+
+        <p
+          className="pl-rise display mb-10 text-[clamp(1.75rem,5vw,2.6rem)] leading-tight font-light text-ivory italic"
+          style={d(0.75)}
+        >
+          <img
+            src={`${import.meta.env.BASE_URL}images/open-invited.webp`}
+            alt="You are cordially invited"
+            className="open-gold-invited"
+            draggable={false}
+          />
+        </p>
+
+        <button
+          type="button"
+          onPointerDown={() => {
+            logMusic('open button pointerdown')
+            onMusicIntent()
+          }}
+          onClick={handleOpen}
+          style={d(0.95)}
+          className="pl-rise group flex flex-col items-center gap-4 bg-transparent focus-visible:outline-gold"
+        >
+          <span className="font-body text-xs font-light tracking-[0.28em] text-gold/90 uppercase transition-colors group-hover:text-gold">
+            Tap or scroll to open
+          </span>
+          {/* A gold thread falling into a lotus bud — "there is more below" */}
+          <span className="relative flex h-14 w-6 items-center justify-center" aria-hidden="true">
+            <span className="pl-thread absolute top-0 h-8 w-px bg-gradient-to-b from-transparent via-gold/70 to-gold" />
+            <span className="pl-cue absolute bottom-0 text-gold">
+              <ChevronDown className="h-4 w-4" strokeWidth={1} />
+            </span>
+          </span>
+        </button>
+
+        <p
+          className="pl-rise mt-6 text-xs font-light tracking-[0.24em] text-ivory/50 uppercase"
+          style={d(1.2)}
+        >
+          {wedding.dayLabel} · {wedding.dateLabel}
+        </p>
+      </div>
     </div>
   )
 }
