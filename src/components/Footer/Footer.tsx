@@ -183,7 +183,7 @@ export function Footer() {
               Made with love, and a great many duas.
             </p>
             <a
-              href="https://adhil-shimnaz-nikkah.fegno.com/?utm_source=adhil-shimnaz-nikkah&utm_medium=referral&utm_campaign=adhil-shimnaz-nikkah"
+              href="https://fegno.com/?utm_source=adhil-shimnaz-nikkah&utm_medium=referral&utm_campaign=adhil-shimnaz-nikkah"
               target="_blank"
               rel="noopener noreferrer"
               className="font-body text-[0.5rem] font-light tracking-[0.28em] text-gold/50 uppercase transition-colors hover:text-gold"

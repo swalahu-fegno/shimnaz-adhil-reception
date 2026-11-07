@@ -858,7 +858,7 @@ export function Footer() {
         <div className="flex flex-col items-center gap-3 border-t border-[#b38a45]/40 pt-6">
           <p className="text-[0.6rem] text-[#6f5a3e]/70">Made with love, and a great many duas.</p>
           <a
-            href="https://adhil-shimnaz-nikkah.fegno.com/?utm_source=adhil-shimnaz-reception&utm_medium=referral&utm_campaign=adhil-shimnaz-reception"
+            href="https://fegno.com/?utm_source=adhil-shimnaz-reception&utm_medium=referral&utm_campaign=adhil-shimnaz-reception"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[0.5rem] tracking-[0.28em] text-[#8a7a55] uppercase hover:text-[#5a4628]"
