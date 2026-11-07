@@ -568,11 +568,10 @@ function UsAmbient({ src, i, n, progress }: { src: string; i: number; n: number;
     const d = Math.abs(v - c) * n // 0 at its centre, 1 one photo away
     return 0.55 * Math.max(0, Math.min(1, (1 - d) / 0.7))
   })
-  const scale = useTransform(progress, (v) => 1.18 - (v - c) * 0.3)
   return (
     <motion.div
-      className="pointer-events-none absolute inset-0 bg-cover bg-center"
-      style={{ backgroundImage: `url(${src})`, opacity, scale, filter: 'blur(28px) sepia(0.35) saturate(0.8)' }}
+      className="couple-bg pointer-events-none absolute inset-0 bg-cover bg-center"
+      style={{ backgroundImage: `url(${src})`, opacity, scale: 1.18, filter: 'blur(28px) sepia(0.35) saturate(0.8)', willChange: 'opacity' }}
       aria-hidden="true"
     />
   )

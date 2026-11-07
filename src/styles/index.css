@@ -5430,3 +5430,33 @@ html.envelope-up, html.envelope-up body { background: #1d2217 !important; }
 }
 /* keep the credit line clear of the floating dock */
 .heaven-footer { padding-bottom: calc(6rem + env(safe-area-inset-bottom)) !important; }
+/* scroll-time paint cost: the noise "deckle" filter, drop-shadow and per-line
+   blur were re-rasterised every frame and Android Chrome dropped tiles */
+.inv-glass, .hero-invite .inv-glass { filter: none !important; }
+.inv-line { filter: none !important; }
+.hero-stage .hp-svg, .hero-stage .hp-svg * { filter: none !important; }
+@media (max-width: 767px) { .hero-rays { display: none !important; } }
+/* phones: move the painted landscape as one GPU layer instead of re-drawing
+   the whole SVG for six separately-moving layers on every scroll frame */
+@media (hover: none) {
+  .hp-svg .pl-0, .hp-svg .pl-1, .hp-svg .pl-2, .hp-svg .pl-left,
+  .hp-svg .pl-right, .hp-svg .pl-5 { transform: none !important; }
+  .hp-svg .pl-4 { transform: none !important; opacity: 1 !important; }
+  .hero-stage .hp-svg {
+    will-change: transform;
+    transform: translate3d(0, calc(var(--p) * 6svh), 0) scale(calc(1 + var(--p) * 0.06));
+  }
+}
+/* phones: keep the GPU layer count low (high-DPR phones ran out of tile
+   memory and showed blank/stale blocks while scrolling) */
+@media (hover: none) {
+  .hp-svg .pl { will-change: auto !important; }
+  .hero-glow { mix-blend-mode: normal !important; }
+  .inv-edge { filter: none !important; }
+  .couple-bg { display: none !important; }
+}
+/* phones: animations inside the landscape SVG made the whole scene repaint
+   every frame at 4x DPR — freeze them (they still render, just still) */
+@media (hover: none) {
+  .hp-svg .hs-rays, .hp-svg .hs-mist, .hp-svg .hs-shimmer, .hp-svg .hs-bulb { animation: none !important; }
+}
