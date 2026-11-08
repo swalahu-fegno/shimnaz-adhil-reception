@@ -1,5 +1,5 @@
 """A polished gold wax seal with a raised A&S, lit like real metal.
-usage: render-gold-seal.py OUT.webp PINYON.ttf [--plain]   (--plain: no letters, for buttons)"""
+usage: render-gold-seal.py OUT.webp PINYON.ttf [GREATVIBES.ttf] [--plain]   (--plain: no letters, for buttons)"""
 import sys, numpy as np
 from PIL import Image, ImageDraw, ImageFont
 from scipy import ndimage
@@ -28,10 +28,16 @@ for k in range(36):
     h += 5 * np.exp(-(((xx - bx) ** 2 + (yy - by) ** 2) / 18))
 # raised monogram
 m = Image.new('L', (N, N), 0); d = ImageDraw.Draw(m)
-f = ImageFont.truetype(FONT, 185)
-txt = 'A&S'
-bb = d.textbbox((0, 0), txt, font=f)
-d.text((C - (bb[2] - bb[0]) / 2 - bb[0], C - (bb[3] - bb[1]) / 2 - bb[1] - 6), txt, font=f, fill=255)
+f = ImageFont.truetype(FONT, 160)
+# Pinyon's S reads like a P: draw the S in Great Vibes (optional 3rd arg)
+fs = ImageFont.truetype(sys.argv[3], 142) if len(sys.argv) > 3 and not sys.argv[3].startswith('--') else f
+parts = [('A', f, 0), ('&', f, -18), ('S', fs, -8)]
+bbs = [d.textbbox((0, 0), t, font=ff) for t, ff, _ in parts]
+x = C - sum(b[2] - b[0] + g for b, (_, _, g) in zip(bbs, parts)) / 2
+for b, (t, ff, g) in zip(bbs, parts):
+    x += g
+    d.text((x - b[0], C - (b[1] + b[3]) / 2 - 6), t, font=ff, fill=255)
+    x += b[2] - b[0]
 mono = np.asarray(m).astype(np.float32) / 255
 mono = ndimage.grey_dilation(mono, size=(5, 5))
 mono_h = ndimage.gaussian_filter(mono, 2.2)
