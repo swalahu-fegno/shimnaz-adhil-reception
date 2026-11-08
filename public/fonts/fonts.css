@@ -137,3 +137,12 @@
   font-display: block;
   src: url(./great-vibes-monogram.woff2) format('woff2');
 }
+/* Pinyon's capital S reads like a P: swap in the Great Vibes S everywhere */
+@font-face {
+  font-family: 'Pinyon Script';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./great-vibes-monogram.woff2) format('woff2');
+  unicode-range: U+0053;
+}

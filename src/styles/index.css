@@ -4696,11 +4696,7 @@ html.envelope-up, html.envelope-up body { background: #1d2217 !important; }
 .op.stage-reveal { animation-delay: 0.45s; }
 .op:not(.stage-idle) .env7 { animation: none; }
 
-/* First glow version: the envelope opens from the top again */
-.op-d0,
-.op-d1 {
-  scale: 1 1;
-}
+
 
 /* ---------- Opening page in the client's look ----------
    Same layout and motion as the nikkah opening, but on their olive felt
@@ -5460,3 +5456,70 @@ html.envelope-up, html.envelope-up body { background: #1d2217 !important; }
 @media (hover: none) {
   .hp-svg .hs-rays, .hp-svg .hs-mist, .hp-svg .hs-shimmer, .hp-svg .hs-bulb { animation: none !important; }
 }
+
+/* ---------- Opening: the envelope dissolves into a heavenly white ----------
+   Instead of a flat cream, the light behind the opened envelope is a warm,
+   glowing white with soft rays, which then fades gently onto the garden. */
+.op.stage-lift,
+.op.stage-reveal {
+  background:
+    radial-gradient(circle at 50% 46%, #ffffff 0%, #fffaf0 18%, #fbf2dc 42%, #f1e6c8 70%, #e9dcbb 100%) !important;
+}
+.op.stage-lift::before,
+.op.stage-reveal::before {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  z-index: 0;
+  pointer-events: none;
+  background: repeating-conic-gradient(from 0deg at 50% 50%, rgba(255, 236, 180, 0) 0deg 9deg, rgba(255, 236, 180, 0.38) 12deg, rgba(255, 236, 180, 0) 15deg 24deg);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0%, rgba(0, 0, 0, 0.6) 30%, transparent 62%);
+  mask-image: radial-gradient(circle at 50% 50%, #000 0%, rgba(0, 0, 0, 0.6) 30%, transparent 62%);
+  animation: op-heaven-turn 14s linear infinite, op-heaven-in 0.9s ease both;
+}
+.op.stage-lift::after,
+.op.stage-reveal::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 70vmax;
+  height: 70vmax;
+  translate: -50% -50%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, rgba(255, 248, 225, 0.6) 30%, rgba(255, 240, 200, 0) 65%);
+  animation: op-heaven-breathe 2.4s ease-in-out both;
+}
+@keyframes op-heaven-turn { to { transform: rotate(360deg); } }
+@keyframes op-heaven-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes op-heaven-breathe { 0% { scale: 0.6; opacity: 0; } 45% { scale: 1.05; opacity: 1; } 100% { scale: 1.2; opacity: 0.85; } }
+/* the envelope and motes stay above the light */
+.op .env7, .op .op-motes { position: absolute; z-index: 1; }
+/* a slower, softer fade from the light onto the garden */
+.op.stage-reveal { animation: op-white-out 1.5s cubic-bezier(0.45, 0, 0.2, 1) 0.9s both !important; }
+@media (prefers-reduced-motion: reduce) {
+  .op.stage-lift::before, .op.stage-reveal::before { animation: none; }
+}
+/* let the heavenly light show: the opened envelope dissolves as it zooms */
+html .op.stage-reveal .env7 { opacity: 0 !important; transition: transform 1.2s cubic-bezier(0.33, 0, 0.2, 1), opacity 0.55s ease !important; }
+
+/* ---------- Invitation: the parchment shows already open (no unroll on scroll) ---------- */
+.hero-invite { --u: 1 !important; clip-path: none !important; }
+.hero-invite .scroll-roll-bot { transform: translateY(calc(var(--S) - var(--R))) scaleY(-1) !important; }
+.hero-invite .inv-line { --t: clamp(0, var(--q) * 2.2, 1) !important; }
+.op.stage-lift::before, .op.stage-reveal::before {
+  background: repeating-conic-gradient(from 0deg at 50% 50%, rgba(232, 196, 110, 0) 0deg 8deg, rgba(232, 196, 110, 0.55) 12deg, rgba(232, 196, 110, 0) 16deg 24deg) !important;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 4%, #000 14%, rgba(0, 0, 0, 0.7) 34%, transparent 66%) !important;
+  mask-image: radial-gradient(circle at 50% 50%, transparent 4%, #000 14%, rgba(0, 0, 0, 0.7) 34%, transparent 66%) !important;
+}
+.op.stage-lift::before, .op.stage-reveal::before { display: block !important; height: auto !important; top: -40% !important; left: -40% !important; right: -40% !important; bottom: -40% !important; }
+/* no round glow or rays in the opening light: a plain soft white fade */
+.op.stage-lift::before, .op.stage-reveal::before,
+.op.stage-lift::after, .op.stage-reveal::after { display: none !important; content: none !important; }
+.op.stage-lift, .op.stage-reveal { background: #fbf7ee !important; }
+/* the open scroll stays hidden on the home screen; it fades in as you scroll to it */
+.hero-stage .hero-invite { opacity: clamp(0, var(--q) * 3, 1) !important; visibility: visible; }
+/* Pinyon's S reads like a P; draw the bride's initial in Great Vibes */
+.env7-mono .mono-s { font-family: 'Great Vibes Mono', 'Pinyon Script', cursive; font-size: 112px; }
